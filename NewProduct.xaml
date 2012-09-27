@@ -1,0 +1,63 @@
+﻿<UserControl
+    x:Class="TheShoppingList.NewProduct"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TheShoppingList"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="500"
+    d:DesignWidth="768">
+
+    <Grid>
+        <Border Background="Gray" Opacity="0.75" Visibility="Visible" Name="transparentBorder">
+            <Border Background="Yellow" Opacity="0.95" Height="500" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible" Name="newListBorder">
+                <Grid Width="768">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="3*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"></ColumnDefinition>
+                        <ColumnDefinition Width="5*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock FontSize="30" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">New Product</TextBlock>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Name: " Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Background="White" VerticalAlignment="Center" Width="250" Name="txtProductName" Padding="0,0,0,0" ToolTipService.ToolTip="Name of product" TextChanged="ProductNameChanged" Foreground="Black" />
+
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Price: " Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Left" Background="White" VerticalAlignment="Center" Width="250" Name="txtPrice" Padding="0,0,0,0" ToolTipService.ToolTip="Name of product" TextChanged="PriceChanged" Foreground="Black" />
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Quantity: " Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Background="White" VerticalAlignment="Center" Width="250" Name="txtQuantity" Padding="0,0,0,0" ToolTipService.ToolTip="Name of product" TextChanged="ProductNameChanged" Foreground="Black" />
+
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Type: " Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <ComboBox Grid.Row="4" Grid.Column="1" Width="200" HorizontalAlignment="Left" Name="quantityType" SelectionChanged="QuantityTypeChanged">
+                        <ComboBoxItem>Kilograms (kg)</ComboBoxItem>
+                        <ComboBoxItem>Metres (m)</ComboBoxItem>
+                        <ComboBoxItem>Feet (ft)</ComboBoxItem>
+                        <ComboBoxItem>Pounds (lb)</ComboBoxItem>
+                    </ComboBox>
+
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Shop name: " Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Background="White" VerticalAlignment="Center" Width="250" Name="txtShopName" Padding="0,0,0,0" ToolTipService.ToolTip="Name of product" TextChanged="ShopNameChanged"  Foreground="Black" />
+
+
+                    <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Button x:Name="btnSave" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Click="OnSaveProductDetails" AutomationProperties.Name="Save" Style="{StaticResource SaveAppBarButtonStyle}" Foreground="Black" />
+                        <Button Name="btnCancel" Width="100" Style="{StaticResource NoAppBarButtonStyle}" Click="Cancel" VerticalAlignment="Center" HorizontalAlignment="Center" AutomationProperties.Name="Cancel"></Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

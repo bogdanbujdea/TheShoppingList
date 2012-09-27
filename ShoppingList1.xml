@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ShoppingList>
+  <ShoppingListInfo>
+    <Name>ShoppingList1</Name>
+    <CreatedTime>10.10.2011</CreatedTime>
+    <FinishedTime>NotFinished</FinishedTime>
+  </ShoppingListInfo>
+  <Products>
+    <Product>
+      <Name>Product</Name>
+      <IsBought>True</IsBought>
+    </Product>
+  </Products>
+</ShoppingList>
