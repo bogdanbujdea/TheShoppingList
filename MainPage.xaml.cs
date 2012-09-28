@@ -141,5 +141,12 @@ namespace TheShoppingList
             if(list != null)
                 Frame.Navigate(typeof (ProductsPage), itemGridView.Items.IndexOf(e.ClickedItem));
         }
+
+        private void itemListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var list = e.ClickedItem as ShoppingList;
+            if (list != null)
+                Frame.Navigate(typeof(ProductsPage), itemListView.Items.IndexOf(e.ClickedItem));
+        }
     }
 }

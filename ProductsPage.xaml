@@ -21,12 +21,12 @@
         <x:String x:Key="AppName">The Shopping List</x:String>
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar>
+        <AppBar Name="appBar">
                     <Grid>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <Button Style="{StaticResource EditAppBarButtonStyle}" Click="EditProduct"/>
-                            <Button Style="{StaticResource RemoveAppBarButtonStyle}" Click="RemoveProduct"/>
-                            <Button Style="{StaticResource AddAppBarButtonStyle}" Click="AddProduct"/>
+                            <Button Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit" Click="EditProduct"/>
+                            <Button Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemove" Click="RemoveProduct"/>
+                            <Button Style="{StaticResource AddAppBarButtonStyle}" Name="btnAdd" Click="AddProduct"/>
                         </StackPanel>
                         <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource RefreshAppBarButtonStyle}" Click="Button_Click"/>
@@ -50,6 +50,7 @@
 
         <!-- Horizontal scrolling grid used in most view states -->
         <GridView
+            RightTapped="OnRightTappedGrid"
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemsGridView"
             AutomationProperties.Name="Items"
@@ -58,8 +59,8 @@
             Padding="116,136,116,46"
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
             ItemTemplate="{StaticResource Standard250x250ItemTemplate}"
-            SelectionMode="None"
-            IsSwipeEnabled="false"/>
+            SelectionMode="Multiple"
+            IsSwipeEnabled="false" IsItemClickEnabled="False" />
         <Popup x:Name="ProductPopup" Height="140" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Bottom" Closed="PopupClosed" IsLightDismissEnabled="True" >
             <Popup.ChildTransitions>
                 <TransitionCollection>
@@ -82,8 +83,8 @@
             Padding="10,0,0,60"
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
             ItemTemplate="{StaticResource Standard80ItemTemplate}"
-            SelectionMode="None"
-            IsSwipeEnabled="false"/>
+            SelectionMode="Multiple"
+            IsSwipeEnabled="false" IsItemClickEnabled="True"/>
 
         <!-- Back button and page title -->
         <Grid>

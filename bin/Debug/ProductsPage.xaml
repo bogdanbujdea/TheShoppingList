@@ -21,12 +21,12 @@
         <x:String x:Key="AppName">The Shopping List</x:String>
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar>
+        <AppBar Name="appBar">
                     <Grid>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <Button x:ConnectionId='1' Style="{StaticResource EditAppBarButtonStyle}"                    />
-                            <Button x:ConnectionId='2' Style="{StaticResource RemoveAppBarButtonStyle}"                      />
-                            <Button x:ConnectionId='3' Style="{StaticResource AddAppBarButtonStyle}"                   />
+                            <Button x:ConnectionId='1' Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit"                    />
+                            <Button x:ConnectionId='2' Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemove"                      />
+                            <Button x:ConnectionId='3' Style="{StaticResource AddAppBarButtonStyle}" Name="btnAdd"                   />
                         </StackPanel>
                         <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource RefreshAppBarButtonStyle}" Click="Button_Click"/>
@@ -49,7 +49,8 @@
         </Grid.RowDefinitions>
 
         <!-- Horizontal scrolling grid used in most view states -->
-        <GridView
+        <GridView x:ConnectionId='4'
+                                           
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemsGridView"
             AutomationProperties.Name="Items"
@@ -58,9 +59,9 @@
             Padding="116,136,116,46"
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
             ItemTemplate="{StaticResource Standard250x250ItemTemplate}"
-            SelectionMode="None"
-            IsSwipeEnabled="false"/>
-        <Popup x:ConnectionId='4' x:Name="ProductPopup" Height="140" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Bottom"                      IsLightDismissEnabled="True" >
+            SelectionMode="Single"
+            IsSwipeEnabled="false" IsItemClickEnabled="False" />
+        <Popup x:ConnectionId='5' x:Name="ProductPopup" Height="140" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Bottom"                      IsLightDismissEnabled="True" >
             <Popup.ChildTransitions>
                 <TransitionCollection>
                     <PopupThemeTransition />
@@ -68,7 +69,7 @@
             </Popup.ChildTransitions>
             <local:NewProduct Name="newProduct"/>
         </Popup>
-        <Button x:ConnectionId='5' Grid.Row="1" Name="btnAddProduct" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                         Style="{StaticResource AddAppBarButtonStyle}" ></Button>
+        <Button x:ConnectionId='6' Grid.Row="1" Name="btnAddProduct" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                         Style="{StaticResource AddAppBarButtonStyle}" ></Button>
 
         <!-- Vertical scrolling list only used when snapped -->
         <ListView
@@ -82,8 +83,8 @@
             Padding="10,0,0,60"
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
             ItemTemplate="{StaticResource Standard80ItemTemplate}"
-            SelectionMode="None"
-            IsSwipeEnabled="false"/>
+            SelectionMode="Multiple"
+            IsSwipeEnabled="false" IsItemClickEnabled="True"/>
 
         <!-- Back button and page title -->
         <Grid>
@@ -91,7 +92,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:ConnectionId='6' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
+            <Button x:ConnectionId='7' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
             <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 

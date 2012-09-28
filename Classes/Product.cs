@@ -12,7 +12,8 @@ namespace TheShoppingList.Classes
         kg,
         m,
         lb,
-        ft
+        ft,
+        pcs
     };
 
     public class Product : INotifyPropertyChanged

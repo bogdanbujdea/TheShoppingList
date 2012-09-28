@@ -3,6 +3,7 @@ using TheShoppingList.Classes;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
@@ -15,11 +16,19 @@ namespace TheShoppingList
     {
         private Product _product;
 
+        public enum InputMode
+        {
+            AddProduct,
+            EditProduct
+        }
+
         public NewProduct()
         {
             InitializeComponent();
             Loaded += PopupLoaded;
         }
+
+        public InputMode Mode { get; set; }
 
         public Product Product
         {
@@ -30,8 +39,17 @@ namespace TheShoppingList
         private void PopupLoaded(object sender, RoutedEventArgs e)
         {
             var size = Application.Current.Resources["newListSize"] as Point;
-
-            _product = new Product();
+            if (Mode == InputMode.AddProduct)
+            {
+                _product = new Product();
+                btnSave.SetValue(AutomationProperties.NameProperty, "Add");
+            }
+            else
+            {
+                FillProperties();
+                btnSave.SetValue(AutomationProperties.NameProperty, "Save");
+            }
+            
             if (size != null)
             {
                 transparentBorder.Width = size.Width;
@@ -41,12 +59,45 @@ namespace TheShoppingList
             }
         }
 
+        private void FillProperties()
+        {
+            txtProductName.Text = Product.Name;
+            txtPrice.Text = Product.Price.ToString();
+            txtQuantity.Text = Product.Quantity.ToString();
+            txtShopName.Text = Product.ShopName;
+            quantityType.SelectedIndex = IndexFromQuantityType(Product.QuantityType);
+        }
+
+        private int IndexFromQuantityType(QuantityType type)
+        {
+            int index = -1;
+            switch (type)
+            {
+                case QuantityType.pcs:
+                    index = 0;
+                    break;
+                case QuantityType.kg:
+                    index = 1;
+                    break;
+                case QuantityType.m:
+                    index = 2;
+                    break;
+                case QuantityType.ft:
+                    index = 3;
+                    break;
+                case QuantityType.lb:
+                    index = 4;
+                    break;
+            }
+            return index;
+        }
+
         private void OnSaveProductDetails(object sender, RoutedEventArgs e)
         {
             var p = Parent as Popup;
             if (Product == null)
                 Product = new Product();
-            if(txtProductName.Text == string.Empty)
+            if (txtProductName.Text == string.Empty)
             {
                 new MessageDialog("You must type the product name").ShowAsync();
                 Product = null;

@@ -136,7 +136,7 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
 
         private object Activate_15_NewProduct() { return new global::TheShoppingList.NewProduct(); }
 
-        private object Activate_16_ProductsPage() { return new global::TheShoppingList.ProductsPage(); }
+        private object Activate_17_ProductsPage() { return new global::TheShoppingList.ProductsPage(); }
 
         private void VectorAdd_1_ObservableCollection(object instance, object item)
         {
@@ -200,6 +200,14 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
 
             case "Int32":
                 xamlType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlSystemBaseType(typeName, typeof(global::System.Int32));
+                break;
+
+            case "Windows.Foundation.Rect":
+                xamlType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlSystemBaseType(typeName, typeof(global::Windows.Foundation.Rect));
+                break;
+
+            case "Windows.UI.Xaml.FrameworkElement":
+                xamlType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlSystemBaseType(typeName, typeof(global::Windows.UI.Xaml.FrameworkElement));
                 break;
 
             case "TheShoppingList.Classes.ShoppingSource":
@@ -292,6 +300,7 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 userType.AddEnumValue("m", global::TheShoppingList.Classes.QuantityType.m);
                 userType.AddEnumValue("lb", global::TheShoppingList.Classes.QuantityType.lb);
                 userType.AddEnumValue("ft", global::TheShoppingList.Classes.QuantityType.ft);
+                userType.AddEnumValue("pcs", global::TheShoppingList.Classes.QuantityType.pcs);
                 xamlType = userType;
                 break;
 
@@ -346,16 +355,30 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
             case "TheShoppingList.NewProduct":
                 userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.NewProduct), GetXamlTypeByName("Windows.UI.Xaml.Controls.UserControl"));
                 userType.Activator = Activate_15_NewProduct;
+                userType.AddMemberName("Mode");
+                AddToMapOfTypeToStandardName(typeof(global::TheShoppingList.NewProduct.InputMode),
+                                                   "TheShoppingList.NewProduct.InputMode");
                 userType.AddMemberName("Product");
+                xamlType = userType;
+                break;
+
+            case "TheShoppingList.NewProduct.InputMode":
+                userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.NewProduct.InputMode), GetXamlTypeByName("System.Enum"));
+                AddToMapOfTypeToStandardName(typeof(global::TheShoppingList.NewProduct.InputMode),
+                                                   "TheShoppingList.NewProduct.InputMode");
+                userType.AddEnumValue("AddProduct", global::TheShoppingList.NewProduct.InputMode.AddProduct);
+                userType.AddEnumValue("EditProduct", global::TheShoppingList.NewProduct.InputMode.EditProduct);
                 xamlType = userType;
                 break;
 
             case "TheShoppingList.ProductsPage":
                 userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.ProductsPage), GetXamlTypeByName("TheShoppingList.Common.LayoutAwarePage"));
-                userType.Activator = Activate_16_ProductsPage;
+                userType.Activator = Activate_17_ProductsPage;
                 userType.AddMemberName("ListIndex");
                 AddToMapOfTypeToStandardName(typeof(global::System.Int32),
                                                    "Int32");
+                userType.AddMemberName("ProductControl");
+                userType.AddMemberName("ElementRect");
                 xamlType = userType;
                 break;
 
@@ -514,25 +537,49 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
             var that = (global::TheShoppingList.NewShoppingList)instance;
             that.NewListSaved = (global::System.Boolean)Value;
         }
-        private object get_15_NewProduct_Product(object instance)
+        private object get_15_NewProduct_Mode(object instance)
+        {
+            var that = (global::TheShoppingList.NewProduct)instance;
+            return that.Mode;
+        }
+        private void set_15_NewProduct_Mode(object instance, object Value)
+        {
+            var that = (global::TheShoppingList.NewProduct)instance;
+            that.Mode = (global::TheShoppingList.NewProduct.InputMode)Value;
+        }
+        private object get_16_NewProduct_Product(object instance)
         {
             var that = (global::TheShoppingList.NewProduct)instance;
             return that.Product;
         }
-        private void set_15_NewProduct_Product(object instance, object Value)
+        private void set_16_NewProduct_Product(object instance, object Value)
         {
             var that = (global::TheShoppingList.NewProduct)instance;
             that.Product = (global::TheShoppingList.Classes.Product)Value;
         }
-        private object get_16_ProductsPage_ListIndex(object instance)
+        private object get_17_ProductsPage_ListIndex(object instance)
         {
             var that = (global::TheShoppingList.ProductsPage)instance;
             return that.ListIndex;
         }
-        private void set_16_ProductsPage_ListIndex(object instance, object Value)
+        private void set_17_ProductsPage_ListIndex(object instance, object Value)
         {
             var that = (global::TheShoppingList.ProductsPage)instance;
             that.ListIndex = (global::System.Int32)Value;
+        }
+        private object get_18_ProductsPage_ProductControl(object instance)
+        {
+            var that = (global::TheShoppingList.ProductsPage)instance;
+            return that.ProductControl;
+        }
+        private void set_18_ProductsPage_ProductControl(object instance, object Value)
+        {
+            var that = (global::TheShoppingList.ProductsPage)instance;
+            that.ProductControl = (global::TheShoppingList.NewProduct)Value;
+        }
+        private object get_19_ProductsPage_ElementRect(object instance)
+        {
+            return global::TheShoppingList.ProductsPage.GetElementRect((global::Windows.UI.Xaml.FrameworkElement)instance);
         }
 
         private global::Windows.UI.Xaml.Markup.IXamlMember CreateXamlMember(string longMemberName)
@@ -632,17 +679,37 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 xamlMember.Getter = get_14_NewShoppingList_NewListSaved;
                 xamlMember.Setter = set_14_NewShoppingList_NewListSaved;
                 break;
+            case "TheShoppingList.NewProduct.Mode":
+                userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.NewProduct");
+                xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Mode", "TheShoppingList.NewProduct.InputMode");
+                xamlMember.Getter = get_15_NewProduct_Mode;
+                xamlMember.Setter = set_15_NewProduct_Mode;
+                break;
             case "TheShoppingList.NewProduct.Product":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.NewProduct");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Product", "TheShoppingList.Classes.Product");
-                xamlMember.Getter = get_15_NewProduct_Product;
-                xamlMember.Setter = set_15_NewProduct_Product;
+                xamlMember.Getter = get_16_NewProduct_Product;
+                xamlMember.Setter = set_16_NewProduct_Product;
                 break;
             case "TheShoppingList.ProductsPage.ListIndex":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.ProductsPage");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "ListIndex", "Int32");
-                xamlMember.Getter = get_16_ProductsPage_ListIndex;
-                xamlMember.Setter = set_16_ProductsPage_ListIndex;
+                xamlMember.Getter = get_17_ProductsPage_ListIndex;
+                xamlMember.Setter = set_17_ProductsPage_ListIndex;
+                break;
+            case "TheShoppingList.ProductsPage.ProductControl":
+                userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.ProductsPage");
+                xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "ProductControl", "TheShoppingList.NewProduct");
+                xamlMember.Getter = get_18_ProductsPage_ProductControl;
+                xamlMember.Setter = set_18_ProductsPage_ProductControl;
+                break;
+            case "TheShoppingList.ProductsPage.ElementRect":
+                userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.ProductsPage");
+                xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "ElementRect", "Windows.Foundation.Rect");
+                xamlMember.SetTargetTypeName("Windows.UI.Xaml.FrameworkElement");
+                xamlMember.SetIsAttachable();
+                xamlMember.Getter = get_19_ProductsPage_ElementRect;
+                xamlMember.SetIsReadOnly();
                 break;
             }
             return xamlMember;
