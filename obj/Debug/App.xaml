@@ -19,7 +19,7 @@
                     <Classes:ShoppingSource x:Key="shoppingSource"/>
                     <Common:LayoutAwarePage x:Key="mainPage"/>
                     <Classes:Point x:Key="newListSize"/>
-                    
+                    <Common:BooleanToColorConverter x:Key="ColorConverter"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 

@@ -12,27 +12,27 @@
 
     <Page.Resources>
 
-        <!-- Collection of items displayed by this page -->
-        <CollectionViewSource
-            x:Name="itemsViewSource"
-            Source="{Binding Items}"/>
-
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">The Shopping List</x:String>
+        <x:String x:Key="AppName">My Application</x:String>
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
         <AppBar Name="appBar">
-                    <Grid>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <Button x:ConnectionId='1' Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit"                    />
-                            <Button x:ConnectionId='2' Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemove"                      />
-                            <Button x:ConnectionId='3' Style="{StaticResource AddAppBarButtonStyle}" Name="btnAdd"                   />
-                        </StackPanel>
-                        <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button x:ConnectionId='1' Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit"                    />
+                    <Button x:ConnectionId='2' Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemove"                      />
+                    <Button x:ConnectionId='3' Style="{StaticResource AddAppBarButtonStyle}" Name="btnAdd"                   />
+                    <Button x:ConnectionId='4' Style="{StaticResource AppBarButtonStyle}" AutomationProperties.Name="Add to cart" Name="btnAddRemove"                             >
+                        <Button.Content>
+                            <Image Source="Assets/addtocart.png" Width="27" Height="27" Stretch="UniformToFill"></Image>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+                <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource RefreshAppBarButtonStyle}" Click="Button_Click"/>
                     <Button Style="{StaticResource HelpAppBarButtonStyle}" Click="Button_Click"/>
                 </StackPanel>-->
-                    </Grid>
+            </Grid>
 
         </AppBar>
     </common:LayoutAwarePage.BottomAppBar>
@@ -42,26 +42,12 @@
         * Row 0 contains the back button and page title
         * Row 1 contains the rest of the page layout
     -->
-    <Grid Style="{StaticResource LayoutRootStyle}">
+    <Grid Style="{StaticResource LayoutRootStyle}" Background="#FF494A4F">
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <!-- Horizontal scrolling grid used in most view states -->
-        <GridView x:ConnectionId='4'
-                                           
-            x:Name="itemGridView"
-            AutomationProperties.AutomationId="ItemsGridView"
-            AutomationProperties.Name="Items"
-            TabIndex="1"
-            Grid.RowSpan="2"
-            Padding="116,136,116,46"
-            ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
-            ItemTemplate="{StaticResource Standard250x250ItemTemplate}"
-            SelectionMode="Single"
-            IsSwipeEnabled="false" IsItemClickEnabled="False" />
-        <Popup x:ConnectionId='5' x:Name="ProductPopup" Height="140" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Bottom"                      IsLightDismissEnabled="True" >
+        <Popup x:ConnectionId='5' Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="ProductPopup" Height="140" Width="768" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Top"                      IsLightDismissEnabled="True" >
             <Popup.ChildTransitions>
                 <TransitionCollection>
                     <PopupThemeTransition />
@@ -69,22 +55,6 @@
             </Popup.ChildTransitions>
             <local:NewProduct Name="newProduct"/>
         </Popup>
-        <Button x:ConnectionId='6' Grid.Row="1" Name="btnAddProduct" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                         Style="{StaticResource AddAppBarButtonStyle}" ></Button>
-
-        <!-- Vertical scrolling list only used when snapped -->
-        <ListView
-            x:Name="itemListView"
-            AutomationProperties.AutomationId="ItemsListView"
-            AutomationProperties.Name="Items"
-            TabIndex="1"
-            Grid.Row="1"
-            Visibility="Collapsed"
-            Margin="0,-10,0,0"
-            Padding="10,0,0,60"
-            ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
-            ItemTemplate="{StaticResource Standard80ItemTemplate}"
-            SelectionMode="Multiple"
-            IsSwipeEnabled="false" IsItemClickEnabled="True"/>
 
         <!-- Back button and page title -->
         <Grid>
@@ -92,10 +62,56 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:ConnectionId='7' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
-            <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
+            <Button x:ConnectionId='8' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
+            <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Shopping Items" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,0,0" Style="{StaticResource ItemTextStyle}" FontSize="36"></TextBlock>
+            <Grid Grid.Row="1" Grid.Column="0" Margin="0,0,20,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Your balance" FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
+                <TextBox Grid.Row="0" Grid.Column="1"  Margin="5"></TextBox>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Total"  FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
+                <TextBox Grid.Row="1" Grid.Column="1"  Margin="5"></TextBox>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Remainder"  FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
+                <TextBox Grid.Row="2" Grid.Column="1"  Margin="5"></TextBox>
+            </Grid>
+            <ListView x:ConnectionId='6' Grid.Row="1" Grid.Column="1" SelectionMode="Single"                                                    IsItemClickEnabled="False" Grid.RowSpan="2" Margin="20,0,20,10" ItemsSource="{Binding}" Name="productsList" Background="#FF3D3E39"                                         >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid x:ConnectionId='7' Width="630" Background="#FF3D3E39"                                 >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*"></ColumnDefinition>
+                                <ColumnDefinition Width="2*"></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"  Text="{Binding Name}" Grid.Column="0" Margin="5,0,0,10" FontSize="29.333" HorizontalAlignment="Left" FontWeight="Bold" FontFamily="Segoe UI Symbol"></TextBlock>
+                            <TextBlock Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding ListPrice}" Grid.Column="1" FontWeight="Bold" FontSize="21.333" FontFamily="Segoe UI Symbol" ></TextBlock>
+                            <TextBlock Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding ShopName}" Grid.Column="2" HorizontalAlignment="Left" TextAlignment="Left" FontWeight="Bold" FontSize="21.333" FontFamily="Segoe UI Symbol" Margin="0,0,20,0"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
         <VisualStateManager.VisualStateGroups>
 
             <!-- Visual states reflect the application's view state -->
@@ -109,16 +125,10 @@
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="backButton" Storyboard.TargetProperty="Style">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PortraitBackButtonStyle}"/>
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemGridView" Storyboard.TargetProperty="Padding">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="96,136,86,56"/>
-                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
 
-                <!--
-                    The back button and title have different styles when snapped, and the list representation is substituted
-                    for the grid displayed in all other view states
-                -->
+                <!-- The back button and title have different styles when snapped -->
                 <VisualState x:Name="Snapped">
                     <Storyboard>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="backButton" Storyboard.TargetProperty="Style">
@@ -126,13 +136,6 @@
                         </ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="pageTitle" Storyboard.TargetProperty="Style">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnappedPageHeaderTextStyle}"/>
-                        </ObjectAnimationUsingKeyFrames>
-
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemListView" Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
-                        </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemGridView" Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>

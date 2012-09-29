@@ -2,16 +2,23 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TheShoppingList.Classes;
 using TheShoppingList.Common;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.Streams;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Point = Windows.Foundation.Point;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -22,9 +29,15 @@ namespace TheShoppingList
     /// </summary>
     public sealed partial class ProductsPage : TheShoppingList.Common.LayoutAwarePage
     {
+
+        public int ListIndex { get; set; }
+        public ShoppingList ShoppingList { get; set; }
+        public NewProduct ProductControl { get; set; }
+        public Product SelectedProduct { get; set; }
         public ProductsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            ProductControl = ProductPopup.Child as NewProduct;
         }
 
         /// <summary>
@@ -38,6 +51,10 @@ namespace TheShoppingList
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
+            ListIndex = navigationParameter is int ? (int)navigationParameter : -1;
+            var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+            ShoppingList = source.ShoppingLists[ListIndex];
+            DataContext = ShoppingList.Products;
         }
 
         /// <summary>
@@ -45,29 +62,128 @@ namespace TheShoppingList
         /// page is discarded from the navigation cache.  Values must conform to the serialization
         /// requirements of <see cref="SuspensionManager.SessionState"/>.
         /// </summary>
-        /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
+        /// <param nLame="pageState">An empty dictionary to be populated with serializable state.</param>
         protected override void SaveState(Dictionary<String, Object> pageState)
         {
         }
 
-        private void PopupClosed(object sender, object e)
+        private async void PopupClosed(object sender, object e)
         {
-            
+            Product product = ProductControl.Product;
+            if (product == null)
+                return;
+            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
+            if (source != null)
+            {
+                source.ShoppingLists[ListIndex].Products.Add(product);
+                await source.SaveListsAsync();
+            }
+
         }
 
-        private void RemoveProduct(object sender, RoutedEventArgs e)
+        private async void RemoveProduct(object sender, RoutedEventArgs e)
         {
-            
+            var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+            if (source != null)
+            {
+                Product product = null;
+                if (productsList.SelectedItem != null)
+                    product = productsList.SelectedItem as Product;
+
+                if (product != null)
+                {
+                    source.ShoppingLists[ListIndex].Products.Remove(product);
+                    await source.SaveListsAsync();
+                }
+            }
         }
 
         private void AddProduct(object sender, RoutedEventArgs e)
         {
-            
+            ProductControl.Mode = NewProduct.InputMode.AddProduct;
+            ShowPopup();
+        }
+
+        private void ShowPopup()
+        {
+            if (!ProductPopup.IsOpen)
+            {
+                ProductPopup.IsLightDismissEnabled = false;
+                ProductPopup.IsOpen = true;
+                ProductPopup.Visibility = Visibility.Visible;
+
+            }
+            else
+            {
+                ProductPopup.IsOpen = false;
+                ShowPopup();
+            }
         }
 
         private void EditProduct(object sender, RoutedEventArgs e)
         {
-            
+            ProductControl.Mode = NewProduct.InputMode.EditProduct;
+            if (ProductControl == null)
+            {
+                new MessageDialog("Could not get a handle to the popup control! Please try again!").ShowAsync();
+                return;
+            }
+            var product = productsList.SelectedItem as Product;
+            ProductControl.Product = product;
+            ShowPopup();
+        }
+
+        private void productsList_RightTapped_1(object sender, RightTappedRoutedEventArgs e)
+        {
+            e.Handled = false;
+        }
+
+        private void Grid_RightTapped_1(object sender, RightTappedRoutedEventArgs e)
+        {
+            var product = productsList.SelectedItem as Product;
+            if(product == null)
+                return;
+            if (product.IsBought == true)
+            {
+                Image image = new Image();
+                image.Source = new BitmapImage(new Uri("ms-appx:/Assets/removefromcart.png", UriKind.RelativeOrAbsolute));
+                btnAddRemove.SetValue(AutomationProperties.NameProperty, "Remove from cart");
+            }
+            else
+            {
+                Image image = new Image();
+                image.Source = new BitmapImage(new Uri("ms-appx:/Assets/addtocart.png", UriKind.RelativeOrAbsolute));
+                btnAddRemove.SetValue(AutomationProperties.NameProperty, "Add to cart");
+            }
+            appBar.IsOpen = true;
+
+        }
+
+        private async void btnAddToCart_Click_1(object sender, RoutedEventArgs e)
+        {
+            var product = productsList.SelectedItem as Product;
+            if (product != null)
+            {
+                
+                var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+                int position = ShoppingList.Products.Count;
+                if(product.IsBought)
+                {
+                    position = 0;
+                    product.IsBought = false;
+                }
+                else
+                    product.IsBought = true;
+                source.ShoppingLists[ListIndex].Products.Remove(product);
+                source.ShoppingLists[ListIndex].Products.Insert(position, product);
+                await source.SaveListsAsync();
+                
+            }
+        }
+
+        private void productsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            //SelectedProduct = e.AddedItems[0] as Product;
         }
     }
 }

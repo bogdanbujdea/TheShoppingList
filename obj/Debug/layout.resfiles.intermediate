@@ -1,8 +1,12 @@
+Assets\addtocart.png
 Assets\cart.png
+Assets\checked.png
 Assets\Logo.png
+Assets\removefromcart.png
 Assets\SmallLogo.png
 Assets\SplashScreen.png
 Assets\StoreLogo.png
+Assets\unchecked.png
 App.xaml
 Common\StandardStyles.xaml
 MainPage.xaml

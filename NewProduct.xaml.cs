@@ -61,6 +61,11 @@ namespace TheShoppingList
 
         private void FillProperties()
         {
+            if(Product == null)
+            {
+                var p = Parent as Popup; 
+                if (p != null) p.IsOpen = false;
+            }
             txtProductName.Text = Product.Name;
             txtPrice.Text = Product.Price.ToString();
             txtQuantity.Text = Product.Quantity.ToString();

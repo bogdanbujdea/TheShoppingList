@@ -111,6 +111,7 @@
     <Compile Include="Classes\ShoppingSource.cs" />
     <Compile Include="Common\BindableBase.cs" />
     <Compile Include="Common\BooleanNegationConverter.cs" />
+    <Compile Include="Common\BooleanToColorConverter.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\LayoutAwarePage.cs" />
     <Compile Include="Common\RichTextColumns.cs" />
@@ -137,11 +138,15 @@
     <None Include="TheShoppingList_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\addtocart.png" />
+    <Content Include="Assets\checked.png" />
     <Content Include="Assets\Logo.png" />
+    <Content Include="Assets\removefromcart.png" />
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\cart.png" />
+    <Content Include="Assets\unchecked.png" />
     <Content Include="Common\ReadMe.txt" />
     <Content Include="ShoppingList1.xml" />
   </ItemGroup>

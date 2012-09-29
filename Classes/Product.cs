@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +19,37 @@ namespace TheShoppingList.Classes
 
     public class Product : INotifyPropertyChanged
     {
+
+        public Product()
+        {
+            IsBought = false;
+        }
+
         private string _name;
         private string _shopName;
         private double _price;
         private bool _isBought;
         private double _quantity;
         private QuantityType _quantityType;
+        private string _listPrice;
+        private string _image;
+
+        public string Image
+        {
+            get
+            {
+                if (IsBought)
+                    _image = @"Assets/checked.png";
+                else
+                    _image = @"Assets/unchecked.png";
+                return _image;
+            }
+            set
+            {
+                _image = value;
+                OnPropertyChanged("Image");
+            }
+        }
 
         public string Name
         {
@@ -32,6 +58,24 @@ namespace TheShoppingList.Classes
             {
                 _name = value;
                 OnPropertyChanged("Name");
+            }
+        }
+
+        public string ListPrice
+        {
+            get { return _listPrice; }
+            set
+            {
+                _listPrice = value;
+                OnPropertyChanged("ListPrice");
+            }
+        }
+
+        public string Currency
+        {
+            get
+            {
+                return RegionInfo.CurrentRegion.ISOCurrencySymbol;
             }
         }
 
@@ -50,6 +94,7 @@ namespace TheShoppingList.Classes
             get { return _price; }
             set
             {
+                _listPrice = value + " " + Currency;
                 _price = value;
                 OnPropertyChanged("Price");
             }
@@ -61,6 +106,10 @@ namespace TheShoppingList.Classes
             set
             {
                 _isBought = value;
+                if (_isBought)
+                    _image = @"Assets/checked.png";
+                else
+                    _image = @"Assets/unchecked.png";
                 OnPropertyChanged("IsBought");
             }
         }
