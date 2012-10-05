@@ -89,24 +89,30 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Your balance" FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
-                <TextBox Grid.Row="0" Grid.Column="1"  Margin="5"></TextBox>
+                <Border Grid.Row="0" Grid.Column="1"  Margin="5" CornerRadius="40">
+                    <TextBox ></TextBox>
+                </Border>
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Total"  FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
-                <TextBox Grid.Row="1" Grid.Column="1"  Margin="5"></TextBox>
+                <Border Grid.Row="1" Grid.Column="1"  Margin="5" CornerRadius="40" BorderThickness="1">
+                    <TextBox></TextBox>
+                </Border>
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Remainder"  FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
-                <TextBox Grid.Row="2" Grid.Column="1"  Margin="5"></TextBox>
+                <Border  Grid.Row="2" Grid.Column="1"  Margin="5" CornerRadius="40">
+                    <TextBox ></TextBox>
+                </Border>
             </Grid>
-            <ListView x:ConnectionId='6' Grid.Row="1" Grid.Column="1" SelectionMode="Single"                                                    IsItemClickEnabled="False" Grid.RowSpan="2" Margin="20,0,20,10" ItemsSource="{Binding}" Name="productsList" Background="#FF3D3E39"                                         >
+            <ListView x:ConnectionId='6' Grid.Row="1" Grid.Column="1" SelectionMode="Single"                                                    IsItemClickEnabled="False" Grid.RowSpan="2" Margin="20,0,0,0" ItemsSource="{Binding}" Name="productsList" Background="#FF3D3E39"                                          ItemContainerStyle="{StaticResource ProductItemStyle}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid x:ConnectionId='7' Width="630" Background="#FF3D3E39"                                 >
+                        <Grid x:ConnectionId='7' Width="650" Margin="0" Background="{Binding Path=Index, Converter={StaticResource BackgroundConverter}}"                                 >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="5*"></ColumnDefinition>
                                 <ColumnDefinition Width="2*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"  Text="{Binding Name}" Grid.Column="0" Margin="5,0,0,10" FontSize="29.333" HorizontalAlignment="Left" FontWeight="Bold" FontFamily="Segoe UI Symbol"></TextBlock>
-                            <TextBlock Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding ListPrice}" Grid.Column="1" FontWeight="Bold" FontSize="21.333" FontFamily="Segoe UI Symbol" ></TextBlock>
-                            <TextBlock Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding ShopName}" Grid.Column="2" HorizontalAlignment="Left" TextAlignment="Left" FontWeight="Bold" FontSize="21.333" FontFamily="Segoe UI Symbol" Margin="0,0,20,0"></TextBlock>
+                            <TextBlock Opacity="{Binding Path=IsBought, Converter={StaticResource OpacityConverter}}" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"  Text="{Binding Name}" Grid.Column="0" Margin="5,0,0,0" FontSize="29.333" HorizontalAlignment="Left" FontWeight="Bold" FontFamily="Segoe UI Symbol"></TextBlock>
+                            <TextBlock Opacity="{Binding Path=IsBought, Converter={StaticResource OpacityConverter}}" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding ListPrice}" Grid.Column="1" FontWeight="Bold" Margin="0" FontSize="21.333" FontFamily="Segoe UI Symbol" ></TextBlock>
+                            <TextBlock Opacity="{Binding Path=IsBought, Converter={StaticResource OpacityConverter}}" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding ShopName}" Grid.Column="2" HorizontalAlignment="Left" TextAlignment="Left" FontWeight="Bold" FontSize="21.333" FontFamily="Segoe UI Symbol" Margin="0"></TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

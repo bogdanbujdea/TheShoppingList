@@ -25,6 +25,8 @@ namespace TheShoppingList.Classes
             IsBought = false;
         }
 
+        public int Index { get; set; }
+
         private string _name;
         private string _shopName;
         private double _price;

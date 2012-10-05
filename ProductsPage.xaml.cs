@@ -1,24 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using TheShoppingList.Classes;
 using TheShoppingList.Common;
-using Windows.Devices.Input;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
-using Point = Windows.Foundation.Point;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -27,18 +16,18 @@ namespace TheShoppingList
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class ProductsPage : TheShoppingList.Common.LayoutAwarePage
+    public sealed partial class ProductsPage : LayoutAwarePage
     {
-
-        public int ListIndex { get; set; }
-        public ShoppingList ShoppingList { get; set; }
-        public NewProduct ProductControl { get; set; }
-        public Product SelectedProduct { get; set; }
         public ProductsPage()
         {
             InitializeComponent();
             ProductControl = ProductPopup.Child as NewProduct;
         }
+
+        public int ListIndex { get; set; }
+        public ShoppingList ShoppingList { get; set; }
+        public NewProduct ProductControl { get; set; }
+        public Product SelectedProduct { get; set; }
 
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
@@ -51,10 +40,15 @@ namespace TheShoppingList
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            ListIndex = navigationParameter is int ? (int)navigationParameter : -1;
-            var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+            ListIndex = navigationParameter is int ? (int) navigationParameter : -1;
+            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             ShoppingList = source.ShoppingLists[ListIndex];
             DataContext = ShoppingList.Products;
+
+            for (int i = 0; i < ShoppingList.Products.Count; i++)
+            {
+                ShoppingList.Products[i].Index = i;
+            }
         }
 
         /// <summary>
@@ -78,12 +72,11 @@ namespace TheShoppingList
                 source.ShoppingLists[ListIndex].Products.Add(product);
                 await source.SaveListsAsync();
             }
-
         }
 
         private async void RemoveProduct(object sender, RoutedEventArgs e)
         {
-            var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source != null)
             {
                 Product product = null;
@@ -111,7 +104,6 @@ namespace TheShoppingList
                 ProductPopup.IsLightDismissEnabled = false;
                 ProductPopup.IsOpen = true;
                 ProductPopup.Visibility = Visibility.Visible;
-
             }
             else
             {
@@ -136,27 +128,27 @@ namespace TheShoppingList
         private void productsList_RightTapped_1(object sender, RightTappedRoutedEventArgs e)
         {
             e.Handled = false;
+            appBar.IsOpen = true;
         }
 
         private void Grid_RightTapped_1(object sender, RightTappedRoutedEventArgs e)
         {
             var product = productsList.SelectedItem as Product;
-            if(product == null)
+            if (product == null)
                 return;
-            if (product.IsBought == true)
+            if (product.IsBought)
             {
-                Image image = new Image();
+                var image = new Image();
                 image.Source = new BitmapImage(new Uri("ms-appx:/Assets/removefromcart.png", UriKind.RelativeOrAbsolute));
                 btnAddRemove.SetValue(AutomationProperties.NameProperty, "Remove from cart");
             }
             else
             {
-                Image image = new Image();
+                var image = new Image();
                 image.Source = new BitmapImage(new Uri("ms-appx:/Assets/addtocart.png", UriKind.RelativeOrAbsolute));
                 btnAddRemove.SetValue(AutomationProperties.NameProperty, "Add to cart");
             }
             appBar.IsOpen = true;
-
         }
 
         private async void btnAddToCart_Click_1(object sender, RoutedEventArgs e)
@@ -164,10 +156,9 @@ namespace TheShoppingList
             var product = productsList.SelectedItem as Product;
             if (product != null)
             {
-                
-                var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+                var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
                 int position = ShoppingList.Products.Count;
-                if(product.IsBought)
+                if (product.IsBought)
                 {
                     position = 0;
                     product.IsBought = false;
@@ -175,9 +166,11 @@ namespace TheShoppingList
                 else
                     product.IsBought = true;
                 source.ShoppingLists[ListIndex].Products.Remove(product);
-                source.ShoppingLists[ListIndex].Products.Insert(position, product);
+                if (position == 0)
+                    source.ShoppingLists[ListIndex].Products.Insert(position, product);
+                else
+                    source.ShoppingLists[ListIndex].Products.Add(product);
                 await source.SaveListsAsync();
-                
             }
         }
 

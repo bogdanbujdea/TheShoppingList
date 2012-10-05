@@ -106,12 +106,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\IntToColorConverter.cs" />
     <Compile Include="Classes\Product.cs" />
     <Compile Include="Classes\ShoppingList.cs" />
     <Compile Include="Classes\ShoppingSource.cs" />
     <Compile Include="Common\BindableBase.cs" />
     <Compile Include="Common\BooleanNegationConverter.cs" />
     <Compile Include="Common\BooleanToColorConverter.cs" />
+    <Compile Include="Common\BooleanToOpacityConverter.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\LayoutAwarePage.cs" />
     <Compile Include="Common\RichTextColumns.cs" />

@@ -14,7 +14,7 @@ namespace TheShoppingList.Common
     {
             public object Convert(object value, Type targetType, object parameter, string language)
             {
-                return (value is bool && (bool)value) ? new SolidColorBrush(Colors.DarkGreen) : new SolidColorBrush(Colors.White);
+                return (value is bool && (bool)value) ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.White);
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, string language)
