@@ -104,15 +104,15 @@
             <ListView Grid.Row="1" Grid.Column="1" SelectionMode="Single" SelectionChanged="productsList_SelectionChanged_1" IsItemClickEnabled="False" Grid.RowSpan="2" Margin="20,0,0,0" ItemsSource="{Binding}" Name="productsList" Background="#FF3D3E39" RightTapped="productsList_RightTapped_1" ItemContainerStyle="{StaticResource ProductItemStyle}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Width="650" Margin="0" Background="{Binding Path=Index, Converter={StaticResource BackgroundConverter}}" RightTapped="Grid_RightTapped_1">
+                        <Grid Width="650" Margin="0" Background="#FF3D3E39" RightTapped="Grid_RightTapped_1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="5*"></ColumnDefinition>
                                 <ColumnDefinition Width="2*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Opacity="{Binding Path=IsBought, Converter={StaticResource OpacityConverter}}" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"  Text="{Binding Name}" Grid.Column="0" Margin="5,0,0,0" FontSize="29.333" HorizontalAlignment="Left" FontWeight="Bold" FontFamily="Segoe UI Symbol"></TextBlock>
-                            <TextBlock Opacity="{Binding Path=IsBought, Converter={StaticResource OpacityConverter}}" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding ListPrice}" Grid.Column="1" FontWeight="Bold" Margin="0" FontSize="21.333" FontFamily="Segoe UI Symbol" ></TextBlock>
-                            <TextBlock Opacity="{Binding Path=IsBought, Converter={StaticResource OpacityConverter}}" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding ShopName}" Grid.Column="2" HorizontalAlignment="Left" TextAlignment="Left" FontWeight="Bold" FontSize="21.333" FontFamily="Segoe UI Symbol" Margin="0"></TextBlock>
+                            <TextBlock Text="{Binding Name}" Grid.Column="0" Margin="5,0,0,0" FontSize="29.333" HorizontalAlignment="Left" FontWeight="Bold" FontFamily="Segoe UI Symbol"></TextBlock>
+                            <TextBlock Text="{Binding ListPrice}" Grid.Column="1" FontWeight="Bold" Margin="0" FontSize="21.333" FontFamily="Segoe UI Symbol" ></TextBlock>
+                            <TextBlock Text="{Binding ShopName}" Grid.Column="2" HorizontalAlignment="Left" TextAlignment="Left" FontWeight="Bold" FontSize="21.333" FontFamily="Segoe UI Symbol" Margin="0"></TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

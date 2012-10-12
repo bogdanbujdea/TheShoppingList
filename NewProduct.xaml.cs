@@ -49,7 +49,7 @@ namespace TheShoppingList
                 FillProperties();
                 btnSave.SetValue(AutomationProperties.NameProperty, "Save");
             }
-            
+
             if (size != null)
             {
                 transparentBorder.Width = size.Width;
@@ -61,9 +61,9 @@ namespace TheShoppingList
 
         private void FillProperties()
         {
-            if(Product == null)
+            if (Product == null)
             {
-                var p = Parent as Popup; 
+                var p = Parent as Popup;
                 if (p != null) p.IsOpen = false;
             }
             txtProductName.Text = Product.Name;
@@ -126,11 +126,15 @@ namespace TheShoppingList
                     type = QuantityType.lb;
                     break;
             }
-            Product.Name = txtProductName.Text;
-            Product.Price = Convert.ToDouble(txtPrice.Text);
-            Product.Quantity = Convert.ToDouble(txtQuantity.Text);
+            if (txtProductName.Text != string.Empty)
+                Product.Name = txtProductName.Text;
+            if (txtPrice.Text != string.Empty)
+                Product.Price = Convert.ToDouble(txtPrice.Text);
+            if (txtQuantity.Text != string.Empty)
+                Product.Quantity = Convert.ToDouble(txtQuantity.Text);
             Product.QuantityType = type;
-            Product.ShopName = txtShopName.Text;
+            if (txtShopName.Text != string.Empty)
+                Product.ShopName = txtShopName.Text;
             txtProductName.Text = string.Empty;
             txtPrice.Text = string.Empty;
             txtQuantity.Text = string.Empty;
