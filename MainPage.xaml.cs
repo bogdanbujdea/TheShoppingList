@@ -19,7 +19,7 @@ namespace TheShoppingList
     public sealed partial class MainPage
     {
         private int listCount;
-        
+
         public MainPage()
         {
             InitializeComponent();
@@ -50,12 +50,12 @@ namespace TheShoppingList
 
         void Current_Resuming(object sender, object e)
         {
-            LoadState(null,null);
+            LoadState(null, null);
         }
 
         void Current_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
         {
-            
+
         }
 
 
@@ -70,13 +70,13 @@ namespace TheShoppingList
         /// session.  This will be null the first time a page is visited.</param>
         protected async override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            
+
         }
 
-        protected async override void SaveState(Dictionary<string,object> pageState)
+        protected async override void SaveState(Dictionary<string, object> pageState)
         {
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
-            if(source != null)
+            if (source != null)
                 await source.SaveListsAsync();
         }
 
@@ -86,8 +86,8 @@ namespace TheShoppingList
             {
                 ParentedPopup.IsLightDismissEnabled = false;
                 ParentedPopup.IsOpen = true;
-                ParentedPopup.Visibility=Visibility.Visible;
-                btnAddList.Visibility=Visibility.Collapsed;
+                ParentedPopup.Visibility = Visibility.Visible;
+                btnAddList.Visibility = Visibility.Collapsed;
                 var shoppingSource = Application.Current.Resources["shoppingSource"] as ShoppingSource;
                 if (shoppingSource != null)
                     listCount = shoppingSource.ShoppingLists.Count;
@@ -99,7 +99,7 @@ namespace TheShoppingList
             var shoppingSource = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (shoppingSource != null)
             {
-                if(shoppingSource.ShoppingLists.Count == 0)
+                if (shoppingSource.ShoppingLists.Count == 0)
                 {
                     btnAddList.Visibility = Visibility.Visible;
                 }
@@ -111,7 +111,7 @@ namespace TheShoppingList
             }
         }
 
-       
+
 
         private void EditList(object sender, RoutedEventArgs e)
         {
@@ -128,7 +128,7 @@ namespace TheShoppingList
             else
                 selectedItem = itemGridView.SelectedItem as ShoppingList;
             var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
-            if(selectedItem != null && source != null)
+            if (selectedItem != null && source != null)
             {
                 source.ShoppingLists.Remove(selectedItem);
                 await source.SaveListsAsync();
@@ -138,15 +138,49 @@ namespace TheShoppingList
         private void ListClicked(object sender, ItemClickEventArgs e)
         {
             var list = e.ClickedItem as ShoppingList;
-            if(list != null)
-                Frame.Navigate(typeof (ProductsPage), itemGridView.Items.IndexOf(e.ClickedItem));
+            if (list != null)
+            {
+                SortProducts(list);
+                Frame.Navigate(typeof(ProductsPage), itemGridView.Items.IndexOf(e.ClickedItem));
+            }
+        }
+
+        private void SortProducts(ShoppingList list)
+        {
+            var products = new Product[list.Products.Count];
+            list.Products.CopyTo(products, 0);
+
+            Array.Sort(products, Comparison);
+            list.Products.Clear();
+            foreach (var product in products)
+            {
+                if (product != null)
+                    list.Products.Add(product);
+            }
+        }
+
+        private int Comparison(Product product, Product product1)
+        {
+            if (product == null)
+                return 1;
+            if (product1 == null)
+                return -1;
+            if (product.IsBought == false && product1.IsBought == false)
+                return 0;
+            if (product.IsBought == false)
+                return -1;
+            return 1;
+
         }
 
         private void itemListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var list = e.ClickedItem as ShoppingList;
             if (list != null)
+            {
+                SortProducts(list);
                 Frame.Navigate(typeof(ProductsPage), itemListView.Items.IndexOf(e.ClickedItem));
+            }
         }
     }
 }

@@ -24,6 +24,7 @@ namespace TheShoppingList
         {
             InitializeComponent();
             ProductControl = ProductPopup.Child as NewProduct;
+            if (ProductControl != null) ProductControl.NewProductAdded += ProductControl_NewProductAdded;
         }
 
         public int ListIndex { get; set; }
@@ -42,14 +43,15 @@ namespace TheShoppingList
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            ListIndex = navigationParameter is int ? (int) navigationParameter : -1;
+            ListIndex = navigationParameter is int ? (int)navigationParameter : -1;
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             ShoppingList = source.ShoppingLists[ListIndex];
             DataContext = ShoppingList.Products;
 
             for (int i = 0; i < ShoppingList.Products.Count; i++)
             {
-                ShoppingList.Products[i].Index = i;
+                if (ShoppingList.Products[i] != null)
+                    ShoppingList.Products[i].Index = i;
             }
         }
 
@@ -65,16 +67,25 @@ namespace TheShoppingList
 
         private async void PopupClosed(object sender, object e)
         {
-            List<Product> products = ProductControl.Products;
-            if (products == null)
-                return;
+            //List<Product> products = ProductControl.Products;
+            //if (products == null)
+            //    return;
+
+        }
+
+        private async void ProductControl_NewProductAdded(object sender, ProductAddedArgs args)
+        {
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source != null)
             {
-                foreach (var product in products)
+                if (ProductControl.Mode == NewProduct.InputMode.EditProduct)
                 {
-                    source.ShoppingLists[ListIndex].Products.Add(product);
+                    source.ShoppingLists[ListIndex].Products[productsList.SelectedIndex] = args.Product;
+                    SortProducts(source.ShoppingLists[ListIndex]);
                 }
+                else
+                    source.ShoppingLists[ListIndex].Products.Add(args.Product);
+
                 await source.SaveListsAsync();
             }
         }
@@ -84,6 +95,12 @@ namespace TheShoppingList
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source != null)
             {
+                if (sender == btnRemoveAll)
+                {
+                    source.ShoppingLists[ListIndex].Products.Clear();
+                    await source.SaveListsAsync();
+                    return;
+                }
                 Product product = null;
                 if (productsList.SelectedItem != null)
                     product = productsList.SelectedItem as Product;
@@ -132,16 +149,14 @@ namespace TheShoppingList
 
         private void productsList_RightTapped_1(object sender, RightTappedRoutedEventArgs e)
         {
-            e.Handled = false;
-            appBar.IsOpen = true;
+            //productsList_SelectionChanged_1(sender,null);
+
         }
 
         private void Grid_RightTapped_1(object sender, RightTappedRoutedEventArgs e)
         {
             var product = productsList.SelectedItem as Product;
-            if (product == null)
-                return;
-            if (product.IsBought)
+            if (product != null && product.IsBought)
             {
                 var image = new Image();
                 image.Source = new BitmapImage(new Uri("ms-appx:/Assets/removefromcart.png", UriKind.RelativeOrAbsolute));
@@ -154,11 +169,41 @@ namespace TheShoppingList
                 btnAddRemove.SetValue(AutomationProperties.NameProperty, "Add to cart");
             }
             appBar.IsOpen = true;
+
+        }
+
+        private void SortProducts(ShoppingList list)
+        {
+            var products = new Product[list.Products.Count];
+            list.Products.CopyTo(products, 0);
+
+            Array.Sort(products, Comparison);
+            list.Products.Clear();
+            foreach (var product in products)
+            {
+                if (product != null)
+                    list.Products.Add(product);
+            }
+        }
+
+        private int Comparison(Product product, Product product1)
+        {
+            if (product == null)
+                return 1;
+            if (product1 == null)
+                return -1;
+            if (product.IsBought == false && product1.IsBought == false)
+                return 0;
+            if (product.IsBought == false)
+                return -1;
+            return 1;
+
         }
 
         private async void btnAddToCart_Click_1(object sender, RoutedEventArgs e)
         {
             var product = productsList.SelectedItem as Product;
+
             if (product != null)
             {
                 var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
@@ -170,12 +215,15 @@ namespace TheShoppingList
                 }
                 else
                     product.IsBought = true;
-                source.ShoppingLists[ListIndex].Products.Remove(product);
-                if (position == 0)
-                    source.ShoppingLists[ListIndex].Products.Insert(position, product);
-                else
-                    source.ShoppingLists[ListIndex].Products.Add(product);
-                await source.SaveListsAsync();
+                if (source != null)
+                {
+                    source.ShoppingLists[ListIndex].Products.Remove(product);
+                    if (position == 0)
+                        source.ShoppingLists[ListIndex].Products.Insert(position, product);
+                    else
+                        source.ShoppingLists[ListIndex].Products.Add(product);
+                    await source.SaveListsAsync();
+                }
             }
         }
 
@@ -211,7 +259,7 @@ namespace TheShoppingList
 
         private void listBox_DoubleTapped_1(object sender, DoubleTappedRoutedEventArgs e)
         {
-            
+
 
         }
 
@@ -239,7 +287,7 @@ namespace TheShoppingList
         {
             if (productsList.SelectedIndex == -1)
                 return;
-            
+
             var currentSelectedListBoxItem = this.productsList.ItemContainerGenerator.ContainerFromIndex(productsList.SelectedIndex) as ListViewItem;
 
             if (currentSelectedListBoxItem == null)
@@ -249,9 +297,9 @@ namespace TheShoppingList
             Grid nameBox = FindDescendant<Grid>(currentSelectedListBoxItem);
             foreach (TextBlock tb in FindVisualChildren<TextBlock>(nameBox))
             {
-                tb.Foreground = new SolidColorBrush(Colors.Red);
+                tb.Foreground = new SolidColorBrush(Colors.IndianRed);
             }
-            if(e.RemovedItems.Count <= 0)
+            if (e.RemovedItems.Count <= 0)
                 return;
             var lastProduct = e.RemovedItems[0] as Product;
             if (lastProduct != null)
@@ -260,19 +308,35 @@ namespace TheShoppingList
                 Grid lastSelection = FindDescendant<Grid>(lvitem);
                 foreach (var child in FindVisualChildren<TextBlock>(lastSelection))
                 {
-                    child.Foreground = new SolidColorBrush(Colors.White);
+                    if (lastProduct.IsBought == false)
+                        child.Foreground = new SolidColorBrush(Colors.White);
+                    else
+                        child.Foreground = new SolidColorBrush(Colors.Green);
                 }
             }
-            
-            //List<TextBlock> textBlocks = new List<TextBlock>();
-            //for(int i = 0; i < 3; i++)
-            //{
-            //    textBlocks.Add(FindDescendant<TextBlock>(nameBox));
-            //}
-            //foreach (var textBox in textBlocks)
-            //{
-            //    textBox.Foreground = new SolidColorBrush(Colors.Red);
-            //}
+        }
+
+        private void appBar_Closed(object sender, object e)
+        {
+            var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+            SortProducts(source.ShoppingLists[ListIndex]);
+            for (int index = 0; index < productsList.Items.Count; index++)
+            {
+                ListViewItem listViewItem = productsList.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
+                if(listViewItem == null)
+                    return;
+                Grid lastSelection = FindDescendant<Grid>(listViewItem);
+                foreach (var child in FindVisualChildren<TextBlock>(lastSelection))
+                {
+                    var product = productsList.Items[index] as Product;
+                    if (product != null)
+                        if (product.IsBought == false)
+                            child.Foreground = new SolidColorBrush(Colors.White);
+                        else
+                            child.Foreground = new SolidColorBrush(Colors.Green);
+                }
+            }
+
         }
     }
 }

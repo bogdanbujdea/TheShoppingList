@@ -1,6 +1,7 @@
 ﻿using System;
 using TheShoppingList.Classes;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,12 +30,22 @@ namespace TheShoppingList
             transparentBorder.Visibility=Visibility.Visible;
         }
 
-        private void OnSaveListName(object sender, RoutedEventArgs e)
+        private async void OnSaveListName(object sender, RoutedEventArgs e)
         {
             var p = Parent as Popup;
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
+            if (txtListName.Text == null)
+            {
+                await new MessageDialog("You must type a name for your list!").ShowAsync();
+                return;
+            }
+            ShoppingList list = new ShoppingList();
+            list.Name = txtListName.Text;
+            double balance;
+            if (txtBalance.Text != null) //review check for digits
+                balance = double.Parse(txtBalance.Text);
             if (source != null)
-                source.ShoppingLists.Add(new ShoppingList {Name = txtListName.Text, CreatedTime = DateTime.Now});
+                source.ShoppingLists.Add(new ShoppingList {Name = txtListName.Text, Balance = balance, CreatedTime = DateTime.Now});
             transparentBorder.Visibility = Visibility.Collapsed;
             txtListName.Text = string.Empty;
             if (p != null) p.IsOpen = false; // close the Popup

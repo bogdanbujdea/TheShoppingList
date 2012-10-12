@@ -18,6 +18,7 @@ namespace TheShoppingList.Classes
         private string _name;
         private DateTime _createdTime;
         private DateTime _finishedTime;
+        private double _balance;
         public string Image { get; set; }
 
 // ReSharper disable ConvertToAutoProperty
@@ -26,6 +27,12 @@ namespace TheShoppingList.Classes
         {
             get { return _products; }
             set { _products = value; }
+        }
+
+        public Double Balance
+        {
+            get { return _balance; }
+            set { _balance = value; OnPropertyChanged("Balance");}
         }
 
         public string Name

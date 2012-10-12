@@ -16,13 +16,14 @@
         <x:String x:Key="AppName">My Application</x:String>
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar Name="appBar">
+        <AppBar x:ConnectionId='1' Name="appBar"                       >
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button x:ConnectionId='1' Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit"                    />
-                    <Button x:ConnectionId='2' Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemove"                      />
-                    <Button x:ConnectionId='3' Style="{StaticResource AddAppBarButtonStyle}" Name="btnAdd"                   />
-                    <Button x:ConnectionId='4' Style="{StaticResource AppBarButtonStyle}" AutomationProperties.Name="Add to cart" Name="btnAddRemove"                             >
+                    <Button x:ConnectionId='2' Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit"                    />
+                    <Button x:ConnectionId='3' Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemove"                      />
+                    <Button x:ConnectionId='4' Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemoveAll"                       AutomationProperties.Name="Remove All"/>
+                    <Button x:ConnectionId='5' Style="{StaticResource AddAppBarButtonStyle}" Name="btnAdd"                   />
+                    <Button x:ConnectionId='6' Style="{StaticResource AppBarButtonStyle}" AutomationProperties.Name="Add to cart" Name="btnAddRemove"                             >
                         <Button.Content>
                             <Image Source="Assets/addtocart.png" Width="27" Height="27" Stretch="UniformToFill"></Image>
                         </Button.Content>
@@ -47,7 +48,7 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Popup x:ConnectionId='5' Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="ProductPopup" Height="140" Width="768" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Top"                      IsLightDismissEnabled="False" >
+        <Popup x:ConnectionId='7' Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="ProductPopup" Height="140" Width="768" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Top"                      IsLightDismissEnabled="False" >
             <Popup.ChildTransitions>
                 <TransitionCollection>
                     <PopupThemeTransition />
@@ -62,7 +63,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:ConnectionId='8' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
+            <Button x:ConnectionId='10' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
             <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
         <Grid Grid.Row="1" Margin="10">
@@ -101,18 +102,18 @@
                     <TextBox ></TextBox>
                 </Border>
             </Grid>
-            <ListView x:ConnectionId='6' Grid.Row="1" Grid.Column="1" SelectionMode="Single"                                                    IsItemClickEnabled="False" Grid.RowSpan="2" Margin="20,0,0,0" ItemsSource="{Binding}" Name="productsList" Background="#FF3D3E39"                                          ItemContainerStyle="{StaticResource ProductItemStyle}">
+            <ListView x:ConnectionId='8' Grid.Row="1" Grid.Column="1" SelectionMode="Single"                                                    IsItemClickEnabled="False" Grid.RowSpan="2" Margin="20,0,0,0" ItemsSource="{Binding}" Name="productsList" Background="#FF3D3E39"                                          ItemContainerStyle="{StaticResource ProductItemStyle}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid x:ConnectionId='7' Width="650" Margin="0" Background="#FF3D3E39"                                 >
+                        <Grid x:ConnectionId='9' Width="650" Margin="0" Background="#FF3D3E39"                                 >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="5*"></ColumnDefinition>
                                 <ColumnDefinition Width="2*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Name}" Grid.Column="0" Margin="5,0,0,0" FontSize="29.333" HorizontalAlignment="Left" FontWeight="Bold" FontFamily="Segoe UI Symbol"></TextBlock>
-                            <TextBlock Text="{Binding ListPrice}" Grid.Column="1" FontWeight="Bold" Margin="0" FontSize="21.333" FontFamily="Segoe UI Symbol" ></TextBlock>
-                            <TextBlock Text="{Binding ShopName}" Grid.Column="2" HorizontalAlignment="Left" TextAlignment="Left" FontWeight="Bold" FontSize="21.333" FontFamily="Segoe UI Symbol" Margin="0"></TextBlock>
+                            <TextBlock Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding Name}" Grid.Column="0" Margin="5,0,0,0" FontSize="29.333" HorizontalAlignment="Left" FontWeight="Bold" FontFamily="Segoe UI Symbol"></TextBlock>
+                            <TextBlock Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding ListPrice}" Grid.Column="1" FontWeight="Bold" Margin="0" FontSize="21.333" FontFamily="Segoe UI Symbol" ></TextBlock>
+                            <TextBlock Foreground="{Binding Path=IsBought, Converter ={StaticResource ColorConverter}}" Text="{Binding ShopName}" Grid.Column="2" HorizontalAlignment="Left" TextAlignment="Left" FontWeight="Bold" FontSize="21.333" FontFamily="Segoe UI Symbol" Margin="0"></TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

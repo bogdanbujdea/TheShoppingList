@@ -16,11 +16,12 @@
         <x:String x:Key="AppName">My Application</x:String>
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar Name="appBar">
+        <AppBar Name="appBar" Closed="appBar_Closed">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit" Click="EditProduct"/>
                     <Button Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemove" Click="RemoveProduct"/>
+                    <Button Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemoveAll" Click="RemoveProduct" AutomationProperties.Name="Remove All"/>
                     <Button Style="{StaticResource AddAppBarButtonStyle}" Name="btnAdd" Click="AddProduct"/>
                     <Button Style="{StaticResource AppBarButtonStyle}" AutomationProperties.Name="Add to cart" Name="btnAddRemove" Click="btnAddToCart_Click_1">
                         <Button.Content>
@@ -90,15 +91,15 @@
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Your balance" FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
                 <Border Grid.Row="0" Grid.Column="1"  Margin="5" CornerRadius="40">
-                    <TextBox ></TextBox>
+                    <TextBox Name="txtBalance"></TextBox>
                 </Border>
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Total"  FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
                 <Border Grid.Row="1" Grid.Column="1"  Margin="5" CornerRadius="40" BorderThickness="1">
-                    <TextBox></TextBox>
+                    <TextBox Name="txtTotal"></TextBox>
                 </Border>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Remainder"  FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="What's Left"  FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
                 <Border  Grid.Row="2" Grid.Column="1"  Margin="5" CornerRadius="40">
-                    <TextBox ></TextBox>
+                    <TextBox Name="txtRest"></TextBox>
                 </Border>
             </Grid>
             <ListView Grid.Row="1" Grid.Column="1" SelectionMode="Single" SelectionChanged="productsList_SelectionChanged_1" IsItemClickEnabled="False" Grid.RowSpan="2" Margin="20,0,0,0" ItemsSource="{Binding}" Name="productsList" Background="#FF3D3E39" RightTapped="productsList_RightTapped_1" ItemContainerStyle="{StaticResource ProductItemStyle}">
@@ -110,9 +111,9 @@
                                 <ColumnDefinition Width="2*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Name}" Grid.Column="0" Margin="5,0,0,0" FontSize="29.333" HorizontalAlignment="Left" FontWeight="Bold" FontFamily="Segoe UI Symbol"></TextBlock>
-                            <TextBlock Text="{Binding ListPrice}" Grid.Column="1" FontWeight="Bold" Margin="0" FontSize="21.333" FontFamily="Segoe UI Symbol" ></TextBlock>
-                            <TextBlock Text="{Binding ShopName}" Grid.Column="2" HorizontalAlignment="Left" TextAlignment="Left" FontWeight="Bold" FontSize="21.333" FontFamily="Segoe UI Symbol" Margin="0"></TextBlock>
+                            <TextBlock Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding Name}" Grid.Column="0" Margin="5,0,0,0" FontSize="29.333" HorizontalAlignment="Left" FontWeight="Bold" FontFamily="Segoe UI Symbol"></TextBlock>
+                            <TextBlock Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}" Text="{Binding ListPrice}" Grid.Column="1" FontWeight="Bold" Margin="0" FontSize="21.333" FontFamily="Segoe UI Symbol" ></TextBlock>
+                            <TextBlock Foreground="{Binding Path=IsBought, Converter ={StaticResource ColorConverter}}" Text="{Binding ShopName}" Grid.Column="2" HorizontalAlignment="Left" TextAlignment="Left" FontWeight="Bold" FontSize="21.333" FontFamily="Segoe UI Symbol" Margin="0"></TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
