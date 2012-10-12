@@ -47,7 +47,7 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Popup Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="ProductPopup" Height="140" Width="768" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Top" Closed="PopupClosed" IsLightDismissEnabled="True" >
+        <Popup Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="ProductPopup" Height="140" Width="768" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Top" Closed="PopupClosed" IsLightDismissEnabled="False" >
             <Popup.ChildTransitions>
                 <TransitionCollection>
                     <PopupThemeTransition />

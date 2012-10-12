@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using TheShoppingList.Classes;
 using Windows.UI;
 using Windows.UI.Popups;
@@ -14,7 +16,10 @@ namespace TheShoppingList
 {
     public sealed partial class NewProduct
     {
+        private List<Product> _products;
         private Product _product;
+
+        public bool ProductAdded { get; set; }
 
         public enum InputMode
         {
@@ -25,7 +30,9 @@ namespace TheShoppingList
         public NewProduct()
         {
             InitializeComponent();
+            _products = new List<Product>();
             Loaded += PopupLoaded;
+            ProductAdded = false;
         }
 
         public InputMode Mode { get; set; }
@@ -34,6 +41,12 @@ namespace TheShoppingList
         {
             get { return _product; }
             set { _product = value; }
+        }
+
+        public List<Product> Products
+        {
+            get { return _products; }
+            set { _products = value; }
         }
 
         private void PopupLoaded(object sender, RoutedEventArgs e)
@@ -99,7 +112,6 @@ namespace TheShoppingList
 
         private void OnSaveProductDetails(object sender, RoutedEventArgs e)
         {
-            var p = Parent as Popup;
             if (Product == null)
                 Product = new Product();
             if (txtProductName.Text == string.Empty)
@@ -108,7 +120,6 @@ namespace TheShoppingList
                 Product = null;
                 return;
             }
-            transparentBorder.Visibility = Visibility.Collapsed;
             int index = quantityType.SelectedIndex;
             var type = QuantityType.kg;
             switch (index)
@@ -140,7 +151,15 @@ namespace TheShoppingList
             txtQuantity.Text = string.Empty;
             txtShopName.Text = string.Empty;
             quantityType.SelectedIndex = -1;
-            if (p != null) p.IsOpen = false; // close the Popup
+            btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Close");
+            Products.Add(Product);
+            ProductAdded = true;
+        }
+
+        private bool IsNumber(string text)
+        {
+            var regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
+            return !regex.IsMatch(text);
         }
 
         private void ProductNameChanged(object sender, TextChangedEventArgs e)
@@ -172,10 +191,38 @@ namespace TheShoppingList
 
         private void ShopNameChanged(object sender, TextChangedEventArgs e)
         {
+            if (ProductAdded == true)
+            {
+                ProductAdded = false;
+                btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Close");
+            }
+            else
+            {
+                btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Cancel");
+            }
         }
 
         private void PriceChanged(object sender, TextChangedEventArgs e)
         {
+            if (ProductAdded == true)
+            {
+                ProductAdded = false;
+                btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Close");
+            }
+            else
+            {
+                btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Cancel");
+            }
+            if (IsNumber(txtPrice.Text) == false)
+            {
+                txtPrice.BorderBrush = new SolidColorBrush(Colors.Red);
+                txtPrice.Background = new SolidColorBrush(Colors.IndianRed);
+            }
+            else
+            {
+                txtPrice.BorderBrush = new SolidColorBrush(Colors.Transparent);
+                txtPrice.Background = new SolidColorBrush(Colors.White);
+            }
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
@@ -187,7 +234,45 @@ namespace TheShoppingList
 
         private void QuantityTypeChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (ProductAdded == true)
+            {
+                ProductAdded = false;
+                btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Close");
+            }
+            else
+            {
+                btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Cancel");
+            }
+        }
 
+        private void OnProductNameChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ProductAdded == true)
+            {
+                ProductAdded = false;
+                btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Close");
+            }
+            else
+            {
+                btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Cancel");
+            }
+        }
+
+        private void OnQuantityTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ProductAdded == true)
+            {
+                ProductAdded = false;
+                btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Close");
+            }
+            else
+            {
+                btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Cancel");
+            }
+        }
+
+        private void newListBorder_Unloaded(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using TheShoppingList.Classes;
 using TheShoppingList.Common;
+using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -63,13 +65,16 @@ namespace TheShoppingList
 
         private async void PopupClosed(object sender, object e)
         {
-            Product product = ProductControl.Product;
-            if (product == null)
+            List<Product> products = ProductControl.Products;
+            if (products == null)
                 return;
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source != null)
             {
-                source.ShoppingLists[ListIndex].Products.Add(product);
+                foreach (var product in products)
+                {
+                    source.ShoppingLists[ListIndex].Products.Add(product);
+                }
                 await source.SaveListsAsync();
             }
         }
@@ -174,9 +179,100 @@ namespace TheShoppingList
             }
         }
 
+        public T FindDescendant<T>(DependencyObject obj) where T : DependencyObject
+        {
+            // Check if this object is the specified type
+            if (obj is T)
+                return obj as T;
+
+            // Check for children
+            int childrenCount = VisualTreeHelper.GetChildrenCount(obj);
+            if (childrenCount < 1)
+                return null;
+
+            // First check all the children
+            for (int i = 0; i < childrenCount; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                if (child is T)
+                    return child as T;
+            }
+
+            // Then check the childrens children
+            for (int i = 0; i < childrenCount; i++)
+            {
+                DependencyObject child = FindDescendant<T>(VisualTreeHelper.GetChild(obj, i));
+                if (child != null && child is T)
+                    return child as T;
+            }
+
+            return null;
+        }
+
+        private void listBox_DoubleTapped_1(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            
+
+        }
+
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
+        }
+
         private void productsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            //SelectedProduct = e.AddedItems[0] as Product;
+            if (productsList.SelectedIndex == -1)
+                return;
+            
+            var currentSelectedListBoxItem = this.productsList.ItemContainerGenerator.ContainerFromIndex(productsList.SelectedIndex) as ListViewItem;
+
+            if (currentSelectedListBoxItem == null)
+                return;
+
+            // Iterate whole listbox tree and search for this items
+            Grid nameBox = FindDescendant<Grid>(currentSelectedListBoxItem);
+            foreach (TextBlock tb in FindVisualChildren<TextBlock>(nameBox))
+            {
+                tb.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            if(e.RemovedItems.Count <= 0)
+                return;
+            var lastProduct = e.RemovedItems[0] as Product;
+            if (lastProduct != null)
+            {
+                var lvitem = this.productsList.ItemContainerGenerator.ContainerFromIndex(lastProduct.Index) as ListViewItem;
+                Grid lastSelection = FindDescendant<Grid>(lvitem);
+                foreach (var child in FindVisualChildren<TextBlock>(lastSelection))
+                {
+                    child.Foreground = new SolidColorBrush(Colors.White);
+                }
+            }
+            
+            //List<TextBlock> textBlocks = new List<TextBlock>();
+            //for(int i = 0; i < 3; i++)
+            //{
+            //    textBlocks.Add(FindDescendant<TextBlock>(nameBox));
+            //}
+            //foreach (var textBox in textBlocks)
+            //{
+            //    textBox.Foreground = new SolidColorBrush(Colors.Red);
+            //}
         }
     }
 }
