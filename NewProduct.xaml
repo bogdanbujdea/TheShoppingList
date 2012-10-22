@@ -11,10 +11,11 @@
 
     <Grid>
         <Border Background="Gray" Opacity="0.75" Visibility="Visible" Name="transparentBorder">
-            <Border Background="LightGray" Opacity="0.95" Height="500" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible" Name="newListBorder" Unloaded="newListBorder_Unloaded">
+            <Border Background="LightGray" Opacity="0.95" Height="500" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible" Name="newProductBorder" Unloaded="newListBorder_Unloaded">
                 <Grid Width="768" Name="containerGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
@@ -56,9 +57,10 @@
 
                     <TextBlock Grid.Row="5" Foreground="Black"  Grid.Column="0" Text="Shop name: " Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <TextBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Background="White" VerticalAlignment="Center" Width="250" Name="txtShopName" Padding="0,0,0,0" ToolTipService.ToolTip="Name of product" TextChanged="OnTextBoxChanged"  Foreground="Black" />
+                    <TextBlock Grid.Row="6" HorizontalAlignment="Right" Foreground="Black" Text="Is Bought" FontSize="20" VerticalAlignment="Bottom" Margin="0,0,15,0"></TextBlock>
+                    <ToggleSwitch Grid.Row="6" Grid.Column="1" OnContent="" OffContent="" Foreground="Black" Width="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,10"  Height="Auto" Name="btnIsBought" Toggled="btnIsBought_Toggled" HorizontalContentAlignment="Center"></ToggleSwitch>
 
-
-                    <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Button x:Name="btnSave" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Click="OnSaveProductDetails" AutomationProperties.Name="Save" Style="{StaticResource SaveAppBarButtonStyle}" Foreground="Black" />
                         <Button Name="btnClear" Width="100" Style="{StaticResource ClearSelectionAppBarButtonStyle}" Click="OnClear" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" AutomationProperties.Name="Clear All"></Button>
                         <Button Name="btnCancelOrClose" Width="100" Style="{StaticResource NoAppBarButtonStyle}" Foreground="Black" Click="Cancel" VerticalAlignment="Center" HorizontalAlignment="Center" AutomationProperties.Name="Close"></Button>

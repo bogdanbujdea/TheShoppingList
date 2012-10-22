@@ -19,7 +19,14 @@ namespace TheShoppingList.Classes
         private DateTime _createdTime;
         private DateTime _finishedTime;
         private double _balance;
+        private double _totalCost;
         public string Image { get; set; }
+
+        public double TotalCost
+        {
+            get { return _totalCost; }
+            set { _totalCost = value; OnPropertyChanged("TotalCost");}
+        }
 
 // ReSharper disable ConvertToAutoProperty
         public ObservableCollection<Product> Products

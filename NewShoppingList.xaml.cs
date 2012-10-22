@@ -32,23 +32,22 @@ namespace TheShoppingList
 
         private async void OnSaveListName(object sender, RoutedEventArgs e)
         {
-            var p = Parent as Popup;
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
-            if (txtListName.Text == null)
+            if (string.IsNullOrEmpty(txtListName.Text))
             {
                 await new MessageDialog("You must type a name for your list!").ShowAsync();
                 return;
             }
-            ShoppingList list = new ShoppingList();
-            list.Name = txtListName.Text;
-            double balance;
-            if (txtBalance.Text != null) //review check for digits
+            double balance = 0;
+            if (string.IsNullOrEmpty(txtBalance.Text) == false && Utils.IsNumber(txtBalance.Text)) //review check for digits
                 balance = double.Parse(txtBalance.Text);
+            
             if (source != null)
-                source.ShoppingLists.Add(new ShoppingList {Name = txtListName.Text, Balance = balance, CreatedTime = DateTime.Now});
+                source.ShoppingLists.Add(new ShoppingList {Name = txtListName.Text, Balance = balance, TotalCost = 0, CreatedTime = DateTime.Now});
             transparentBorder.Visibility = Visibility.Collapsed;
             txtListName.Text = string.Empty;
-            if (p != null) p.IsOpen = false; // close the Popup
+            txtBalance.Text = string.Empty;
+            ClosePopup();
         }
 
         private void txtListName_TextChanged(object sender, TextChangedEventArgs e)
@@ -75,6 +74,17 @@ namespace TheShoppingList
                         btnSave.IsEnabled = true;
                 }
             }
+        }
+
+        public void ClosePopup()
+        {
+            var p = Parent as Popup;
+            if (p != null) p.IsOpen = false; // close the Popup
+        }
+
+        private void OnClosePopup(object sender, RoutedEventArgs e)
+        {
+            ClosePopup();
         }
     }
 }

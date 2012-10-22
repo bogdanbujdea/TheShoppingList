@@ -59,7 +59,8 @@ namespace TheShoppingList
             {
                 transparentBorder.Width = size.Width;
                 transparentBorder.Height = size.Height;
-                newListBorder.Width = transparentBorder.Width;
+                //transparentBorder.Margin= new Thickness(0);
+                newProductBorder.Width = transparentBorder.Width;
                 transparentBorder.Visibility = Visibility.Visible;
             }
         }
@@ -68,15 +69,14 @@ namespace TheShoppingList
         {
             if (Product == null)
             {
-                var p = Parent as Popup;
-                if (p != null) p.IsOpen = false;
+                CloseControl();
             }
             if (Product != null)
             {
-                txtProductName.Text = Product.Name;
+                txtProductName.Text = Product.Title;
                 txtPrice.Text = Product.Price.ToString();
                 txtQuantity.Text = Product.Quantity.ToString();
-                if(Product.ShopName != null)
+                if (Product.ShopName != null)
                     txtShopName.Text = Product.ShopName;
                 quantityType.SelectedIndex = IndexFromQuantityType(Product.QuantityType);
             }
@@ -108,7 +108,7 @@ namespace TheShoppingList
 
         private void OnSaveProductDetails(object sender, RoutedEventArgs e)
         {
-                Product = new Product();
+            Product = new Product();
             if (txtProductName.Text == string.Empty)
             {
                 new MessageDialog("You must type the product name").ShowAsync();
@@ -133,11 +133,23 @@ namespace TheShoppingList
                     break;
             }
             if (txtProductName.Text != string.Empty)
-                Product.Name = txtProductName.Text;
+                Product.Title = txtProductName.Text;
             if (txtPrice.Text != string.Empty)
-                Product.Price = Convert.ToDouble(txtPrice.Text);
+                if(Utils.IsNumber(txtPrice.Text))
+                    Product.Price = Convert.ToDouble(txtPrice.Text);
+                else
+                {
+                    new MessageDialog("The price must have only digits!").ShowAsync();
+                    return;
+                }
             if (txtQuantity.Text != string.Empty)
-                Product.Quantity = Convert.ToDouble(txtQuantity.Text);
+                if (Utils.IsNumber(txtQuantity.Text))
+                    Product.Quantity = Convert.ToDouble(txtQuantity.Text);
+                else
+                {
+                    new MessageDialog("The quantity must have only digits!").ShowAsync();
+                    return;
+                }
             Product.QuantityType = type;
             if (txtShopName.Text != string.Empty)
                 Product.ShopName = txtShopName.Text;
@@ -146,16 +158,17 @@ namespace TheShoppingList
             txtQuantity.Text = string.Empty;
             txtShopName.Text = string.Empty;
             quantityType.SelectedIndex = -1;
+            Product.IsBought = btnIsBought.IsOn;
+            if (Product.IsBought == false)
+                Product.Category = "Not Bought";
+            else
+            {
+                Product.Category = "In Cart";
+            }
             btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Close");
             ProductAdded = true;
-            
-            OnNewProductAdded(new ProductAddedArgs { Product = Product});
-        }
 
-        private bool IsNumber(string text)
-        {
-            var regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
-            return !regex.IsMatch(text);
+            OnNewProductAdded(new ProductAddedArgs { Product = Product });
         }
 
         private void ProductNameChanged(object sender, TextChangedEventArgs e)
@@ -188,7 +201,7 @@ namespace TheShoppingList
 
         private void DigitTextChanged(TextBox textBox, TextBlock warningText)
         {
-            if (IsNumber(textBox.Text) == false)
+            if (Utils.IsNumber(textBox.Text) == false)
             {
                 textBox.BorderBrush = new SolidColorBrush(Colors.Red);
                 textBox.Background = new SolidColorBrush(Colors.IndianRed);
@@ -205,8 +218,7 @@ namespace TheShoppingList
         private void Cancel(object sender, RoutedEventArgs e)
         {
             Product = null;
-            var p = Parent as Popup;
-            if (p != null) p.IsOpen = false; // close the Popup
+            CloseControl();
         }
 
         public event ProductAdded NewProductAdded;
@@ -214,7 +226,15 @@ namespace TheShoppingList
         public void OnNewProductAdded(ProductAddedArgs args)
         {
             ProductAdded handler = NewProductAdded;
+            if (Mode == InputMode.EditProduct)
+                CloseControl();
             if (handler != null) handler(this, args);
+        }
+
+        private void CloseControl()
+        {
+            var p = Parent as Popup;
+            if (p != null) p.IsOpen = false;
         }
 
         private void newListBorder_Unloaded(object sender, RoutedEventArgs e)
@@ -266,6 +286,16 @@ namespace TheShoppingList
             {
                 textbox.Text = string.Empty;
             }
+        }
+
+        private void BtnIsBought_OnChecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnIsBought_Toggled(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 

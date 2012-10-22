@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using TheShoppingList.Classes;
 using TheShoppingList.Common;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
 // The Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234233
@@ -31,7 +33,7 @@ namespace TheShoppingList
             var bounds = Window.Current.Bounds;
             size.Width = bounds.Width;
             size.Height = bounds.Height;
-            App.Current.Resources["newListSize"] = size;
+            Application.Current.Resources["newListSize"] = size;
 
         }
 
@@ -41,11 +43,13 @@ namespace TheShoppingList
             if (source == null)
                 source = new ShoppingSource();
             bool noLists = await source.GetListsAsync();
-            if (noLists == false)
+            if (noLists == false || source.ShoppingLists.Count == 0)
+            {
                 btnAddList.Visibility = Visibility.Visible;
+                return;
+            }
             DefaultViewModel["Items"] = source.ShoppingLists;
-            itemGridView.SelectionMode = ListViewSelectionMode.Multiple;
-            itemListView.SelectedItem = ListViewSelectionMode.Multiple;
+            itemGridView.SelectedIndex = -1;
         }
 
         void Current_Resuming(object sender, object e)
@@ -89,8 +93,7 @@ namespace TheShoppingList
                 ParentedPopup.Visibility = Visibility.Visible;
                 btnAddList.Visibility = Visibility.Collapsed;
                 var shoppingSource = Application.Current.Resources["shoppingSource"] as ShoppingSource;
-                if (shoppingSource != null)
-                    listCount = shoppingSource.ShoppingLists.Count;
+                
             }
         }
 
@@ -106,6 +109,8 @@ namespace TheShoppingList
                 else
                 {
                     btnAddList.Visibility = Visibility.Collapsed;
+                    if (itemGridView.Items.Count != shoppingSource.ShoppingLists.Count)
+                        DefaultViewModel["Items"] = shoppingSource.ShoppingLists;
                     await shoppingSource.SaveListsAsync();
                 }
             }
@@ -121,18 +126,46 @@ namespace TheShoppingList
         private async void RemoveList(object sender, RoutedEventArgs e)
         {
             ShoppingList selectedItem;
-
+            if (sender.Equals(e))
+                new MessageDialog("dsa").ShowAsync();
             VisualState currentState = ApplicationViewStates.CurrentState;
-            if (currentState.Name == "Snapped")
-                selectedItem = itemListView.SelectedItem as ShoppingList;
-            else
-                selectedItem = itemGridView.SelectedItem as ShoppingList;
+
             var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
-            if (selectedItem != null && source != null)
+            if (source == null)
+                return;
+            if (currentState.Name == "Snapped")
             {
-                source.ShoppingLists.Remove(selectedItem);
-                await source.SaveListsAsync();
+                if (itemListView.SelectedItems.Count > 1)
+                {
+                    foreach (var item in itemListView.SelectedItems)
+                    {
+                        source.ShoppingLists.Remove(item as ShoppingList);
+                    }
+                }
+                else
+                {
+                    selectedItem = itemListView.SelectedItem as ShoppingList;
+                    source.ShoppingLists.Remove(selectedItem);
+                }
             }
+            else //if view it's normal, get the selected items from the gridview
+            {
+                if (itemGridView.SelectedItems.Count > 1)
+                {
+                    foreach (var item in itemGridView.SelectedItems)
+                    {
+                        source.ShoppingLists.Remove(item as ShoppingList);
+                    }
+                }
+                else
+                {
+                    selectedItem = itemGridView.SelectedItem as ShoppingList;
+                    source.ShoppingLists.Remove(selectedItem);
+                }
+            }
+            await source.SaveListsAsync();
+            if (source.ShoppingLists.Count == 0)
+                btnAddList.Visibility = Visibility.Visible;
         }
 
         private void ListClicked(object sender, ItemClickEventArgs e)
@@ -141,7 +174,7 @@ namespace TheShoppingList
             if (list != null)
             {
                 SortProducts(list);
-                Frame.Navigate(typeof(ProductsPage), itemGridView.Items.IndexOf(e.ClickedItem));
+                Frame.Navigate(typeof(GroupedProducts), itemGridView.Items.IndexOf(e.ClickedItem));
             }
         }
 
@@ -182,5 +215,25 @@ namespace TheShoppingList
                 Frame.Navigate(typeof(ProductsPage), itemListView.Items.IndexOf(e.ClickedItem));
             }
         }
+
+        private void OnRightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            bottomAppBar.IsOpen = true;
+            var list = itemGridView.SelectedItem as ShoppingList;
+        }
+
+        private async void RemoveAllShoppingLists(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult showAsync = await MessageBox.ShowAsync("Are you sure you want to remove all shopping lists?", "Please confirm", MessageBoxButton.YesNo);
+            if(showAsync == MessageBoxResult.No)
+                return;
+            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
+            if (source != null)
+            {
+                source.ShoppingLists.Clear();
+                btnAddList.Visibility = Visibility.Visible;
+                await source.SaveListsAsync();
+            }
+    }
     }
 }

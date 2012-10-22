@@ -27,7 +27,7 @@ namespace TheShoppingList.Classes
 
         public int Index { get; set; }
 
-        private string _name;
+        private string _title;
         private string _shopName;
         private double _price;
         private bool _isBought;
@@ -35,15 +35,16 @@ namespace TheShoppingList.Classes
         private QuantityType _quantityType;
         private string _listPrice;
         private string _image;
+        private string _category;
 
         public string Image
         {
             get
             {
                 if (IsBought)
-                    _image = @"Assets/checked.png";
+                    _image = @"Assets/removefromcart.png";
                 else
-                    _image = @"Assets/unchecked.png";
+                    _image = @"Assets/addtocart.png";
                 return _image;
             }
             set
@@ -53,13 +54,13 @@ namespace TheShoppingList.Classes
             }
         }
 
-        public string Name
+        public string Title
         {
-            get { return _name; }
+            get { return _title; }
             set
             {
-                _name = value;
-                OnPropertyChanged("Name");
+                _title = value;
+                OnPropertyChanged("Title");
             }
         }
 
@@ -134,6 +135,12 @@ namespace TheShoppingList.Classes
                 _quantityType = value;
                 OnPropertyChanged("QuantityType");
             }
+        }
+
+        public string Category
+        {
+            get { return _category; }
+            set { _category = value; OnPropertyChanged("Category");}
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

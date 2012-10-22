@@ -31,6 +31,7 @@ namespace TheShoppingList
         public ShoppingList ShoppingList { get; set; }
         public NewProduct ProductControl { get; set; }
         public Product SelectedProduct { get; set; }
+        public int SelectedIndex { get; set; }
 
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
@@ -47,12 +48,23 @@ namespace TheShoppingList
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             ShoppingList = source.ShoppingLists[ListIndex];
             DataContext = ShoppingList.Products;
-
+            txtBalance.DataContext = ShoppingList;
+            txtTotal.DataContext = ShoppingList;
+            //txtBalance.Text = ShoppingList.Balance.ToString();
+            double totalPrice = 0;
             for (int i = 0; i < ShoppingList.Products.Count; i++)
             {
                 if (ShoppingList.Products[i] != null)
+                {
                     ShoppingList.Products[i].Index = i;
+                    totalPrice += ShoppingList.Products[i].Price;
+                }
+                
             }
+            ShoppingList.TotalCost = totalPrice;
+            txtTotal.Text = totalPrice.ToString();
+            double rest = ShoppingList.Balance - ShoppingList.TotalCost;
+            txtRest.Text = rest.ToString();
         }
 
         /// <summary>
@@ -80,12 +92,26 @@ namespace TheShoppingList
             {
                 if (ProductControl.Mode == NewProduct.InputMode.EditProduct)
                 {
-                    source.ShoppingLists[ListIndex].Products[productsList.SelectedIndex] = args.Product;
+                    if (SelectedIndex == -1)
+                        SelectedIndex = ShoppingList.Products.IndexOf(SelectedProduct);
+                    double oldPrice = source.ShoppingLists[ListIndex].Products[SelectedIndex].Price;
+                    if (oldPrice != args.Product.Price)
+                    {
+                        ShoppingList.TotalCost -= oldPrice;
+                        ShoppingList.TotalCost += args.Product.Price;
+                        txtTotal.Text = ShoppingList.TotalCost.ToString();
+                    }
+                    source.ShoppingLists[ListIndex].Products[SelectedIndex] = args.Product;
                     SortProducts(source.ShoppingLists[ListIndex]);
+
                 }
                 else
+                {
                     source.ShoppingLists[ListIndex].Products.Add(args.Product);
-
+                    ShoppingList.TotalCost += args.Product.Price;
+                }
+                double rest = ShoppingList.Balance - ShoppingList.TotalCost;
+                txtRest.Text = rest.ToString();
                 await source.SaveListsAsync();
             }
         }
@@ -98,6 +124,9 @@ namespace TheShoppingList
                 if (sender == btnRemoveAll)
                 {
                     source.ShoppingLists[ListIndex].Products.Clear();
+                    ShoppingList.TotalCost = 0;
+                    txtRest.Text = "0";
+                    txtTotal.Text = "0";
                     await source.SaveListsAsync();
                     return;
                 }
@@ -108,6 +137,9 @@ namespace TheShoppingList
                 if (product != null)
                 {
                     source.ShoppingLists[ListIndex].Products.Remove(product);
+                    ShoppingList.TotalCost -= product.Price;
+                    txtTotal.Text = ShoppingList.TotalCost.ToString();
+                    txtRest.Text = (ShoppingList.Balance - ShoppingList.TotalCost).ToString();
                     await source.SaveListsAsync();
                 }
             }
@@ -130,7 +162,8 @@ namespace TheShoppingList
             else
             {
                 ProductPopup.IsOpen = false;
-                ShowPopup();
+                ProductPopup.Visibility = Visibility.Collapsed;
+                //ShowPopup();
             }
         }
 
@@ -142,8 +175,10 @@ namespace TheShoppingList
                 new MessageDialog("Could not get a handle to the popup control! Please try again!").ShowAsync();
                 return;
             }
-            var product = productsList.SelectedItem as Product;
-            ProductControl.Product = product;
+            if (SelectedProduct == null)
+                return;
+            ProductControl.Product = SelectedProduct;
+            
             ShowPopup();
         }
 
@@ -156,7 +191,15 @@ namespace TheShoppingList
         private void Grid_RightTapped_1(object sender, RightTappedRoutedEventArgs e)
         {
             var product = productsList.SelectedItem as Product;
-            if (product != null && product.IsBought)
+            if (product != null)
+            {
+                SelectedProduct = product;
+                SelectedIndex = productsList.SelectedIndex;
+                
+            }
+            else return;
+            contextMenu.Visibility = Visibility.Visible;
+            if (product.IsBought)
             {
                 var image = new Image();
                 image.Source = new BitmapImage(new Uri("ms-appx:/Assets/removefromcart.png", UriKind.RelativeOrAbsolute));
@@ -286,8 +329,11 @@ namespace TheShoppingList
         private void productsList_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
             if (productsList.SelectedIndex == -1)
+            {
+                contextMenu.Visibility = Visibility.Collapsed;
                 return;
-
+            }
+            btnAddRemove.Visibility = Visibility.Visible;
             var currentSelectedListBoxItem = this.productsList.ItemContainerGenerator.ContainerFromIndex(productsList.SelectedIndex) as ListViewItem;
 
             if (currentSelectedListBoxItem == null)
@@ -323,7 +369,7 @@ namespace TheShoppingList
             for (int index = 0; index < productsList.Items.Count; index++)
             {
                 ListViewItem listViewItem = productsList.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
-                if(listViewItem == null)
+                if (listViewItem == null)
                     return;
                 Grid lastSelection = FindDescendant<Grid>(listViewItem);
                 foreach (var child in FindVisualChildren<TextBlock>(lastSelection))
@@ -336,7 +382,23 @@ namespace TheShoppingList
                             child.Foreground = new SolidColorBrush(Colors.Green);
                 }
             }
+            SelectedProduct = null;
+            SelectedIndex = -1;
 
+        }
+
+        private void txtBalance_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(Utils.IsNumber(txtBalance.Text))
+            {
+                double balance = 0;
+                if(double.TryParse(txtBalance.Text,out balance))
+                {
+                    txtBalance.Text = balance.ToString();
+                    double rest = balance - ShoppingList.TotalCost;
+                    txtRest.Text = rest.ToString();
+                }
+            }
         }
     }
 }

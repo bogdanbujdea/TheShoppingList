@@ -23,17 +23,16 @@
 
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar>
+        <AppBar Name="bottomAppBar">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button Style="{StaticResource EditAppBarButtonStyle}" Click="EditList"/>
                     <Button Style="{StaticResource RemoveAppBarButtonStyle}" Click="RemoveList"/>
-                    <Button Style="{StaticResource AddAppBarButtonStyle}" Click="OnAddNewList"/>
                 </StackPanel>
-                <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Style="{StaticResource RefreshAppBarButtonStyle}" Click="Button_Click"/>
-                    <Button Style="{StaticResource HelpAppBarButtonStyle}" Click="Button_Click"/>
-                </StackPanel>-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource AddAppBarButtonStyle}" Click="OnAddNewList"/>
+                    <Button Style="{StaticResource RemoveAppBarButtonStyle}" AutomationProperties.Name="Remove All" Click="RemoveAllShoppingLists"/>
+                </StackPanel>
             </Grid>
         </AppBar>
     </common:LayoutAwarePage.BottomAppBar>
@@ -58,9 +57,29 @@
             Grid.RowSpan="2"
             Padding="116,136,116,46"
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
-            ItemTemplate="{StaticResource DataTemplate1}"
-            SelectionMode="Single"
-            IsSwipeEnabled="false" Margin="10,0,-10,0" ItemClick="ListClicked" IsItemClickEnabled="True"/>
+            SelectionMode="Multiple"
+            IsRightTapEnabled="True"
+            RightTapped="OnRightTapped"
+            IsSwipeEnabled="True" Margin="10,0,-10,0" ItemClick="ListClicked" IsItemClickEnabled="True">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Border CornerRadius="40" Margin="4,0,0,0" BorderThickness="1" >
+                        <Grid HorizontalAlignment="Left" Width="250" Height="250">
+                            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" CornerRadius="45">
+                                <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                            </Border>
+                            <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" Text="{Binding Name}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,5" FontFamily="Segoe Print" FontSize="24" Foreground="DarkCyan"/>
+                            <Border VerticalAlignment="Bottom" CornerRadius="50" BorderThickness="1" Background="Transparent">
+                                <StackPanel VerticalAlignment="Bottom">
+
+                                    <TextBlock Text="{Binding CreatedTime}" HorizontalAlignment="Center" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
         
         <Popup x:Name="ParentedPopup" Height="140" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Bottom" Closed="PopupClosed" IsLightDismissEnabled="True" >
             <Popup.ChildTransitions>
