@@ -120,7 +120,15 @@ namespace TheShoppingList
 
         private void EditList(object sender, RoutedEventArgs e)
         {
+            if (!ParentedPopup.IsOpen)
+            {
+                ParentedPopup.IsLightDismissEnabled = false;
+                ParentedPopup.IsOpen = true;
+                ParentedPopup.Visibility = Visibility.Visible;
+                btnAddList.Visibility = Visibility.Collapsed;
+                var shoppingSource = Application.Current.Resources["shoppingSource"] as ShoppingSource;
 
+            }
         }
 
         private async void RemoveList(object sender, RoutedEventArgs e)
@@ -219,6 +227,7 @@ namespace TheShoppingList
         private void OnRightTapped(object sender, RightTappedRoutedEventArgs e)
         {
             bottomAppBar.IsOpen = true;
+            e.Handled = true;
             var list = itemGridView.SelectedItem as ShoppingList;
         }
 

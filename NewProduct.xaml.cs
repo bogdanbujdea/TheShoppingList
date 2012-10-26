@@ -46,6 +46,7 @@ namespace TheShoppingList
             var size = Application.Current.Resources["newListSize"] as Point;
             if (Mode == InputMode.AddProduct)
             {
+                btnIsBought.IsOn = false;
                 _product = new Product();
                 btnSave.SetValue(AutomationProperties.NameProperty, "Add");
             }
@@ -73,6 +74,7 @@ namespace TheShoppingList
             }
             if (Product != null)
             {
+                btnIsBought.IsOn = Product.IsBought;
                 txtProductName.Text = Product.Title;
                 txtPrice.Text = Product.Price.ToString();
                 txtQuantity.Text = Product.Quantity.ToString();
@@ -166,6 +168,7 @@ namespace TheShoppingList
                 Product.Category = "In Cart";
             }
             btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Close");
+            
             ProductAdded = true;
 
             OnNewProductAdded(new ProductAddedArgs { Product = Product });

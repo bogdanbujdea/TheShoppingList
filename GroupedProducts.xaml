@@ -85,10 +85,27 @@
             Grid.RowSpan="2"
             Padding="116,137,40,46"
             ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
-            ItemTemplate="{StaticResource GroupedItemTemplate1}"
-            SelectionMode="None" IsRightTapEnabled="True" IsItemClickEnabled="True" ItemClick="ItemGridView_OnItemClick"
-            IsSwipeEnabled="False" Style="{StaticResource GridViewStyle}" ItemContainerStyle="{StaticResource GridViewItemStyle1}">
+             SelectionChanged="ItemGridView_OnSelectionChanged"
+            SelectionMode="Single" IsRightTapEnabled="True" RightTapped="ItemGridView_OnRightTapped"
+            IsSwipeEnabled="False" Style="{StaticResource GridViewStyle}">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="40" Margin="4,0,0,0" BorderThickness="1" RightTapped="ItemRightTapped" >
+                                    <Grid HorizontalAlignment="Left" Width="200" Height="80">
+                                        <!--<Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" CornerRadius="45">
+                                            <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                                        </Border>-->
+                                        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" Text="{Binding Title}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,5" FontFamily="Segoe Print" FontSize="24" Foreground="DarkCyan"/>
+                                        <Border VerticalAlignment="Bottom" CornerRadius="50" BorderThickness="1" Background="Transparent">
+                                            <StackPanel VerticalAlignment="Bottom">
 
+                                                <TextBlock Text="{Binding Price}" HorizontalAlignment="Center" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontWeight="Bold"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel Orientation="Horizontal"/>

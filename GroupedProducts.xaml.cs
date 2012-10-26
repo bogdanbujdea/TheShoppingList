@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
+using Point = Windows.Foundation.Point;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 
@@ -53,6 +54,8 @@ namespace TheShoppingList
                     totalPrice += ShoppingList.Products[i].Price;
                 }
             }
+            itemGridView.SelectedIndex = -1;
+
             ShoppingList.TotalCost = totalPrice;
             //review add totalcost, rest,etc.
         }
@@ -67,7 +70,8 @@ namespace TheShoppingList
                 var viewModel = new ProductsPageViewModel(ShoppingList);
                 DataContext = viewModel;
                 var collectionGroups = groupedItemsViewSource.View.CollectionGroups;
-                ((ListViewBase)this.Zoom.ZoomedOutView).ItemsSource = collectionGroups;
+                ((ListViewBase)Zoom.ZoomedOutView).ItemsSource = collectionGroups;
+                itemGridView.SelectedIndex = -1;
             }
         }
 
@@ -330,6 +334,26 @@ namespace TheShoppingList
         private void ItemGridView_OnItemClick(object sender, ItemClickEventArgs e)
         {
             SelectedProduct = e.ClickedItem as Product;
+        }
+
+        private void ItemGridView_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            Point position = e.GetPosition(itemGridView);
+            Button button = sender as Button;
+            e.Handled = false;
+            appBar.IsOpen = true;
+        }
+
+        private void ItemGridView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(e.AddedItems.Count > 0)
+                SelectedProduct = e.AddedItems[0] as Product;
+        }
+
+
+        private void ItemRightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            appBar.IsOpen = true;
         }
     }
 }

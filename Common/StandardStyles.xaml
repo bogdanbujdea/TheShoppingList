@@ -1682,17 +1682,13 @@
     </DataTemplate>
 
     <DataTemplate x:Key="GroupedItemTemplate1">
-        <Grid Width="294" Margin="6">
+        <Grid Width="294" Margin="6" AllowDrop="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Margin="0,0,0,10" Width="80" Height="60">
-                <Button>
-                    <Button.Content>
-                        <Image Source="{Binding Image}" Stretch="UniformToFill"/>
-                    </Button.Content>
-                </Button>
+            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Margin="0,0,0,10" Width="Auto" Height="60">
+                <Image Source="{Binding Image}" Stretch="UniformToFill"/>
             </Border>
             <StackPanel Grid.Column="1" Margin="10,-10,0,0">
                 <TextBlock Text="{Binding Title}" Style="{StaticResource BodyTextStyle}" TextWrapping="NoWrap"/>
@@ -1918,7 +1914,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
 
     <DataTemplate x:Key="Standard80ItemTemplate1">
         <Border CornerRadius="40" Margin="4,0,0,0" BorderThickness="1">
