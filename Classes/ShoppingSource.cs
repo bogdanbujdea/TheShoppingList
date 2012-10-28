@@ -52,9 +52,9 @@ namespace TheShoppingList.Classes
                     await LoadListsFromFileAsync(backupFile);
                     var sessionFile = await ApplicationData.Current.LocalFolder.GetFileAsync(backupFile);
                     sessionFile.CopyAsync(ApplicationData.Current.LocalFolder, listsFile, NameCollisionOption.ReplaceExisting);
-                    new MessageDialog(
-                        "We are sorry for this inconveninence, but it seems that the shopping lists are missing or corrupted. The app loaded the latest backup!")
-                        .ShowAsync();
+                    //new MessageDialog(
+                    //    "We are sorry for this inconveninence, but it seems that the shopping lists are missing or corrupted. The app loaded the latest backup!")
+                    //    .ShowAsync();
                 }
                 return true;
             }

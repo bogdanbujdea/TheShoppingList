@@ -137,7 +137,7 @@ namespace TheShoppingList
             if (txtProductName.Text != string.Empty)
                 Product.Title = txtProductName.Text;
             if (txtPrice.Text != string.Empty)
-                if(Utils.IsNumber(txtPrice.Text))
+                if (Utils.IsNumber(txtPrice.Text))
                     Product.Price = Convert.ToDouble(txtPrice.Text);
                 else
                 {
@@ -161,14 +161,8 @@ namespace TheShoppingList
             txtShopName.Text = string.Empty;
             quantityType.SelectedIndex = -1;
             Product.IsBought = btnIsBought.IsOn;
-            if (Product.IsBought == false)
-                Product.Category = "Not Bought";
-            else
-            {
-                Product.Category = "In Cart";
-            }
             btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Close");
-            
+
             ProductAdded = true;
 
             OnNewProductAdded(new ProductAddedArgs { Product = Product });
@@ -176,29 +170,26 @@ namespace TheShoppingList
 
         private void ProductNameChanged(object sender, TextChangedEventArgs e)
         {
-            //var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
-            //if (source == null) return;
-            //foreach (ShoppingList list in source.ShoppingLists)
-            //{
-            //    if (String.Compare(list.Name, txtPrice.Text, StringComparison.Ordinal) == 0)
-            //    {
-            //        txtPrice.BorderBrush = new SolidColorBrush(Colors.Red);
-            //        var color = new Color();
-            //        //string colorcode = "#FFD87474";
-            //        //int argb = Int32.Parse(colorcode.Replace("#", ""), NumberStyles.HexNumber);
-            //        Color clr = Color.FromArgb(0xFF, 0xD8, 0x74, 0x74);
-            //        txtPrice.Background = new SolidColorBrush(clr);
-            //        btnSave.IsEnabled = false;
-            //    }
-            //    else
-            //    {
-            //        txtPrice.BorderBrush = new SolidColorBrush(Colors.Black);
-            //        txtPrice.Background = new SolidColorBrush(Colors.White);
-            //        if (btnSave.IsEnabled == false)
-            //            btnSave.IsEnabled = true;
-            //    }
 
-            //}
+            if (txtProductName.Text.Length > 30)
+            {
+                txtPrice.BorderBrush = new SolidColorBrush(Colors.Red);
+                var color = new Color();
+                //string colorcode = "#FFD87474";
+                //int argb = Int32.Parse(colorcode.Replace("#", ""), NumberStyles.HexNumber);
+                Color clr = Color.FromArgb(0xFF, 0xD8, 0x74, 0x74);
+                txtPrice.Background = new SolidColorBrush(clr);
+                btnSave.IsEnabled = false;
+            }
+            else
+            {
+                txtPrice.BorderBrush = new SolidColorBrush(Colors.Black);
+                txtPrice.Background = new SolidColorBrush(Colors.White);
+                if (btnSave.IsEnabled == false)
+                    btnSave.IsEnabled = true;
+            }
+
+
         }
 
 
@@ -256,6 +247,8 @@ namespace TheShoppingList
                 txtQuantityWarning.Visibility = Visibility.Visible;
                 DigitTextChanged(txtQuantity, txtQuantityWarning);
             }
+            else if(sender.Equals(txtProductName))
+                ProductNameChanged(null,null);
         }
 
         private void QuantityTypeChanged(object sender, SelectionChangedEventArgs e)

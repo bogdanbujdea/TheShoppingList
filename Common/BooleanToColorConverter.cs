@@ -14,12 +14,12 @@ namespace TheShoppingList.Common
     {
             public object Convert(object value, Type targetType, object parameter, string language)
             {
-                return (value is bool && (bool)value) ? new SolidColorBrush(Colors.LightBlue) : new SolidColorBrush(Colors.GreenYellow);
+                return (value is bool && (bool)value) ? new SolidColorBrush(Colors.OrangeRed) : new SolidColorBrush(Colors.YellowGreen);
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, string language)
             {
-                return value is SolidColorBrush && (SolidColorBrush)value == new SolidColorBrush(Colors.GreenYellow);
+                return value is SolidColorBrush && (SolidColorBrush)value == new SolidColorBrush(Colors.YellowGreen);
             }
     }
 }

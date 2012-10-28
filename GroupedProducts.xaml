@@ -8,7 +8,7 @@
     xmlns:common="using:TheShoppingList.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Unloaded="pageRoot_Unloaded">
 
     <Page.Resources>
 
@@ -18,20 +18,20 @@
         -->
         <CollectionViewSource
             x:Name="groupedItemsViewSource"
-            Source="{Binding Items}"
+            Source="{Binding Items, Mode=TwoWay}"
             IsSourceGrouped="true"
             ItemsPath="Items"/>
 
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">My Application</x:String>
+        <x:String x:Key="AppName">The Shopping List</x:String>
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar Name="appBar" Closed="appBar_Closed">
+        <AppBar Name="appBar" Closed="appBar_Closed" Opened="AppBarOpened">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="Visible" Name="contextMenu">
                     <Button Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit" Click="EditProduct"/>
-                    <Button Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemove" Click="RemoveProduct"/>
-                    <Button Style="{StaticResource AppBarButtonStyle}" Visibility="Visible" AutomationProperties.Name="Add to cart" HorizontalAlignment="Right" Name="btnAddRemove" Click="btnAddToCart_Click_1">
+                    <Button Style="{StaticResource DeleteAppBarButtonStyle}" Name="btnRemove" Click="RemoveProduct"/>
+                    <Button Style="{StaticResource AppBarButtonStyle}" Visibility="Visible" AutomationProperties.Name="Add to cart" HorizontalAlignment="Right" Name="btnAddRemoveFromCart" Click="OnAddRemoveFromCart">
                         <Button.Content>
                             <Image Source="Assets/addtocart.png" Width="27" Height="27" Stretch="UniformToFill"></Image>
                         </Button.Content>
@@ -57,7 +57,7 @@
         * Row 0 contains the back button and page title
         * Row 1 contains the rest of the page layout
     -->
-    <Grid Style="{StaticResource LayoutRootStyle}">
+    <Grid Style="{StaticResource LayoutRootStyle}" Background="#16499A">
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
@@ -72,43 +72,47 @@
         </Popup>
         <!-- Horizontal scrolling grid used in most view states -->
         <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="80"></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="945*"></ColumnDefinition>
-                <ColumnDefinition Width="421*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="160"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <SemanticZoom x:Name="Zoom" Grid.Row="1" Margin="0,-3,0,0">
+            <SemanticZoom x:Name="Zoom" Grid.Row="0" Margin="0,-3,0,0">
                 <SemanticZoom.ZoomedInView>
                     <GridView
-            x:Name="itemGridView"
+            x:Name="itemGridView" CanReorderItems="True"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
             Grid.RowSpan="2"
-            Padding="116,137,40,46"
-            ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
-             SelectionChanged="ItemGridView_OnSelectionChanged"
+            Padding="10,20,10,10"
+            ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}, Mode=TwoWay}"
+            SelectionChanged="ItemGridView_OnSelectionChanged"
             SelectionMode="Single" IsRightTapEnabled="True" RightTapped="ItemGridView_OnRightTapped"
-            IsSwipeEnabled="False" Style="{StaticResource GridViewStyle}">
+            IsSwipeEnabled="True" Style="{StaticResource GridViewStyle}" AllowDrop="True" CanDragItems="True" DragItemsStarting="GridDragStarting">
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Border CornerRadius="40" Margin="4,0,0,0" BorderThickness="1" RightTapped="ItemRightTapped" >
-                                    <Grid HorizontalAlignment="Left" Width="200" Height="80">
-                                        <!--<Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" CornerRadius="45">
-                                            <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
-                                        </Border>-->
-                                        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" Text="{Binding Title}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,5" FontFamily="Segoe Print" FontSize="24" Foreground="DarkCyan"/>
-                                        <Border VerticalAlignment="Bottom" CornerRadius="50" BorderThickness="1" Background="Transparent">
-                                            <StackPanel VerticalAlignment="Bottom">
-
-                                                <TextBlock Text="{Binding Price}" HorizontalAlignment="Center" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontWeight="Bold"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </Grid>
+                                <Border Margin="4,0,0,0" BorderThickness="1" RightTapped="ItemRightTapped" Width="200" Height="80">
+                                    <StackPanel Width="200" Height="80">
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Title}" Padding="3" Style="{StaticResource TitleTextStyle}" Margin="0,7,0,0" FontFamily="Segoe Print" FontSize="30" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                            <TextBlock>Price:</TextBlock>
+                                            <TextBlock Text="{Binding Price}" FontWeight="Bold"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                            <TextBlock>Quantity:</TextBlock>
+                                            <TextBlock Text="{Binding Quantity}"></TextBlock>
+                                            <TextBlock Text="{Binding QuantityType}"/>
+                                        </StackPanel>
+                                    </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </GridView.ItemTemplate>
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <VirtualizingStackPanel Orientation="Horizontal"/>
+                                <VirtualizingStackPanel Orientation="Horizontal"  AllowDrop="True" Drop="ItemsPanelDrop"/>
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                         <GridView.GroupStyle>
@@ -118,15 +122,15 @@
                                         <Grid Margin="1,0,0,6">
                                             <Button Click="ButtonBase_OnClick"
                                 AutomationProperties.Name="Group Title"
-                                Content="{Binding Title}"
-                                                    FontSize="20"
-                                Style="{StaticResource TextButtonStyle}"/>
+                                Content="{Binding Title}" BorderThickness="0"
+                                                    FontSize="30"
+                                Foreground="WhiteSmoke" FontFamily="Segoe UI Symbol"/>
                                         </Grid>
                                     </DataTemplate>
                                 </GroupStyle.HeaderTemplate>
                                 <GroupStyle.Panel>
                                     <ItemsPanelTemplate>
-                                        <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
+                                        <VariableSizedWrapGrid Orientation="Vertical" MinWidth="400" Background="#16499A" Margin="0,0,80,0"/>
                                     </ItemsPanelTemplate>
                                 </GroupStyle.Panel>
                             </GroupStyle>
@@ -134,7 +138,7 @@
                     </GridView>
                 </SemanticZoom.ZoomedInView>
                 <SemanticZoom.ZoomedOutView>
-                    <GridView VerticalAlignment="Center" Margin="200 -200 0 0">
+                    <GridView VerticalAlignment="Center" Margin="200 -200 0 0" AllowDrop="True">
                         <GridView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
@@ -165,29 +169,32 @@
                 </SemanticZoom.ZoomedOutView>
             </SemanticZoom>
 
-            <Grid Grid.Column="1" Height="200" Margin="10,0,5,0" Width="Auto" VerticalAlignment="Top">
-                <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
+            <Grid Grid.Row="1" Grid.Column="0" Margin="10,0,5,10" Width="Auto" VerticalAlignment="Bottom">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Your balance" FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
-                <Border Grid.Row="0" Grid.Column="1"  Margin="5" CornerRadius="40">
-                    <TextBox Name="txtBalance" TextChanged="txtBalance_TextChanged" Text="{Binding Path=Balance}"></TextBox>
-                </Border>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Total"  FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
-                <Border Grid.Row="1" Grid.Column="1"  Margin="5" CornerRadius="40" BorderThickness="1">
-                    <TextBox Name="txtTotal" Text="{Binding Path=TotalCost}"></TextBox>
-                </Border>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="What's Left"  FontSize="32" Margin="5" HorizontalAlignment="Center"></TextBlock>
-                <Border  Grid.Row="2" Grid.Column="1"  Margin="5" CornerRadius="40">
-                    <TextBox Name="txtRest"></TextBox>
-                </Border>
+                <Button IsEnabled="True" Width="100" Height="70" Click="OnClickDiscard" Style="{StaticResource DiscardAppBarButtonStyle}" AllowDrop="True" Drop="ItemDropDelete" VerticalAlignment="Center"></Button>
+                <TextBlock Grid.Column="1" Width="Auto" Height="70"  Text="Your balance: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
+
+                <TextBox Name="txtBalance" Grid.Column="2" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True" TextChanged="OnTextBalanceTextChanged" IsReadOnly="True" DoubleTapped="OnBalanceTextDoubleTapped" Height="60" LostFocus="OnTxtBalanceLostFocus" ></TextBox>
+
+                <TextBlock Grid.Column="3" Text="Total:" Height="70"  VerticalAlignment="Center"  FontSize="26" HorizontalAlignment="Center"></TextBlock>
+
+                <TextBlock Name="txtTotal" Grid.Column="4"  Margin="5" Foreground="White" VerticalAlignment="Center"  FontWeight="Bold" FontSize="26"  Height="70" ></TextBlock>
+
+                <TextBlock Grid.Column="5" Text="What's Left:" Height="70"  VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
+
+                <TextBlock Name="txtRest" Grid.Column="6" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"  FontSize="26" Height="70"></TextBlock>
+
             </Grid>
+            <Button Grid.Row="0" Name="btnAddProduct" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" Click="AddProduct" Style="{StaticResource AddAppBarButtonStyle}" ></Button>
+
         </Grid>
         <!-- Vertical scrolling list only used when snapped -->
         <ListView

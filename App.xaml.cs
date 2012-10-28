@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TheShoppingList.Classes;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -80,10 +81,16 @@ namespace TheShoppingList
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
+            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
+
+            if (source != null)
+            {
+                await source.SaveListsAsync();
+            }
             deferral.Complete();
         }
     }

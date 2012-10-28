@@ -109,10 +109,17 @@ namespace TheShoppingList.Classes
             set
             {
                 _isBought = value;
+
                 if (_isBought)
+                {
+                    Category = "In Cart";
                     _image = @"Assets/checked.png";
+                }
                 else
+                {
+                    Category = "Remaining Products";
                     _image = @"Assets/unchecked.png";
+                }
                 OnPropertyChanged("IsBought");
             }
         }
