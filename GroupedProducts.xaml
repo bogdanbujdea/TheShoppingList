@@ -80,9 +80,9 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="160"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <SemanticZoom x:Name="Zoom" Grid.Row="0" Margin="0,-3,0,0">
+            <SemanticZoom x:Name="Zoom" Grid.Row="0" Margin="0,-3,0,0" ViewChangeStarted="Zoom_ViewChangeStarted" ViewChangeCompleted="Zoom_ViewChangeCompleted">
                 <SemanticZoom.ZoomedInView>
-                    <GridView
+                    <GridView 
             x:Name="itemGridView" CanReorderItems="True"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
@@ -91,7 +91,7 @@
             ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}, Mode=TwoWay}"
             SelectionChanged="ItemGridView_OnSelectionChanged"
             SelectionMode="Single" IsRightTapEnabled="True" RightTapped="ItemGridView_OnRightTapped"
-            IsSwipeEnabled="True" Style="{StaticResource GridViewStyle}" AllowDrop="True" CanDragItems="True" DragItemsStarting="GridDragStarting">
+            IsSwipeEnabled="True" Style="{StaticResource GridViewStyle}" AllowDrop="True" CanDragItems="True" DragItemsStarting="GridDragStarting" Loaded="itemGridView_Loaded">
                         <GridView.ItemTemplate>
                             <DataTemplate>
                                 <Border Margin="4,0,0,0" BorderThickness="1" RightTapped="ItemRightTapped" Width="200" Height="80">
@@ -141,10 +141,10 @@
                     <GridView VerticalAlignment="Center" Margin="200 -200 0 0" AllowDrop="True">
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel>
+                                <StackPanel Orientation="Horizontal">
                                     <TextBlock HorizontalAlignment="Center"
                                    Text="{Binding Group.Title}"
-                                   Style="{StaticResource HeaderTextStyle}"
+                                   Style="{StaticResource HeaderTextStyle}" 
                                    />
                                 </StackPanel>
                             </DataTemplate>
@@ -162,7 +162,7 @@
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapGrid ItemWidth="400" ItemHeight="70"
-                              Orientation="Horizontal" VerticalChildrenAlignment="Center" MaximumRowsOrColumns="5"></WrapGrid>
+                              Orientation="Horizontal" VerticalChildrenAlignment="Center" MaximumRowsOrColumns="5" Tapped="UiTapped"></WrapGrid>
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                     </GridView>

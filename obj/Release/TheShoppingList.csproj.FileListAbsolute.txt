@@ -30,10 +30,6 @@ C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppin
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Release\GroupedProducts.xaml
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Release\TheShoppingList.exe
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Release\TheShoppingList.pdb
-C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Release\priconfig.xml.intermediate
-C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Release\layout.resfiles.intermediate
-C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Release\resources.resfiles.intermediate
-C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Release\pri.resfiles.intermediate
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Release\priconfig.xml
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Release\layout.resfiles
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Release\resources.resfiles
