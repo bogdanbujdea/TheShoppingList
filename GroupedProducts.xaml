@@ -8,7 +8,7 @@
     xmlns:common="using:TheShoppingList.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Unloaded="pageRoot_Unloaded">
+    mc:Ignorable="d">
 
     <Page.Resources>
 
@@ -26,7 +26,7 @@
         <x:String x:Key="AppName">The Shopping List</x:String>
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar Name="appBar" Closed="appBar_Closed" Opened="AppBarOpened">
+        <AppBar Name="appBar" Closed="AppBarClosed" Opened="AppBarOpened">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="Visible" Name="contextMenu">
                     <Button Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit" Click="EditProduct"/>
@@ -89,13 +89,13 @@
             Grid.RowSpan="2"
             Padding="10,20,10,10"
             ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}, Mode=TwoWay}"
-            SelectionChanged="ItemGridView_OnSelectionChanged"
-            SelectionMode="Single" IsRightTapEnabled="True" RightTapped="ItemGridView_OnRightTapped"
-            IsSwipeEnabled="True" Style="{StaticResource GridViewStyle}" AllowDrop="True" CanDragItems="True" DragItemsStarting="GridDragStarting" Loaded="itemGridView_Loaded">
+            SelectionChanged="OnSelectionChanged"
+            SelectionMode="Single" IsRightTapEnabled="True" RightTapped="OnRightTappedGridView"
+            IsSwipeEnabled="True" Style="{StaticResource GridViewStyle}" AllowDrop="True" CanDragItems="True" DragItemsStarting="ItemDragStarting" >
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Border Margin="4,0,0,0" BorderThickness="1" RightTapped="ItemRightTapped" Width="200" Height="80">
-                                    <StackPanel Width="200" Height="80">
+                                <Border Margin="4,0,0,0" BorderThickness="1"  Width="200" Height="80">
+                                    <StackPanel Width="200" Height="80" RightTapped="ItemRightTapped">
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding Title}" Padding="3" Style="{StaticResource TitleTextStyle}" Margin="0,7,0,0" FontFamily="Segoe Print" FontSize="30" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"/>
                                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
                                             <TextBlock>Price:</TextBlock>
@@ -120,7 +120,7 @@
                                 <GroupStyle.HeaderTemplate>
                                     <DataTemplate>
                                         <Grid Margin="1,0,0,6">
-                                            <Button Click="ButtonBase_OnClick"
+                                            <Button 
                                 AutomationProperties.Name="Group Title"
                                 Content="{Binding Title}" BorderThickness="0"
                                                     FontSize="30"
@@ -162,7 +162,7 @@
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapGrid ItemWidth="400" ItemHeight="70"
-                              Orientation="Horizontal" VerticalChildrenAlignment="Center" MaximumRowsOrColumns="5" Tapped="UiTapped"></WrapGrid>
+                              Orientation="Horizontal" VerticalChildrenAlignment="Center" MaximumRowsOrColumns="5" ></WrapGrid>
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                     </GridView>

@@ -106,6 +106,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\GridViewUtils.cs" />
     <Compile Include="Classes\MessageBox.cs" />
     <Compile Include="Classes\ProductsPageViewModel.cs" />
     <Compile Include="Classes\Utils.cs" />

@@ -26,7 +26,7 @@ namespace TheShoppingList
         {
             InitializeComponent();
             ProductControl = ProductPopup.Child as NewProduct;
-            if (ProductControl != null) ProductControl.NewProductAdded += ProductControl_NewProductAdded;
+            if (ProductControl != null) ProductControl.NewProductAdded += OnNewProductAdded;
         }
 
         public int ListIndex { get; set; }
@@ -35,7 +35,10 @@ namespace TheShoppingList
         public Product SelectedProduct { get; set; }
         public int SelectedIndex { get; set; }
         public Product DraggedProduct { get; set; }
+        private GridViewUtils gridViewUtils;
+        private bool rightTapped;
 
+        #region Initialize List
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
         /// provided when recreating a page from a prior session.
@@ -47,18 +50,28 @@ namespace TheShoppingList
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            ListIndex = navigationParameter is int ? (int) navigationParameter : -1;
-            SetGridBinding();
-            double totalPrice = 0;
-            for (int i = 0; i < ShoppingList.Products.Count; i++)
+            gridViewUtils = new GridViewUtils();
+            ListIndex = navigationParameter is int ? (int)navigationParameter : -1; //get the List Index
+            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource; //load the source
+
+            if (source != null) //if we have shopping lists
             {
-                if (ShoppingList.Products[i] != null)
-                {
-                    ShoppingList.Products[i].Index = i;
-                    totalPrice += ShoppingList.Products[i].Price;
-                }
+                ShoppingList = source.ShoppingLists[ListIndex]; //set the property list
+                SetGridBinding(); //set the binding
+                SetProductsPrice(); //initialize prices
+                itemGridView.SelectedIndex = -1; //deselect the first item
             }
-            itemGridView.SelectedIndex = -1;
+        }
+
+        private void SetProductsPrice()
+        {
+            double totalPrice = 0;
+            for (int i = 0; i < ShoppingList.Products.Count; i++) //review set totalprice in mainpage IDIOT
+            {
+                if (ShoppingList.Products[i] == null) continue;
+                ShoppingList.Products[i].Index = i;
+                totalPrice += ShoppingList.Products[i].Price;
+            }
 
             ShoppingList.TotalCost = totalPrice;
             txtTotal.Text = totalPrice.ToString();
@@ -75,154 +88,88 @@ namespace TheShoppingList
 
                 if (source != null)
                 {
-                    ShoppingList = source.ShoppingLists[ListIndex];
+                    ShoppingList shoppingList = ShoppingList;
+                    gridViewUtils.CleanShoppingList(ref shoppingList);
                     var viewModel = new ProductsPageViewModel(ShoppingList);
-                    if (viewModel.Items.Count <= 0)
-                    {
-                        btnAddProduct.Visibility = Visibility.Visible;
-                        DataContext = viewModel;
-                        ((ListViewBase) Zoom.ZoomedOutView).ItemsSource = groupedItemsViewSource.View.CollectionGroups;
-                        itemGridView.SelectedIndex = -1;
-                        return;
-                    }
-                    if (viewModel.Items.Count == 1)
-                    {
-                        string title = "Remaining Products";
-                        if (viewModel.Items[0].Title == "Remaining Products")
-                            title = "In Cart";
-                        viewModel.Items.Add(new ProductsCategory {Title = title});
-                    }
-                    
-                    btnAddProduct.Visibility = Visibility.Collapsed;
-                    if (String.Compare(viewModel.Items[0].Title, "In Cart", StringComparison.Ordinal) == 0) //swap groups so the "In Cart" group is the last ont
-                    {
-                        ProductsCategory group = viewModel.Items[0];
-                        viewModel.Items[0] = viewModel.Items[1];
-                        viewModel.Items[1] = group;
-                    }
-                    try
-                    {
-                        if (viewModel.Items[1].Items.Count == 1 && viewModel.Items[1].Items[0].Title.Length == 0)
-                            viewModel.Items[1].Items.RemoveAt(0);
-                    }
-                    catch (Exception)
-                    {
 
-                    }
+
+                    gridViewUtils.FixViewModel(ref viewModel);
+
                     DataContext = viewModel;
                     IObservableVector<object> collectionGroups = groupedItemsViewSource.View.CollectionGroups;
-                    ((ListViewBase) Zoom.ZoomedOutView).ItemsSource = collectionGroups;
+                    ((ListViewBase)Zoom.ZoomedOutView).ItemsSource = collectionGroups;
+
+
+                    btnAddProduct.Visibility = gridViewUtils.ListIsEmpty(viewModel);
                     itemGridView.SelectedIndex = -1;
                 }
-                return;
             }
             catch (Exception exception)
             {
                 new MessageDialog(exception.Message + "In SetGridBinding").ShowAsync();
-                return;
             }
         }
 
-        /// <summary>
-        /// Preserves state associated with this page in case the application is suspended or the
-        /// page is discarded from the navigation cache.  Values must conform to the serialization
-        /// requirements of <see cref="SuspensionManager.SessionState"/>.
-        /// </summary>
-        /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
-        protected override async void SaveState(Dictionary<String, Object> pageState)
-        {
-            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
+        #endregion
 
-            if (source != null)
+        #region Product Helper Functions
+        private void HandleModifiedProduct(ref ShoppingSource source, ProductAddedArgs args)
+        {
+            if (SelectedIndex == -1)
+                SelectedIndex = ShoppingList.Products.IndexOf(SelectedProduct);
+            double oldPrice = source.ShoppingLists[ListIndex].Products[SelectedIndex].Price;
+            if (Math.Abs(oldPrice - args.Product.Price) > 0)
             {
-                await source.SaveListsAsync();
+                ShoppingList.TotalCost -= oldPrice;
+                ShoppingList.TotalCost += args.Product.Price;
+                txtTotal.Text = ShoppingList.TotalCost.ToString();
             }
+            source.ShoppingLists[ListIndex].Products[SelectedIndex] = args.Product;
         }
 
-        private async void ProductControl_NewProductAdded(object sender, ProductAddedArgs args)
-        {
-            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
-            if (source != null)
-            {
-                if (ProductControl.Mode == NewProduct.InputMode.EditProduct)
-                {
-                    if (SelectedIndex == -1)
-                        SelectedIndex = ShoppingList.Products.IndexOf(SelectedProduct);
-                    double oldPrice = source.ShoppingLists[ListIndex].Products[SelectedIndex].Price;
-                    if (Math.Abs(oldPrice - args.Product.Price) > 0)
-                    {
-                        ShoppingList.TotalCost -= oldPrice;
-                        ShoppingList.TotalCost += args.Product.Price;
-                        txtTotal.Text = ShoppingList.TotalCost.ToString();
-                    }
-                    source.ShoppingLists[ListIndex].Products[SelectedIndex] = args.Product;
-                }
-                else
-                {
-                    source.ShoppingLists[ListIndex].Products.Add(args.Product);
-                    ShoppingList.TotalCost += args.Product.Price;
-                }
-                double rest = ShoppingList.Balance - ShoppingList.TotalCost;
-                txtRest.Text = rest.ToString();
-                CheckForTotalCostOverflow();
-                await source.SaveListsAsync();
-            }
-        }
+        #endregion
 
-        private void ItemGridView_OnItemClick(object sender, ItemClickEventArgs e)
-        {
-            SelectedProduct = e.ClickedItem as Product;
-        }
+        #region GridView Events
 
-        private void ItemGridView_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
+        private void OnRightTappedGridView(object sender, RightTappedRoutedEventArgs e)
         {
-            ShowHideButtons();
             e.Handled = true;
+            appBar.IsOpen = true;
+            var product = itemGridView.SelectedItem as Product;
+            if (product != null)
+            {
+                SelectedProduct = product;
+                SelectedIndex = itemGridView.SelectedIndex;
+            }
+            else return;
+            contextMenu.Visibility = Visibility.Visible;
+            ShowHideButtons();
             appBar.IsOpen = true;
         }
 
-        private void ShowHideButtons()
-        {
-            var product = itemGridView.SelectedItem as Product;
-            if (product == null)
-            {
-                contextMenu.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                contextMenu.Visibility = Visibility.Visible;
-                if (product.IsBought)
-                {
-                    var image = new Image();
-                    image.Source =
-                        new BitmapImage(new Uri("ms-appx:/Assets/removefromcart.png", UriKind.RelativeOrAbsolute));
-                    btnAddRemoveFromCart.SetValue(AutomationProperties.NameProperty, "Remove from cart");
-                }
-                else
-                {
-                    var image = new Image();
-                    image.Source = new BitmapImage(new Uri("ms-appx:/Assets/addtocart.png", UriKind.RelativeOrAbsolute));
-                    btnAddRemoveFromCart.SetValue(AutomationProperties.NameProperty, "Add to cart");
-                }
-            }
-        }
-
-        private void ItemGridView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count <= 0) return;
             SelectedProduct = e.AddedItems[0] as Product;
-
-            btnAddRemoveFromCart.Visibility = Visibility.Visible;
+            if(rightTapped)
+            {
+                ShowHideButtons();
+                appBar.IsOpen = true;
+            }
+            rightTapped = false;
         }
-
 
         private void ItemRightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            ShowHideButtons();
-            appBar.IsOpen = true;
+            //review right tapped mode(mouse,touch,pen...)
+            rightTapped = true;
         }
 
-        private void GridDragStarting(object sender, DragItemsStartingEventArgs e)
+        #endregion
+
+        #region Drag Events
+
+        private void ItemDragStarting(object sender, DragItemsStartingEventArgs e)
         {
             if (e.Items.Count > 0)
                 DraggedProduct = e.Items[0] as Product;
@@ -249,20 +196,22 @@ namespace TheShoppingList
                 SetGridBinding();
             }
         }
+        #endregion
 
-        private async void OnClickDiscard(object sender, RoutedEventArgs e)
-        {
-            if (itemGridView.SelectedItem != null)
-            {
-                var product = itemGridView.SelectedItem as Product;
-                await DeleteProduct(product);
-            }
-        }
-
+        #region AppBar Events
         private void AppBarOpened(object sender, object e)
         {
             ShowHideButtons();
         }
+
+        private void AppBarClosed(object sender, object e)
+        {
+            SelectedProduct = null;
+            SelectedIndex = -1;
+        }
+        #endregion
+
+        #region Money Events
 
         private void OnBalanceTextDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
@@ -278,14 +227,21 @@ namespace TheShoppingList
             txtBalance.Background = new SolidColorBrush(blueBkg);
             txtBalance.Text = ShoppingList.Balance.ToString();
             txtBalance.Foreground = new SolidColorBrush(Colors.White);
+            CheckForTotalCostOverflow();
         }
 
         private void OnTextBalanceTextChanged(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtBalance.Text) == false && Utils.IsNumber(txtBalance.Text))
             {
+                double balance;
+                if (double.TryParse(txtBalance.Text, out balance))
+                {
+                    txtBalance.Text = balance.ToString();
+                    double rest = balance - ShoppingList.TotalCost;
+                    txtRest.Text = rest.ToString();
+                }
                 ShoppingList.Balance = Convert.ToDouble(txtBalance.Text);
-                txtBalance.Foreground = new SolidColorBrush(Colors.White);
             }
             else
             {
@@ -293,7 +249,39 @@ namespace TheShoppingList
             }
         }
 
-        private async void pageRoot_Unloaded(object sender, RoutedEventArgs e)
+
+        private void CheckForTotalCostOverflow()
+        {
+            if (ShoppingList.Balance < ShoppingList.TotalCost)
+            {
+                txtTotal.Foreground = new SolidColorBrush(Colors.Red);
+                txtRest.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else if (ShoppingList.Balance == ShoppingList.TotalCost)
+            {
+                txtBalance.Foreground = new SolidColorBrush(Colors.White);
+                txtTotal.Foreground = new SolidColorBrush(Colors.OrangeRed);
+                txtRest.Foreground = new SolidColorBrush(Colors.OrangeRed);
+            }
+            else
+            {
+                txtTotal.Foreground = new SolidColorBrush(Colors.GreenYellow);
+                txtBalance.Foreground = new SolidColorBrush(Colors.White);
+                txtRest.Foreground = new SolidColorBrush(Colors.GreenYellow);
+            }
+        }
+
+
+        #endregion
+
+        #region Save List Events
+        /// <summary>
+        /// Preserves state associated with this page in case the application is suspended or the
+        /// page is discarded from the navigation cache.  Values must conform to the serialization
+        /// requirements of <see cref="SuspensionManager.SessionState"/>.
+        /// </summary>
+        /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
+        protected override async void SaveState(Dictionary<String, Object> pageState)
         {
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
 
@@ -302,14 +290,15 @@ namespace TheShoppingList
                 await source.SaveListsAsync();
             }
         }
+        #endregion
 
-        #region Popup
+        #region Popup Events
 
         private void ShowPopup()
         {
             if (!ProductPopup.IsOpen)
             {
-                ProductPopup.IsLightDismissEnabled = false;
+                ProductPopup.IsLightDismissEnabled = true;
                 ProductPopup.IsOpen = true;
                 ProductPopup.Visibility = Visibility.Visible;
             }
@@ -323,89 +312,14 @@ namespace TheShoppingList
         private void PopupClosed(object sender, object e)
         {
             appBar.IsOpen = false;
+            itemGridView.SelectedIndex = -1;
+            SelectedProduct = null;
             SetGridBinding();
         }
 
         #endregion
 
-        #region UI Events
-
-        private void GridRightTapped(object sender, RightTappedRoutedEventArgs e)
-        {
-            var product = itemGridView.SelectedItem as Product;
-            if (product != null)
-            {
-                SelectedProduct = product;
-                SelectedIndex = itemGridView.SelectedIndex;
-            }
-            else return;
-            contextMenu.Visibility = Visibility.Visible;
-            ShowHideButtons();
-            appBar.IsOpen = true;
-        }
-
-        private async void OnAddRemoveFromCart(object sender, RoutedEventArgs e)
-        {
-            var product = itemGridView.SelectedItem as Product;
-
-            if (product != null)
-            {
-                product.IsBought = !product.IsBought;
-                SetGridBinding();
-            }
-
-            appBar.IsOpen = true;
-        }
-
-
-        private void appBar_Closed(object sender, object e)
-        {
-            SelectedProduct = null;
-            SelectedIndex = -1;
-        }
-
-        private void txtBalance_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //review costs
-            if (Utils.IsNumber(txtBalance.Text))
-            {
-                double balance = 0;
-                if (double.TryParse(txtBalance.Text, out balance))
-                {
-                    txtBalance.Text = balance.ToString();
-                    double rest = balance - ShoppingList.TotalCost;
-                    txtRest.Text = rest.ToString();
-                }
-                CheckForTotalCostOverflow();
-            }
-        }
-
-        private void CheckForTotalCostOverflow()
-        {
-            if (ShoppingList.Balance < ShoppingList.TotalCost)
-            {
-                txtTotal.Foreground = new SolidColorBrush(Colors.Red);
-                txtRest.Foreground = new SolidColorBrush(Colors.Red);
-            }
-            else if (ShoppingList.Balance == ShoppingList.TotalCost)
-            {
-                txtRest.Foreground = new SolidColorBrush(Colors.OrangeRed);
-            }
-            else
-            {
-                txtTotal.Foreground = new SolidColorBrush(Colors.GreenYellow);
-                txtBalance.Foreground = new SolidColorBrush(Colors.GreenYellow);
-                txtRest.Foreground = new SolidColorBrush(Colors.GreenYellow);
-            }
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-        }
-
-        #endregion
-
-        #region List Operations
+        #region List Operations Events
 
         private void AddProduct(object sender, RoutedEventArgs e)
         {
@@ -440,6 +354,8 @@ namespace TheShoppingList
                     ShoppingList.TotalCost = 0;
                     txtRest.Text = "0";
                     txtTotal.Text = "0";
+                    txtRest.Foreground = new SolidColorBrush(Colors.White);
+                    txtTotal.Foreground = new SolidColorBrush(Colors.White);
                     await source.SaveListsAsync();
                     return;
                 }
@@ -469,84 +385,56 @@ namespace TheShoppingList
             }
         }
 
+        private async void OnNewProductAdded(object sender, ProductAddedArgs args)
+        {
+            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
+            if (source != null)
+            {
+                if (ProductControl.Mode == NewProduct.InputMode.EditProduct)
+                {
+                    HandleModifiedProduct(ref source, args);
+                }
+                else
+                {
+                    source.ShoppingLists[ListIndex].Products.Add(args.Product);
+                    ShoppingList.TotalCost += args.Product.Price;
+                }
+                double rest = ShoppingList.Balance - ShoppingList.TotalCost;
+                txtRest.Text = rest.ToString();
+                CheckForTotalCostOverflow();
+                await source.SaveListsAsync();
+            }
+        }
+
+        private async void OnClickDiscard(object sender, RoutedEventArgs e)
+        {
+            if (itemGridView.SelectedItem != null)
+            {
+                var product = itemGridView.SelectedItem as Product;
+                await DeleteProduct(product);
+            }
+        }
+
+        private void OnAddRemoveFromCart(object sender, RoutedEventArgs e)
+        {
+            var product = itemGridView.SelectedItem as Product;
+            if (product != null)
+            {
+                product.IsBought = !product.IsBought;
+                ShowHideButtons();
+                SetGridBinding();
+            }
+            SelectedProduct = product;
+            contextMenu.Visibility = Visibility.Collapsed;
+            itemGridView.SelectedIndex = -1; //ShoppingList.Products.IndexOf(SelectedProduct);
+            appBar.IsOpen = true;
+        }
+
         #endregion
 
-
-
-        private void UiTapped(object sender, TappedRoutedEventArgs e)
-        {
-
-        }
-
-        private void itemGridView_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
+        #region SemanticZoom Events
 
         private void Zoom_ViewChangeStarted(object sender, SemanticZoomViewChangedEventArgs e)
-        {
-            if (e.IsSourceZoomedInView == false)
-            {
-                try
-                {
-                    var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
-
-                    if (source != null)
-                    {
-                        ShoppingList = source.ShoppingLists[ListIndex]; //get shopping list
-                        var viewModel = new ProductsPageViewModel(ShoppingList);
-                        if (viewModel.Items.Count <= 0)
-                        {
-                            btnAddProduct.Visibility = Visibility.Visible;
-                            DataContext = viewModel;
-                            ((ListViewBase) Zoom.ZoomedOutView).ItemsSource =
-                                groupedItemsViewSource.View.CollectionGroups;
-                            itemGridView.SelectedIndex = -1;
-                            return;
-                        }
-                        if (viewModel.Items.Count == 1)
-                        {
-                            string title = "Remaining Products";
-                            if (viewModel.Items[0].Title == "Remaining Products")
-                                title = "In Cart";
-                            ProductsCategory productsCategory = new ProductsCategory {Title = title};
-                            productsCategory.Items = new List<Product>();
-                            ShoppingList.Products.Add(new Product { Title = "" , Category = "In Cart"});
-                            productsCategory.Items.Add(new Product { Title = "" });
-                            viewModel.Items.Add(productsCategory);
-                        }
-                        btnAddProduct.Visibility = Visibility.Collapsed;
-                        if (String.Compare(viewModel.Items[0].Title, "In Cart", StringComparison.Ordinal) == 0)
-                        {
-                            ProductsCategory group = viewModel.Items[0];
-                            viewModel.Items[0] = viewModel.Items[1];
-                            viewModel.Items[1] = group;
-                        }
-
-                        DataContext = viewModel;
-                        IObservableVector<object> collectionGroups = groupedItemsViewSource.View.CollectionGroups;
-                        ((ListViewBase) Zoom.ZoomedOutView).ItemsSource = collectionGroups;
-                        itemGridView.SelectedIndex = -1;
-                    }
-                    return;
-                }
-                catch (Exception exception)
-                {
-                    new MessageDialog(exception.Message + "In SetGridBinding").ShowAsync();
-                    return;
-                }
-            }
-        }
-
-        private void Zoom_ViewChangeCompleted(object sender, SemanticZoomViewChangedEventArgs e)
-        {
-            if (e.IsSourceZoomedInView == false)
-            {
-                RemoveNullProduct();
-            }
-        }
-
-        private void RemoveNullProduct()
         {
             try
             {
@@ -554,24 +442,76 @@ namespace TheShoppingList
 
                 if (source != null)
                 {
-                    ShoppingList = source.ShoppingLists[ListIndex]; //get shopping list
+                    ShoppingList shoppingList = ShoppingList;
+                    gridViewUtils.CleanShoppingList(ref shoppingList);
                     var viewModel = new ProductsPageViewModel(ShoppingList);
+                    gridViewUtils.FixViewModel(ref viewModel);
 
-                    if (viewModel.Items[1].Items.Count == 1)
-                        if (viewModel.Items[1].Items[0].Title.Length == 0)
-                            viewModel.Items[1].Items.RemoveAt(0);
-
+                    if(viewModel.Items[1].Items == null || viewModel.Items[1].Items.Count == 0)
+                    {
+                        viewModel.Items[1].Items = new List<Product>();
+                        var productsCategory = new ProductsCategory {Title = "In Cart", Items = new List<Product>()};
+                        //ShoppingList.Products.Add(new Product { Title = "", Category = "In Cart" });
+                        productsCategory.Items.Add(new Product { Title = "" });
+                        viewModel.Items.Add(productsCategory);
+                    }
+                    if (e.IsSourceZoomedInView == true)
+                        btnAddProduct.Visibility = Visibility.Collapsed;
                     DataContext = viewModel;
-                    ((ListViewBase)Zoom.ZoomedOutView).ItemsSource =
-                        groupedItemsViewSource.View.CollectionGroups;
+                    IObservableVector<object> collectionGroups = groupedItemsViewSource.View.CollectionGroups;
+                    ((ListViewBase)Zoom.ZoomedOutView).ItemsSource = collectionGroups;
                     itemGridView.SelectedIndex = -1;
-
                 }
             }
             catch (Exception exception)
             {
-                new MessageDialog(exception.Message).ShowAsync();
+                new MessageDialog(exception.Message + "In SetGridBinding").ShowAsync();
             }
         }
+
+        private void Zoom_ViewChangeCompleted(object sender, SemanticZoomViewChangedEventArgs e)
+        {
+            SetGridBinding();
+            if(e.IsSourceZoomedInView)
+                btnAddProduct.Visibility = Visibility.Collapsed;
+        }
+
+        #endregion
+
+        #region Other
+
+        private void ShowHideButtons()
+        {
+            var product = itemGridView.SelectedItem as Product;
+            if (product == null)
+            {
+                if (SelectedProduct == null)
+                {
+                    contextMenu.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                product = SelectedProduct;
+
+            }
+
+            contextMenu.Visibility = Visibility.Visible;
+            if (product.IsBought)
+            {
+                var image = new Image();
+                image.Source =
+                    new BitmapImage(new Uri("ms-appx:/Assets/removefromcart.png", UriKind.RelativeOrAbsolute));
+                btnAddRemoveFromCart.SetValue(AutomationProperties.NameProperty, "Remove from cart");
+            }
+            else
+            {
+                var image = new Image();
+                image.Source = new BitmapImage(new Uri("ms-appx:/Assets/addtocart.png", UriKind.RelativeOrAbsolute));
+                btnAddRemoveFromCart.SetValue(AutomationProperties.NameProperty, "Add to cart");
+            }
+
+        }
+
+        #endregion
+
     }
 }

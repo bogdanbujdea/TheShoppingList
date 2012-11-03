@@ -1,4 +1,4 @@
-﻿<common:LayoutAwarePage x:ConnectionId='1'
+﻿<common:LayoutAwarePage
     x:Name="pageRoot"
     x:Class="TheShoppingList.GroupedProducts"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
@@ -8,7 +8,7 @@
     xmlns:common="using:TheShoppingList.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"                             >
+    mc:Ignorable="d">
 
     <Page.Resources>
 
@@ -26,12 +26,12 @@
         <x:String x:Key="AppName">The Shopping List</x:String>
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar x:ConnectionId='2' Name="appBar"                                             >
+        <AppBar x:ConnectionId='1' Name="appBar"                                            >
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="Visible" Name="contextMenu">
-                    <Button x:ConnectionId='5' Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit"                    />
-                    <Button x:ConnectionId='6' Style="{StaticResource DeleteAppBarButtonStyle}" Name="btnRemove"                      />
-                    <Button x:ConnectionId='7' Style="{StaticResource AppBarButtonStyle}" Visibility="Visible" AutomationProperties.Name="Add to cart" HorizontalAlignment="Right" Name="btnAddRemoveFromCart"                            >
+                    <Button x:ConnectionId='4' Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit"                    />
+                    <Button x:ConnectionId='5' Style="{StaticResource DeleteAppBarButtonStyle}" Name="btnRemove"                      />
+                    <Button x:ConnectionId='6' Style="{StaticResource AppBarButtonStyle}" Visibility="Visible" AutomationProperties.Name="Add to cart" HorizontalAlignment="Right" Name="btnAddRemoveFromCart"                            >
                         <Button.Content>
                             <Image Source="Assets/addtocart.png" Width="27" Height="27" Stretch="UniformToFill"></Image>
                         </Button.Content>
@@ -40,8 +40,8 @@
 
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button x:ConnectionId='3' Style="{StaticResource AddAppBarButtonStyle}" Name="btnAdd"                   />
-                    <Button x:ConnectionId='4' Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemoveAll"                       AutomationProperties.Name="Remove All"/>
+                    <Button x:ConnectionId='2' Style="{StaticResource AddAppBarButtonStyle}" Name="btnAdd"                   />
+                    <Button x:ConnectionId='3' Style="{StaticResource RemoveAppBarButtonStyle}" Name="btnRemoveAll"                       AutomationProperties.Name="Remove All"/>
                 </StackPanel>
                 <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource RefreshAppBarButtonStyle}" Click="Button_Click"/>
@@ -62,7 +62,7 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Popup x:ConnectionId='8' Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="ProductPopup" Height="140" Width="768" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Top"                      IsLightDismissEnabled="False" >
+        <Popup x:ConnectionId='7' Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="ProductPopup" Height="140" Width="768" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Top"                      IsLightDismissEnabled="False" >
             <Popup.ChildTransitions>
                 <TransitionCollection>
                     <PopupThemeTransition />
@@ -80,22 +80,22 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="160"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <SemanticZoom x:ConnectionId='10' x:Name="Zoom" Grid.Row="0" Margin="0,-3,0,0"                                                                                          >
+            <SemanticZoom x:ConnectionId='9' x:Name="Zoom" Grid.Row="0" Margin="0,-3,0,0"                                                                                          >
                 <SemanticZoom.ZoomedInView>
-                    <GridView x:ConnectionId='14' 
+                    <GridView x:ConnectionId='13' 
             x:Name="itemGridView" CanReorderItems="True"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
             Grid.RowSpan="2"
             Padding="10,20,10,10"
             ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}, Mode=TwoWay}"
-                                                              
-            SelectionMode="Single" IsRightTapEnabled="True"                                         
-            IsSwipeEnabled="True" Style="{StaticResource GridViewStyle}" AllowDrop="True" CanDragItems="True"                                                                  >
+                                                 
+            SelectionMode="Single" IsRightTapEnabled="True"                                    
+            IsSwipeEnabled="True" Style="{StaticResource GridViewStyle}" AllowDrop="True" CanDragItems="True"                                      >
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Border x:ConnectionId='15' Margin="4,0,0,0" BorderThickness="1"                               Width="200" Height="80">
-                                    <StackPanel Width="200" Height="80">
+                                <Border Margin="4,0,0,0" BorderThickness="1"  Width="200" Height="80">
+                                    <StackPanel x:ConnectionId='14' Width="200" Height="80"                              >
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding Title}" Padding="3" Style="{StaticResource TitleTextStyle}" Margin="0,7,0,0" FontFamily="Segoe Print" FontSize="30" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"/>
                                         <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
                                             <TextBlock>Price:</TextBlock>
@@ -112,7 +112,7 @@
                         </GridView.ItemTemplate>
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <VirtualizingStackPanel x:ConnectionId='16' Orientation="Horizontal"  AllowDrop="True"                      />
+                                <VirtualizingStackPanel x:ConnectionId='15' Orientation="Horizontal"  AllowDrop="True"                      />
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                         <GridView.GroupStyle>
@@ -120,7 +120,7 @@
                                 <GroupStyle.HeaderTemplate>
                                     <DataTemplate>
                                         <Grid Margin="1,0,0,6">
-                                            <Button x:ConnectionId='17'                           
+                                            <Button 
                                 AutomationProperties.Name="Group Title"
                                 Content="{Binding Title}" BorderThickness="0"
                                                     FontSize="30"
@@ -161,8 +161,8 @@
 
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapGrid x:ConnectionId='18' ItemWidth="400" ItemHeight="70"
-                              Orientation="Horizontal" VerticalChildrenAlignment="Center" MaximumRowsOrColumns="5"                  ></WrapGrid>
+                                <WrapGrid ItemWidth="400" ItemHeight="70"
+                              Orientation="Horizontal" VerticalChildrenAlignment="Center" MaximumRowsOrColumns="5" ></WrapGrid>
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                     </GridView>
@@ -179,10 +179,10 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button x:ConnectionId='12' IsEnabled="True" Width="100" Height="70"                        Style="{StaticResource DiscardAppBarButtonStyle}" AllowDrop="True"                       VerticalAlignment="Center"></Button>
+                <Button x:ConnectionId='11' IsEnabled="True" Width="100" Height="70"                        Style="{StaticResource DiscardAppBarButtonStyle}" AllowDrop="True"                       VerticalAlignment="Center"></Button>
                 <TextBlock Grid.Column="1" Width="Auto" Height="70"  Text="Your balance: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
 
-                <TextBox x:ConnectionId='13' Name="txtBalance" Grid.Column="2" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True"                                        IsReadOnly="True"                                          Height="60"                                   ></TextBox>
+                <TextBox x:ConnectionId='12' Name="txtBalance" Grid.Column="2" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True"                                        IsReadOnly="True"                                          Height="60"                                   ></TextBox>
 
                 <TextBlock Grid.Column="3" Text="Total:" Height="70"  VerticalAlignment="Center"  FontSize="26" HorizontalAlignment="Center"></TextBlock>
 
@@ -193,7 +193,7 @@
                 <TextBlock Name="txtRest" Grid.Column="6" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"  FontSize="26" Height="70"></TextBlock>
 
             </Grid>
-            <Button x:ConnectionId='11' Grid.Row="0" Name="btnAddProduct" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                    Style="{StaticResource AddAppBarButtonStyle}" ></Button>
+            <Button x:ConnectionId='10' Grid.Row="0" Name="btnAddProduct" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                    Style="{StaticResource AddAppBarButtonStyle}" ></Button>
 
         </Grid>
         <!-- Vertical scrolling list only used when snapped -->
@@ -236,7 +236,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:ConnectionId='9' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
+            <Button x:ConnectionId='8' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Grid.Column="1" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 
