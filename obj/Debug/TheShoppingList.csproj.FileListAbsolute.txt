@@ -40,3 +40,8 @@ C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppin
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\layout.resfiles.intermediate
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\resources.resfiles.intermediate
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\pri.resfiles.intermediate
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\AdDuplex.Windows.dll
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\AdDuplex.Windows.pri
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\TheShoppingList.csprojResolveAssemblyReference.cache
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\TheShoppingList.csproj.GenerateResource.Cache
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\AdDuplex.Windows.pri.xml

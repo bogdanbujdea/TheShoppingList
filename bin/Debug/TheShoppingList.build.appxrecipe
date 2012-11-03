@@ -19,6 +19,9 @@
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\TheShoppingList.pdb">
       <PackagePath>TheShoppingList.pdb</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\AdDuplexWindows.8.0.1.0\lib\winrt45\AdDuplex.Windows.dll">
+      <PackagePath>AdDuplex.Windows.dll</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\addtocart.png">
       <PackagePath>Assets\addtocart.png</PackagePath>
     </AppxPackagedFile>
@@ -79,6 +82,9 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\ProductsPageGrid.xaml">
       <PackagePath>ProductsPageGrid.xaml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\AdDuplexWindows.8.0.1.0\lib\winrt45\AdDuplex.Windows\Themes\Generic.xaml">
+      <PackagePath>AdDuplex.Windows\Themes\Generic.xaml</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>

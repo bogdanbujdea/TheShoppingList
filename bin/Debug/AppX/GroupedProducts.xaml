@@ -7,7 +7,7 @@
     xmlns:local="using:TheShoppingList"
     xmlns:common="using:TheShoppingList.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:adduplex="using:AdDuplex.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -80,6 +80,10 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="160"></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            <adduplex:AdControl x:Name="adDuplexAd" Grid.Column="2" Grid.Row="0"
+                    AppId="24355" 
+                    Size="160x600"
+                    />
             <SemanticZoom x:ConnectionId='9' x:Name="Zoom" Grid.Row="0" Margin="0,-3,0,0"                                                                                          >
                 <SemanticZoom.ZoomedInView>
                     <GridView x:ConnectionId='13' 
