@@ -164,7 +164,7 @@ namespace TheShoppingList
         private void ItemRightTapped(object sender, RightTappedRoutedEventArgs e)
         {
             
-            //review right tapped mode(mouse,touch,pen...)
+            //review right tapped mode(mouse,teouch,pen...)
             rightTapped = true;
         }
 
@@ -352,6 +352,12 @@ namespace TheShoppingList
             {
                 if (sender == btnRemoveAll)
                 {
+                    MessageBoxResult showAsync = await MessageBox.ShowAsync("Are you sure you want to remove all the products from this list?", "Please confirm", MessageBoxButton.YesNo);
+                    if (showAsync == MessageBoxResult.No)
+                    {
+                        contextMenu.Visibility = Visibility.Visible;
+                        return;
+                    }
                     source.ShoppingLists[ListIndex].Products.Clear();
                     SetGridBinding();
                     ShoppingList.TotalCost = 0;
@@ -360,6 +366,7 @@ namespace TheShoppingList
                     txtRest.Foreground = new SolidColorBrush(Colors.White);
                     txtTotal.Foreground = new SolidColorBrush(Colors.White);
                     await source.SaveListsAsync();
+                    contextMenu.Visibility = Visibility.Collapsed;
                     return;
                 }
                 Product product = null;
@@ -370,6 +377,8 @@ namespace TheShoppingList
                 {
                     await DeleteProduct(product);
                 }
+                contextMenu.Visibility = Visibility.Collapsed;
+
             }
         }
 

@@ -26,7 +26,7 @@
         <x:String x:Key="AppName">The Shopping List</x:String>
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar Name="appBar" Closed="AppBarClosed" Opened="AppBarOpened">
+        <AppBar Name="appBar" Closed="AppBarClosed" Opened="AppBarOpened" IsSticky="True">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="Visible" Name="contextMenu">
                     <Button Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit" Click="EditProduct"/>
@@ -101,11 +101,7 @@
                                             <TextBlock>Price:</TextBlock>
                                             <TextBlock Text="{Binding Price}" FontWeight="Bold"/>
                                         </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
-                                            <TextBlock>Quantity:</TextBlock>
-                                            <TextBlock Text="{Binding Quantity}"></TextBlock>
-                                            <TextBlock Text="{Binding QuantityType}"/>
-                                        </StackPanel>
+                                            <TextBlock Text="{Binding ShopName}" HorizontalAlignment="Center" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
@@ -138,13 +134,14 @@
                     </GridView>
                 </SemanticZoom.ZoomedInView>
                 <SemanticZoom.ZoomedOutView>
-                    <GridView VerticalAlignment="Center" Margin="200 -200 0 0" AllowDrop="True">
+                    <GridView VerticalAlignment="Center" Margin="250 0 0 0" AllowDrop="True">
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock HorizontalAlignment="Center"
+                                <StackPanel Orientation="Horizontal" >
+                                    <TextBlock HorizontalAlignment="Center" MinWidth="450"
                                    Text="{Binding Group.Title}"
-                                   Style="{StaticResource HeaderTextStyle}" 
+                                   Style="{StaticResource HeaderTextStyle}"
+                                               FontSize="40" Margin="20"
                                    />
                                 </StackPanel>
                             </DataTemplate>
@@ -161,7 +158,7 @@
 
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapGrid ItemWidth="400" ItemHeight="70"
+                                <WrapGrid ItemWidth="450" ItemHeight="120"
                               Orientation="Horizontal" VerticalChildrenAlignment="Center" MaximumRowsOrColumns="5" ></WrapGrid>
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
