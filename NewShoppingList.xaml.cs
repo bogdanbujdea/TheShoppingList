@@ -2,6 +2,7 @@
 using TheShoppingList.Classes;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -24,7 +25,15 @@ namespace TheShoppingList
         private void NewShoppingList_Loaded(object sender, RoutedEventArgs e)
         {
             var size = Application.Current.Resources["newListSize"] as Point;
-            transparentBorder.Width = size.Width;
+            var CurrentViewState = ApplicationView.Value;
+            if(CurrentViewState == ApplicationViewState.Snapped)
+            {
+                transparentBorder.Width = 300;
+                control.Width = 300;
+                gridControl.Width = 300;
+            }
+            else
+                transparentBorder.Width = size.Width;
             transparentBorder.Height = size.Height;
             newListBorder.Width = transparentBorder.Width;
             transparentBorder.Visibility=Visibility.Visible;
