@@ -220,7 +220,7 @@ namespace TheShoppingList
             if (list != null)
             {
                 SortProducts(list);
-                Frame.Navigate(typeof(ProductsPage), itemListView.Items.IndexOf(e.ClickedItem));
+                Frame.Navigate(typeof(GroupedProducts), itemListView.Items.IndexOf(e.ClickedItem));
             }
         }
 
