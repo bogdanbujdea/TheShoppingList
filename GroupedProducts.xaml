@@ -180,7 +180,7 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button IsEnabled="True" Width="100" Height="70" Click="OnClickDiscard" Style="{StaticResource DiscardAppBarButtonStyle}" AllowDrop="True" Drop="ItemDropDelete" VerticalAlignment="Center"></Button>
-                <TextBlock Grid.Column="1" Width="Auto" Height="70"  Text="Your balance: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
+                <TextBlock Grid.Column="1" Width="Auto" Height="70" Text="Your balance: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
 
                 <TextBox Name="txtBalance" Grid.Column="2" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True" TextChanged="OnTextBalanceTextChanged" IsReadOnly="True" DoubleTapped="OnBalanceTextDoubleTapped" Height="60" LostFocus="OnTxtBalanceLostFocus" ></TextBox>
 

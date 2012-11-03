@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TheShoppingList.Classes;
 using TheShoppingList.Common;
+using Windows.Devices.Input;
 using Windows.Foundation.Collections;
 using Windows.UI;
 using Windows.UI.Popups;
@@ -151,6 +152,7 @@ namespace TheShoppingList
         {
             if (e.AddedItems.Count <= 0) return;
             SelectedProduct = e.AddedItems[0] as Product;
+            
             if(rightTapped)
             {
                 ShowHideButtons();
@@ -161,6 +163,7 @@ namespace TheShoppingList
 
         private void ItemRightTapped(object sender, RightTappedRoutedEventArgs e)
         {
+            
             //review right tapped mode(mouse,touch,pen...)
             rightTapped = true;
         }

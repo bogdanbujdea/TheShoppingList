@@ -180,7 +180,7 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button x:ConnectionId='11' IsEnabled="True" Width="100" Height="70"                        Style="{StaticResource DiscardAppBarButtonStyle}" AllowDrop="True"                       VerticalAlignment="Center"></Button>
-                <TextBlock Grid.Column="1" Width="Auto" Height="70"  Text="Your balance: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
+                <TextBlock Grid.Column="1" Width="Auto" Height="70" Text="Your balance: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
 
                 <TextBox x:ConnectionId='12' Name="txtBalance" Grid.Column="2" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True"                                        IsReadOnly="True"                                          Height="60"                                   ></TextBox>
 
