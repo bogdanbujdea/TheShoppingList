@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="768" Width="300">
+    d:DesignWidth="768" >
     <Border Background="Gray" Opacity="0.75" Visibility="Visible" Name="transparentBorder">
         <Border Background="YellowGreen" Opacity="0.9" Height="300" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible" Name="newListBorder">
             <Grid Name="gridControl" Width="768">

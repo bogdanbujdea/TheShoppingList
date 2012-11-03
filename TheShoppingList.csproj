@@ -133,12 +133,6 @@
     </Compile>
     <Compile Include="Classes\Point.cs" />
     <Compile Include="ProductsCategory.cs" />
-    <Compile Include="ProductsPage.xaml.cs">
-      <DependentUpon>ProductsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ProductsPageGrid.xaml.cs">
-      <DependentUpon>ProductsPageGrid.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -183,14 +177,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewShoppingList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ProductsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ProductsPageGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
