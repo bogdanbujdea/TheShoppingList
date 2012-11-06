@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TheShoppingList.Classes;
 using TheShoppingList.Common;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.Store;
 using Windows.Data.Xml.Dom;
 using Windows.Devices.Input;
 using Windows.UI;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
 
 // The Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234233
 
@@ -25,6 +29,8 @@ namespace TheShoppingList
     {
         private int listCount;
         private bool rightTapped;
+        private LicenseInformation licenseInformation;
+        public bool RegisteredForShare { get; set; }
         public MainPage()
         {
             InitializeComponent();
@@ -38,11 +44,103 @@ namespace TheShoppingList
             size.Height = bounds.Height;
             Application.Current.Resources["newListSize"] = size;
             Page = this;
+
+            SettingsPane.GetForCurrentView().CommandsRequested += onCommandsRequested;
+            licenseInformation = CurrentAppSimulator.LicenseInformation;
+            if (RegisteredForShare == false)
+            {
+                
+                RegisterForShare();
+                RegisteredForShare = true;
+            }
+            if (licenseInformation.IsActive)
+            {
+                if (licenseInformation.IsTrial == false)
+                {
+                    adDuplexAd.Visibility = Visibility.Collapsed;
+
+                }
+                else
+                {
+                    adDuplexAd.Visibility = Visibility.Visible;
+                }
+            }
         }
 
         static public MainPage Page { get; set; }
         public ShoppingList SelectedList { get; set; }
+        #region ShareContract
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            // Unregister the current page as a share source.
+             UnregisterForShare();
+            base.OnNavigatedFrom(e);
+        }
+        public void RegisterForShare()
+        {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            
+            dataTransferManager.DataRequested += ShareStorageItemsHandler;
+        }
 
+        public void UnregisterForShare()
+        {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested -= ShareStorageItemsHandler;
+        }
+
+        private async void ShareStorageItemsHandler(DataTransferManager sender,
+                                                    DataRequestedEventArgs e)
+        {
+            //var point = App.Current.Resources["recordingSent"] as Point;
+            //if (point != null)
+            //    if (point.Width != 500)
+            //        if (point.Height == 200)
+            //        {
+            //            await new MessageDialog("You already shared a recording. Please restart the app in order to send another one!")
+            //                .ShowAsync();
+            //            return;
+            //        }
+
+            DataRequest request = e.Request;
+            request.Data.Properties.Title = "Send this list";
+            request.Data.Properties.Description = "Use any of the options below";
+
+            // Because we are making async calls in the DataRequested event handler,
+            // we need to get the deferral first.
+            DataRequestDeferral deferral = request.GetDeferral();
+
+            // Make sure we always call Complete on the deferral.
+            try
+            {
+
+                if (SelectedList != null)
+                {
+                    string htmlFile = SelectedList.ToHtml();
+                    request.Data.SetHtmlFormat(htmlFile);
+                    request.Data.SetText(SelectedList.ToString());
+                    
+                    sender.TargetApplicationChosen += sender_TargetApplicationChosen;
+                }
+                else
+                {
+                    e.Request.FailWithDisplayText("You haven't selected anything. Please click on a shopping list before trying to share it!");
+                }
+            }
+            finally
+            {
+                deferral.Complete();
+            }
+        }
+
+
+
+        void sender_TargetApplicationChosen(DataTransferManager sender, TargetApplicationChosenEventArgs args)
+        {
+            
+        }
+
+        #endregion
         private void InitializeTile()
         {
             var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
@@ -63,9 +161,27 @@ namespace TheShoppingList
             var tileNotification = new TileNotification(tileXml);
             TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
         }
+        #region Setting
+        private void onCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            UICommandInvokedHandler handler = onSettingsCommand;
+            args.Request.ApplicationCommands.Clear();
+            var privacyCommand = new SettingsCommand("privacyPage", "Privacy", handler);
+            var getProVersion = new SettingsCommand("proPage", "Get Pro Version", handler);
 
+            args.Request.ApplicationCommands.Add(privacyCommand);
+            args.Request.ApplicationCommands.Add(getProVersion);
+        }
+
+        private void onSettingsCommand(IUICommand command)
+        {
+
+        }
+
+        #endregion
         async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source == null)
                 source = new ShoppingSource();
@@ -80,15 +196,8 @@ namespace TheShoppingList
             itemGridView.SelectedIndex = -1;
         }
 
-        void Current_Resuming(object sender, object e)
-        {
-            LoadState(null, null);
-        }
 
-        void Current_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
-        {
-
-        }
+        #region App State
 
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
@@ -101,7 +210,7 @@ namespace TheShoppingList
         /// session.  This will be null the first time a page is visited.</param>
         protected async override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-
+            
         }
 
         protected async override void SaveState(Dictionary<string, object> pageState)
@@ -111,6 +220,19 @@ namespace TheShoppingList
                 await source.SaveListsAsync();
         }
 
+        void Current_Resuming(object sender, object e)
+        {
+            LoadState(null, null);
+        }
+
+        void Current_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        #region Not Sorted
         private void OnAddNewList(object sender, RoutedEventArgs e)
         {
             if (!ParentedPopup.IsOpen)
@@ -294,5 +416,6 @@ namespace TheShoppingList
 
 
         }
+        #endregion
     }
 }

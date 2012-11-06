@@ -32,7 +32,7 @@ namespace TheShoppingList
             InitializeComponent();
             Loaded += PopupLoaded;
             ProductAdded = false;
-            InputPaneHelper helper  = new InputPaneHelper();
+            InputPaneHelper helper = new InputPaneHelper();
             helper.SubscribeToKeyboard(true);
             helper.AddShowingHandler(txtProductName, CustomKeyboardHandler);
             helper.AddShowingHandler(txtPrice, CustomKeyboardHandler);
@@ -104,7 +104,7 @@ namespace TheShoppingList
 
         private int IndexFromQuantityType(QuantityType type)
         {
-            int index = -1;
+            int index;
             switch (type)
             {
                 case QuantityType.pcs:
@@ -113,14 +113,20 @@ namespace TheShoppingList
                 case QuantityType.kg:
                     index = 1;
                     break;
-                case QuantityType.m:
+                case QuantityType.l:
                     index = 2;
                     break;
-                case QuantityType.ft:
+                case QuantityType.m:
                     index = 3;
                     break;
-                case QuantityType.lb:
+                case QuantityType.ft:
                     index = 4;
+                    break;
+                case QuantityType.lb:
+                    index = 5;
+                    break;
+                default:
+                    index = -1;
                     break;
             }
             return index;
@@ -136,19 +142,25 @@ namespace TheShoppingList
                 return;
             }
             int index = quantityType.SelectedIndex;
-            var type = QuantityType.kg;
+            var type = QuantityType.Default;
             switch (index)
             {
                 case 0:
-                    type = QuantityType.kg;
+                    type = QuantityType.pcs;
                     break;
                 case 1:
-                    type = QuantityType.m;
+                    type = QuantityType.kg;
                     break;
                 case 2:
-                    type = QuantityType.ft;
+                    type = QuantityType.l;
                     break;
                 case 3:
+                    type = QuantityType.m;
+                    break;
+                case 4:
+                    type = QuantityType.ft;
+                    break;
+                case 5:
                     type = QuantityType.lb;
                     break;
             }
@@ -265,8 +277,8 @@ namespace TheShoppingList
                 txtQuantityWarning.Visibility = Visibility.Visible;
                 DigitTextChanged(txtQuantity, txtQuantityWarning);
             }
-            else if(sender.Equals(txtProductName))
-                ProductNameChanged(null,null);
+            else if (sender.Equals(txtProductName))
+                ProductNameChanged(null, null);
         }
 
         private void QuantityTypeChanged(object sender, SelectionChangedEventArgs e)

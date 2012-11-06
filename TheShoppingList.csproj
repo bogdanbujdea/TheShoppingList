@@ -155,6 +155,7 @@
     <Content Include="Assets\unchecked.png" />
     <Content Include="Common\ReadMe.txt" />
     <Content Include="Data\app-listing-uri.xml" />
+    <Content Include="list.html" />
     <Content Include="ShoppingList1.xml" />
   </ItemGroup>
   <ItemGroup>

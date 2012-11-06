@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
+using System.Text;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -81,6 +83,81 @@ namespace TheShoppingList.Classes
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public string ToHtml()
+        {
+            StringBuilder htmlList = new StringBuilder();
+            
+            htmlList.Append("<h1>" + Name + "</h1><br />");
+            htmlList.Append("<ol>");
+            foreach (var product in Products)
+            {
+                htmlList.AppendLine("<li>");
+                htmlList.Append(product.Title);
+                
+                
+                if (Math.Abs(product.Price - 0) > 0)
+                {
+
+                    htmlList.Append(product.Price.ToString() + RegionInfo.CurrentRegion.CurrencySymbol);
+                }
+                if(Math.Abs(product.Quantity - 0) > 0)
+                {
+                    htmlList.AppendLine("&nbsp;&nbsp;");
+                    htmlList.Append(product.Quantity.ToString());
+                    if (product.QuantityType != QuantityType.Default)
+                    {
+                        htmlList.Append("&nbsp;" + product.QuantityType.ToString());
+                    }
+                }
+                if(string.IsNullOrEmpty(product.ShopName))
+                {
+                    htmlList.AppendLine("From: ");
+                    htmlList.Append(product.ShopName);
+                    htmlList.Append("<br />");
+                }
+                htmlList.Append("</li>");
+            }
+            htmlList.Append("</ol>");
+            
+            return htmlList.ToString();
+        }
+
+        public override string ToString()
+        {
+            StringBuilder stringList = new StringBuilder();
+
+            stringList.Append(Name);
+            stringList.AppendLine();
+            foreach (var product in Products)
+            {
+                stringList.Append(product.Title + " :   ");
+
+
+                if (Math.Abs(product.Price - 0) > 0)
+                {
+
+                    stringList.Append(product.Price.ToString() + " " + RegionInfo.CurrentRegion.CurrencySymbol + ", ");
+                }
+                if (Math.Abs(product.Quantity - 0) > 0)
+                {
+                    stringList.Append(product.Quantity.ToString() + " ");
+                    if (product.QuantityType != QuantityType.Default)
+                    {
+                        stringList.Append(" " + product.QuantityType.ToString() + ", ");
+                    }
+                }
+                if (string.IsNullOrEmpty(product.ShopName))
+                {
+                    stringList.Append("From: ");
+                    stringList.Append(product.ShopName);
+                }
+                stringList.AppendLine();
+            }
+            
+
+            return stringList.ToString();
         }
     }
 }

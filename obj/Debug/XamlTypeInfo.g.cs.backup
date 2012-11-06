@@ -332,11 +332,13 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
 
             case "TheShoppingList.Classes.QuantityType":
                 userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.Classes.QuantityType), GetXamlTypeByName("System.Enum"));
-                userType.AddEnumValue("kg", global::TheShoppingList.Classes.QuantityType.kg);
-                userType.AddEnumValue("m", global::TheShoppingList.Classes.QuantityType.m);
-                userType.AddEnumValue("lb", global::TheShoppingList.Classes.QuantityType.lb);
-                userType.AddEnumValue("ft", global::TheShoppingList.Classes.QuantityType.ft);
                 userType.AddEnumValue("pcs", global::TheShoppingList.Classes.QuantityType.pcs);
+                userType.AddEnumValue("kg", global::TheShoppingList.Classes.QuantityType.kg);
+                userType.AddEnumValue("l", global::TheShoppingList.Classes.QuantityType.l);
+                userType.AddEnumValue("m", global::TheShoppingList.Classes.QuantityType.m);
+                userType.AddEnumValue("ft", global::TheShoppingList.Classes.QuantityType.ft);
+                userType.AddEnumValue("lb", global::TheShoppingList.Classes.QuantityType.lb);
+                userType.AddEnumValue("Default", global::TheShoppingList.Classes.QuantityType.Default);
                 xamlType = userType;
                 break;
 
@@ -463,6 +465,9 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
             case "TheShoppingList.MainPage":
                 userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.MainPage), GetXamlTypeByName("TheShoppingList.Common.LayoutAwarePage"));
                 userType.Activator = Activate_21_MainPage;
+                userType.AddMemberName("RegisteredForShare");
+                AddToMapOfTypeToStandardName(typeof(global::System.Boolean),
+                                                   "Boolean");
                 userType.AddMemberName("SelectedList");
                 xamlType = userType;
                 break;
@@ -892,12 +897,22 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
             var that = (global::TheShoppingList.NewShoppingList)instance;
             that.Mode = (global::TheShoppingList.NewProduct.InputMode)Value;
         }
-        private object get_38_MainPage_SelectedList(object instance)
+        private object get_38_MainPage_RegisteredForShare(object instance)
+        {
+            var that = (global::TheShoppingList.MainPage)instance;
+            return that.RegisteredForShare;
+        }
+        private void set_38_MainPage_RegisteredForShare(object instance, object Value)
+        {
+            var that = (global::TheShoppingList.MainPage)instance;
+            that.RegisteredForShare = (global::System.Boolean)Value;
+        }
+        private object get_39_MainPage_SelectedList(object instance)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             return that.SelectedList;
         }
-        private void set_38_MainPage_SelectedList(object instance, object Value)
+        private void set_39_MainPage_SelectedList(object instance, object Value)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             that.SelectedList = (global::TheShoppingList.Classes.ShoppingList)Value;
@@ -1142,11 +1157,17 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 xamlMember.Getter = get_37_NewShoppingList_Mode;
                 xamlMember.Setter = set_37_NewShoppingList_Mode;
                 break;
+            case "TheShoppingList.MainPage.RegisteredForShare":
+                userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.MainPage");
+                xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "RegisteredForShare", "Boolean");
+                xamlMember.Getter = get_38_MainPage_RegisteredForShare;
+                xamlMember.Setter = set_38_MainPage_RegisteredForShare;
+                break;
             case "TheShoppingList.MainPage.SelectedList":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.MainPage");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "SelectedList", "TheShoppingList.Classes.ShoppingList");
-                xamlMember.Getter = get_38_MainPage_SelectedList;
-                xamlMember.Setter = set_38_MainPage_SelectedList;
+                xamlMember.Getter = get_39_MainPage_SelectedList;
+                xamlMember.Setter = set_39_MainPage_SelectedList;
                 break;
             }
             return xamlMember;

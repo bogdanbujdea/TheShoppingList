@@ -30,10 +30,6 @@ C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppin
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\pri.resfiles
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\LanguageQualifiers.txt
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\ProjectArchitectures.txt
-C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\priconfig.xml.intermediate
-C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\layout.resfiles.intermediate
-C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\resources.resfiles.intermediate
-C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\pri.resfiles.intermediate
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\AdDuplex.Windows.dll
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\AdDuplex.Windows.pri
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\TheShoppingList.csprojResolveAssemblyReference.cache
@@ -42,3 +38,7 @@ C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppin
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\Callisto.dll
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\Callisto.pri
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\Callisto.pri.xml
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\priconfig.xml.intermediate
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\layout.resfiles.intermediate
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\resources.resfiles.intermediate
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\pri.resfiles.intermediate

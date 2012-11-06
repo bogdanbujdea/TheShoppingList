@@ -10,11 +10,13 @@ namespace TheShoppingList.Classes
 {
     public enum QuantityType
     {
+        pcs,
         kg,
+        l,
         m,
-        lb,
         ft,
-        pcs
+        lb,
+        Default
     };
 
     public class Product : INotifyPropertyChanged
