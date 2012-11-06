@@ -22,6 +22,10 @@ namespace TheShoppingList
 
         public bool NewListSaved { get; set; }
 
+        public ShoppingList List { get; set; }
+
+        public NewProduct.InputMode Mode { get; set; }
+
         private void NewShoppingList_Loaded(object sender, RoutedEventArgs e)
         {
             var size = Application.Current.Resources["newListSize"] as Point;
@@ -34,6 +38,12 @@ namespace TheShoppingList
             }
             else
                 transparentBorder.Width = size.Width;
+            if(Mode == NewProduct.InputMode.Edit)
+            {
+                List = MainPage.Page.SelectedList;
+                txtBalance.Text = List.Balance.ToString();
+                txtListName.Text = List.Name;
+            }
             transparentBorder.Height = size.Height;
             newListBorder.Width = transparentBorder.Width;
             transparentBorder.Visibility=Visibility.Visible;
@@ -50,7 +60,12 @@ namespace TheShoppingList
             double balance = 0;
             if (string.IsNullOrEmpty(txtBalance.Text) == false && Utils.IsNumber(txtBalance.Text)) //review check for digits
                 balance = double.Parse(txtBalance.Text);
-            
+            if (Mode == NewProduct.InputMode.Edit)
+            {
+                List.Name = txtListName.Text;
+                List.Balance = balance;
+            }
+            else
             if (source != null)
                 source.ShoppingLists.Add(new ShoppingList {Name = txtListName.Text, Balance = balance, TotalCost = 0, CreatedTime = DateTime.Now});
             transparentBorder.Visibility = Visibility.Collapsed;

@@ -39,3 +39,6 @@ C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppin
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\TheShoppingList.csprojResolveAssemblyReference.cache
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\TheShoppingList.csproj.GenerateResource.Cache
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\AdDuplex.Windows.pri.xml
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\Callisto.dll
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\Callisto.pri
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\Callisto.pri.xml

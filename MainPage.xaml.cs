@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TheShoppingList.Classes;
 using TheShoppingList.Common;
+using Windows.Data.Xml.Dom;
+using Windows.Devices.Input;
 using Windows.UI;
+using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -21,7 +24,7 @@ namespace TheShoppingList
     public sealed partial class MainPage
     {
         private int listCount;
-
+        private bool rightTapped;
         public MainPage()
         {
             InitializeComponent();
@@ -34,7 +37,31 @@ namespace TheShoppingList
             size.Width = bounds.Width;
             size.Height = bounds.Height;
             Application.Current.Resources["newListSize"] = size;
+            Page = this;
+        }
 
+        static public MainPage Page { get; set; }
+        public ShoppingList SelectedList { get; set; }
+
+        private void InitializeTile()
+        {
+            var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+
+            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText03);
+            XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
+
+            if (source != null)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (source.ShoppingLists.Count > i)
+                        tileTextAttributes[i].InnerText = source.ShoppingLists[i].Name;
+                    else break;
+                }
+
+            }
+            var tileNotification = new TileNotification(tileXml);
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
         }
 
         async void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -49,6 +76,7 @@ namespace TheShoppingList
                 return;
             }
             DefaultViewModel["Items"] = source.ShoppingLists;
+            InitializeTile();
             itemGridView.SelectedIndex = -1;
         }
 
@@ -61,7 +89,6 @@ namespace TheShoppingList
         {
 
         }
-
 
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
@@ -92,8 +119,7 @@ namespace TheShoppingList
                 ParentedPopup.IsOpen = true;
                 ParentedPopup.Visibility = Visibility.Visible;
                 btnAddList.Visibility = Visibility.Collapsed;
-                var shoppingSource = Application.Current.Resources["shoppingSource"] as ShoppingSource;
-                
+                newShoppingList.Mode = NewProduct.InputMode.Add;
             }
         }
 
@@ -115,19 +141,17 @@ namespace TheShoppingList
                 }
             }
         }
-
-
-
+        
         private void EditList(object sender, RoutedEventArgs e)
         {
             if (!ParentedPopup.IsOpen)
             {
                 ParentedPopup.IsLightDismissEnabled = false;
                 ParentedPopup.IsOpen = true;
+                newShoppingList.Mode = NewProduct.InputMode.Edit;
                 ParentedPopup.Visibility = Visibility.Visible;
                 btnAddList.Visibility = Visibility.Collapsed;
-                var shoppingSource = Application.Current.Resources["shoppingSource"] as ShoppingSource;
-
+                SelectedList = itemGridView.SelectedItem as ShoppingList;
             }
         }
 
@@ -175,7 +199,7 @@ namespace TheShoppingList
             if (source.ShoppingLists.Count == 0)
                 btnAddList.Visibility = Visibility.Visible;
         }
-
+        
         private void ListClicked(object sender, ItemClickEventArgs e)
         {
             var list = e.ClickedItem as ShoppingList;
@@ -226,15 +250,13 @@ namespace TheShoppingList
 
         private void OnRightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            bottomAppBar.IsOpen = true;
-            e.Handled = true;
-            var list = itemGridView.SelectedItem as ShoppingList;
+            rightTapped = true;
         }
 
         private async void RemoveAllShoppingLists(object sender, RoutedEventArgs e)
         {
             MessageBoxResult showAsync = await MessageBox.ShowAsync("Are you sure you want to remove all shopping lists?", "Please confirm", MessageBoxButton.YesNo);
-            if(showAsync == MessageBoxResult.No)
+            if (showAsync == MessageBoxResult.No)
                 return;
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source != null)
@@ -243,6 +265,34 @@ namespace TheShoppingList
                 btnAddList.Visibility = Visibility.Visible;
                 await source.SaveListsAsync();
             }
-    }
+        }
+
+        private void OnItemRightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            rightTapped = true;
+        }
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count <= 0)
+            {
+                SelectedList = null;
+                return;
+            }
+            SelectedList = e.AddedItems[0] as ShoppingList;
+
+            ItemControls.Visibility = Visibility.Visible;
+            bottomAppBar.IsOpen = true;
+        }
+
+        private void OnAppBarOpened(object sender, object e)
+        {
+            if (SelectedList == null)
+                ItemControls.Visibility = Visibility.Collapsed;
+            else
+                ItemControls.Visibility = Visibility.Visible;
+
+
+        }
     }
 }

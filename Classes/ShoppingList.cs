@@ -17,9 +17,10 @@ namespace TheShoppingList.Classes
         private ObservableCollection<Product> _products;
         private string _name;
         private DateTime _createdTime;
-        private DateTime _finishedTime;
+        private DateTime _reminderTime;
         private double _balance;
         private double _totalCost;
+        private int _count;
         public string Image { get; set; }
 
         public double TotalCost
@@ -34,6 +35,14 @@ namespace TheShoppingList.Classes
         {
             get { return _products; }
             set { _products = value; }
+        }
+
+        public int Count
+        {
+            get
+            {
+                _count = Products.Count; return _count; }
+            set { _count = value; OnPropertyChanged("Count");}
         }
 
         public Double Balance
@@ -58,11 +67,11 @@ namespace TheShoppingList.Classes
             }
         }
 
-        public DateTime FinishedTime
+        public DateTime ReminderTime
         {
-            get { return _finishedTime; }
-            set { _finishedTime = value;
-                OnPropertyChanged("FinishedTime");
+            get { return _reminderTime; }
+            set { _reminderTime = value;
+                OnPropertyChanged("ReminderTime");
             }
         }
 

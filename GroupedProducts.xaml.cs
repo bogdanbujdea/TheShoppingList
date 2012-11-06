@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using TheShoppingList.Classes;
 using TheShoppingList.Common;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Store;
 using Windows.Devices.Input;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -13,6 +17,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Navigation;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 
@@ -23,12 +28,82 @@ namespace TheShoppingList
     /// </summary>
     public sealed partial class GroupedProducts
     {
+        private LicenseInformation licenseInfo;
+        LicenseChangedEventHandler licenseChangeHandler = null;
         public GroupedProducts()
         {
             InitializeComponent();
             ProductControl = ProductPopup.Child as NewProduct;
             if (ProductControl != null) ProductControl.NewProductAdded += OnNewProductAdded;
+            balanceCurrency.Foreground = new SolidColorBrush(Colors.YellowGreen);
+            restCurrency.Foreground = new SolidColorBrush(Colors.YellowGreen);
+            totalCurrency.Foreground = new SolidColorBrush(Colors.YellowGreen);
+            balanceCurrency.Text = GetCurrency();
+            restCurrency.Text = GetCurrency();
+            totalCurrency.Text = GetCurrency();
+            licenseInfo = CurrentAppSimulator.LicenseInformation;
+            licenseInfo.LicenseChanged += licenseInfo_LicenseChanged;
+            InitializeLicense();
         }
+
+        #region License
+        private void InitializeLicense()
+        {
+
+            if (licenseInfo.IsActive)
+            {
+                if (licenseInfo.IsTrial == false)
+                {
+                    adDuplexAd.Visibility = Visibility.Collapsed;
+                    Grid.SetColumnSpan(Zoom, 2);
+                }
+                else
+                {
+                    adDuplexAd.Visibility = Visibility.Visible;
+                    Grid.SetColumnSpan(Zoom, 1);
+                }
+            }
+            else
+            {
+                new MessageDialog("Something went wrong").ShowAsync();
+            }
+
+        }
+
+        /// <summary>
+        /// Invoked when this page is about to unload
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            if (licenseChangeHandler != null)
+            {
+                CurrentAppSimulator.LicenseInformation.LicenseChanged -= licenseChangeHandler;
+            }
+            base.OnNavigatingFrom(e);
+        }
+
+        private async Task LoadAppListingUriProxyFileAsync()
+        {
+            StorageFolder proxyDataFolder = await Package.Current.InstalledLocation.GetFolderAsync("data");
+            StorageFile proxyFile = await proxyDataFolder.GetFileAsync("app-listing-uri.xml");
+            licenseChangeHandler = AppListingUriRefreshScenario;
+            CurrentAppSimulator.LicenseInformation.LicenseChanged += licenseChangeHandler;
+            await CurrentAppSimulator.ReloadSimulatorAsync(proxyFile);
+        }
+
+        private void AppListingUriRefreshScenario()
+        {
+
+        }
+
+        void licenseInfo_LicenseChanged()
+        {
+            InitializeLicense();
+        }
+        #endregion
+
+
 
         public int ListIndex { get; set; }
         public ShoppingList ShoppingList { get; set; }
@@ -49,7 +124,7 @@ namespace TheShoppingList
         /// </param>
         /// <param name="pageState">A dictionary of state preserved by this page during an earlier
         /// session.  This will be null the first time a page is visited.</param>
-        protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
+        protected async override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
             gridViewUtils = new GridViewUtils();
             ListIndex = navigationParameter is int ? (int)navigationParameter : -1; //get the List Index
@@ -62,6 +137,7 @@ namespace TheShoppingList
                 SetProductsPrice(); //initialize prices
                 itemGridView.SelectedIndex = -1; //deselect the first item
             }
+            await LoadAppListingUriProxyFileAsync();
         }
 
         private void SetProductsPrice()
@@ -152,8 +228,8 @@ namespace TheShoppingList
         {
             if (e.AddedItems.Count <= 0) return;
             SelectedProduct = e.AddedItems[0] as Product;
-            
-            if(rightTapped)
+
+            if (rightTapped)
             {
                 ShowHideButtons();
                 appBar.IsOpen = true;
@@ -163,7 +239,7 @@ namespace TheShoppingList
 
         private void ItemRightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            
+
             //review right tapped mode(mouse,teouch,pen...)
             rightTapped = true;
         }
@@ -215,6 +291,11 @@ namespace TheShoppingList
         #endregion
 
         #region Money Events
+
+        private string GetCurrency()
+        {
+            return RegionInfo.CurrentRegion.CurrencySymbol;
+        }
 
         private void OnBalanceTextDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
@@ -326,13 +407,13 @@ namespace TheShoppingList
 
         private void AddProduct(object sender, RoutedEventArgs e)
         {
-            ProductControl.Mode = NewProduct.InputMode.AddProduct;
+            ProductControl.Mode = NewProduct.InputMode.Add;
             ShowPopup();
         }
 
         private void EditProduct(object sender, RoutedEventArgs e)
         {
-            ProductControl.Mode = NewProduct.InputMode.EditProduct;
+            ProductControl.Mode = NewProduct.InputMode.Edit;
             if (ProductControl == null)
             {
                 new MessageDialog("Could not get a handle to the popup control! Please try again!").ShowAsync();
@@ -402,16 +483,17 @@ namespace TheShoppingList
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source != null)
             {
-                if (ProductControl.Mode == NewProduct.InputMode.EditProduct)
+                if (ProductControl.Mode == NewProduct.InputMode.Edit)
                 {
                     HandleModifiedProduct(ref source, args);
                 }
                 else
                 {
+                    ShoppingList = source.ShoppingLists[ListIndex];
                     source.ShoppingLists[ListIndex].Products.Add(args.Product);
-                    ShoppingList.TotalCost += args.Product.Price;
+                    source.ShoppingLists[ListIndex].TotalCost += args.Product.Price;
                 }
-                double rest = ShoppingList.Balance - ShoppingList.TotalCost;
+                double rest = source.ShoppingLists[ListIndex].Balance - source.ShoppingLists[ListIndex].TotalCost;
                 txtRest.Text = rest.ToString();
                 CheckForTotalCostOverflow();
                 await source.SaveListsAsync();
@@ -459,10 +541,10 @@ namespace TheShoppingList
                     var viewModel = new ProductsPageViewModel(ShoppingList);
                     gridViewUtils.FixViewModel(ref viewModel);
 
-                    if(viewModel.Items[1].Items == null || viewModel.Items[1].Items.Count == 0)
+                    if (viewModel.Items[1].Items == null || viewModel.Items[1].Items.Count == 0)
                     {
                         viewModel.Items[1].Items = new List<Product>();
-                        var productsCategory = new ProductsCategory {Title = "In Cart", Items = new List<Product>()};
+                        var productsCategory = new ProductsCategory { Title = "In Cart", Items = new List<Product>() };
                         //ShoppingList.Products.Add(new Product { Title = "", Category = "In Cart" });
                         productsCategory.Items.Add(new Product { Title = "" });
                         viewModel.Items.Add(productsCategory);
@@ -484,7 +566,7 @@ namespace TheShoppingList
         private void Zoom_ViewChangeCompleted(object sender, SemanticZoomViewChangedEventArgs e)
         {
             SetGridBinding();
-            if(e.IsSourceZoomedInView)
+            if (e.IsSourceZoomedInView)
                 btnAddProduct.Visibility = Visibility.Collapsed;
         }
 

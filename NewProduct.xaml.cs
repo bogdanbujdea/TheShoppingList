@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using TheShoppingList.Classes;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
@@ -22,8 +23,8 @@ namespace TheShoppingList
 
         public enum InputMode
         {
-            AddProduct,
-            EditProduct
+            Add,
+            Edit
         }
 
         public NewProduct()
@@ -31,6 +32,23 @@ namespace TheShoppingList
             InitializeComponent();
             Loaded += PopupLoaded;
             ProductAdded = false;
+            InputPaneHelper helper  = new InputPaneHelper();
+            helper.SubscribeToKeyboard(true);
+            helper.AddShowingHandler(txtProductName, CustomKeyboardHandler);
+            helper.AddShowingHandler(txtPrice, CustomKeyboardHandler);
+            helper.AddShowingHandler(txtQuantity, CustomKeyboardHandler);
+            helper.AddShowingHandler(txtShopName, CustomKeyboardHandler);
+            helper.SetHidingHandler(InputPanelHiding);
+        }
+
+        private void InputPanelHiding(InputPane input, InputPaneVisibilityEventArgs e)
+        {
+            this.Margin = new Thickness(0);
+        }
+
+        private void CustomKeyboardHandler(object sender, InputPaneVisibilityEventArgs e)
+        {
+            this.Margin = new Thickness(0, -100, 0, 0);
         }
 
         public InputMode Mode { get; set; }
@@ -44,7 +62,7 @@ namespace TheShoppingList
         private void PopupLoaded(object sender, RoutedEventArgs e)
         {
             var size = Application.Current.Resources["newListSize"] as Point;
-            if (Mode == InputMode.AddProduct)
+            if (Mode == InputMode.Add)
             {
                 btnIsBought.IsOn = false;
                 _product = new Product();
@@ -220,7 +238,7 @@ namespace TheShoppingList
         public void OnNewProductAdded(ProductAddedArgs args)
         {
             ProductAdded handler = NewProductAdded;
-            if (Mode == InputMode.EditProduct)
+            if (Mode == InputMode.Edit)
                 CloseControl();
             if (handler != null) handler(this, args);
         }

@@ -3,7 +3,7 @@
   <ShoppingListInfo>
     <Name>ShoppingList1</Name>
     <CreatedTime>10.10.2011</CreatedTime>
-    <FinishedTime>NotFinished</FinishedTime>
+    <ReminderTime>NotFinished</ReminderTime>
   </ShoppingListInfo>
   <Products>
     <Product>

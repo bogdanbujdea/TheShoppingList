@@ -105,7 +105,7 @@
                                             <TextBlock>Price:</TextBlock>
                                             <TextBlock Text="{Binding Price}" FontWeight="Bold"/>
                                         </StackPanel>
-                                            <TextBlock Text="{Binding ShopName}" HorizontalAlignment="Center" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
+                                        <TextBlock Text="{Binding ShopName}" HorizontalAlignment="Center" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
@@ -181,18 +181,22 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button IsEnabled="True" Width="100" Height="70" Click="OnClickDiscard" Style="{StaticResource DiscardAppBarButtonStyle}" AllowDrop="True" Drop="ItemDropDelete" VerticalAlignment="Center"></Button>
-                <TextBlock x:Name="textBlock" Grid.Column="1" Width="Auto" Height="70" Text="Your balance: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
-
-                <TextBox Name="txtBalance" Grid.Column="2" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True" TextChanged="OnTextBalanceTextChanged" IsReadOnly="True" DoubleTapped="OnBalanceTextDoubleTapped" Height="60" LostFocus="OnTxtBalanceLostFocus" ></TextBox>
+                <TextBlock x:Name="txblockBalance" Grid.Column="1" Width="Auto" Height="70" Text="Your balance: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <TextBox Name="txtBalance" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True" TextChanged="OnTextBalanceTextChanged" IsReadOnly="True" DoubleTapped="OnBalanceTextDoubleTapped" Height="60" LostFocus="OnTxtBalanceLostFocus" ></TextBox>
+                    <TextBlock Name="balanceCurrency" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Height="60"></TextBlock>
+                </StackPanel>
 
                 <TextBlock x:Name="textBlock1" Grid.Column="3" Text="Total:" Height="70"  VerticalAlignment="Center"  FontSize="26" HorizontalAlignment="Center"></TextBlock>
-
-                <TextBlock Name="txtTotal" Grid.Column="4"  Margin="5" Foreground="White" VerticalAlignment="Center"  FontWeight="Bold" FontSize="26"  Height="70" ></TextBlock>
-
+                <StackPanel Grid.Column="4" Orientation="Horizontal">
+                    <TextBlock Name="txtTotal"   Margin="5" Foreground="White" VerticalAlignment="Center"  FontWeight="Bold" FontSize="26"  Height="70" ></TextBlock>
+                    <TextBlock Name="totalCurrency" Height="70"  VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
+                </StackPanel>
                 <TextBlock x:Name="textBlock2" Grid.Column="5" Text="What's Left:" Height="70"  VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
-
-                <TextBlock Name="txtRest" Grid.Column="6" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"  FontSize="26" Height="70"></TextBlock>
-
+                <StackPanel Grid.Column="6" Orientation="Horizontal">
+                    <TextBlock Name="txtRest" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"  FontSize="26" Height="70"></TextBlock>
+                    <TextBlock Name="restCurrency" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"  FontSize="26" Height="70"></TextBlock>
+                </StackPanel>
             </Grid>
             <Button Grid.Row="0" Name="btnAddProduct" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" Click="AddProduct" Style="{StaticResource AddAppBarButtonStyle}" ></Button>
 
@@ -211,16 +215,16 @@
             IsSwipeEnabled="false">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                            <Border Margin="4,0,0,0" BorderThickness="1"  Width="200" Height="40">
-                                <StackPanel Width="200" Height="40" RightTapped="ItemRightTapped">
-                                    <TextBlock HorizontalAlignment="Center" Text="{Binding Title}" Padding="3" Style="{StaticResource TitleTextStyle}" Margin="0,7,0,0" FontFamily="Segoe Print" FontSize="30" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"/>
-                                    <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
-                                        <TextBlock>Price:</TextBlock>
-                                        <TextBlock Text="{Binding Price}" FontWeight="Bold"/>
-                                    </StackPanel>
-                                    <TextBlock Text="{Binding ShopName}" HorizontalAlignment="Center" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
-                                </StackPanel>
-                            </Border>
+                    <Border Margin="4,0,0,0" BorderThickness="1"  Width="200" Height="40">
+                        <StackPanel Width="200" Height="40" RightTapped="ItemRightTapped">
+                            <TextBlock HorizontalAlignment="Center" Text="{Binding Title}" Padding="3" Style="{StaticResource TitleTextStyle}" Margin="0,7,0,0" FontFamily="Segoe Print" FontSize="30" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                <TextBlock>Price:</TextBlock>
+                                <TextBlock Text="{Binding Price}" FontWeight="Bold"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding ShopName}" HorizontalAlignment="Center" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
+                        </StackPanel>
+                    </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.GroupStyle>

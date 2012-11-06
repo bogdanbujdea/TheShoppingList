@@ -104,6 +104,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\GridViewUtils.cs" />
+    <Compile Include="Classes\InputPaneHelper.cs" />
     <Compile Include="Classes\MessageBox.cs" />
     <Compile Include="Classes\ProductsPageViewModel.cs" />
     <Compile Include="Classes\Utils.cs" />
@@ -153,6 +154,7 @@
     <Content Include="Assets\cart.png" />
     <Content Include="Assets\unchecked.png" />
     <Content Include="Common\ReadMe.txt" />
+    <Content Include="Data\app-listing-uri.xml" />
     <Content Include="ShoppingList1.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -185,7 +187,11 @@
     <Reference Include="AdDuplex.Windows">
       <HintPath>..\packages\AdDuplexWindows.8.0.1.0\lib\winrt45\AdDuplex.Windows.dll</HintPath>
     </Reference>
+    <Reference Include="Callisto">
+      <HintPath>..\packages\Callisto.1.2.5\lib\winrt45\Callisto.dll</HintPath>
+    </Reference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

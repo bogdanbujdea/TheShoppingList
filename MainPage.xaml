@@ -23,9 +23,9 @@
 
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar Name="bottomAppBar">
+        <AppBar Name="bottomAppBar" Opened="OnAppBarOpened">
             <Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Name="ItemControls">
                     <Button Style="{StaticResource EditAppBarButtonStyle}" Click="EditList"/>
                     <Button Style="{StaticResource RemoveAppBarButtonStyle}" Click="RemoveList"/>
                 </StackPanel>
@@ -63,11 +63,11 @@
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
             SelectionMode="Multiple"
             IsRightTapEnabled="True"
-            RightTapped="OnRightTapped"
+            RightTapped="OnRightTapped" SelectionChanged="OnSelectionChanged"
             IsSwipeEnabled="True" Margin="10,0,0,0" ItemClick="ListClicked" IsItemClickEnabled="True">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Border CornerRadius="40" Margin="4,0,0,0" BorderThickness="1" >
+                    <Border CornerRadius="40" Margin="4,0,0,0" BorderThickness="1" RightTapped="OnItemRightTapped">
                         <Grid HorizontalAlignment="Left" Width="250" Height="250">
                             <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" CornerRadius="45">
                                 <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
@@ -76,7 +76,7 @@
                             <Border VerticalAlignment="Bottom" CornerRadius="50" BorderThickness="1" Background="Transparent">
                                 <StackPanel VerticalAlignment="Bottom">
 
-                                    <TextBlock Text="{Binding CreatedTime}" HorizontalAlignment="Center" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Count}" HorizontalAlignment="Center" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontWeight="Bold"/>
                                 </StackPanel>
                             </Border>
                         </Grid>
@@ -94,7 +94,7 @@
                     <PopupThemeTransition />
                 </TransitionCollection>
             </Popup.ChildTransitions>
-            <local:NewShoppingList />
+            <local:NewShoppingList x:Name="newShoppingList" />
         </Popup>
         
         <Button Grid.Row="1" Name="btnAddList" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" Click="OnAddNewList" Style="{StaticResource AddAppBarButtonStyle}" ></Button>

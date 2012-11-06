@@ -14,4 +14,5 @@ MainPage.xaml
 NewProduct.xaml
 NewShoppingList.xaml
 Common\ReadMe.txt
+Data\app-listing-uri.xml
 ShoppingList1.xml

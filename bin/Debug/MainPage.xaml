@@ -23,15 +23,15 @@
 
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar Name="bottomAppBar">
+        <AppBar x:ConnectionId='1' Name="bottomAppBar"                        >
             <Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button x:ConnectionId='3' Style="{StaticResource EditAppBarButtonStyle}"                 />
-                    <Button x:ConnectionId='4' Style="{StaticResource RemoveAppBarButtonStyle}"                   />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Name="ItemControls">
+                    <Button x:ConnectionId='4' Style="{StaticResource EditAppBarButtonStyle}"                 />
+                    <Button x:ConnectionId='5' Style="{StaticResource RemoveAppBarButtonStyle}"                   />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button x:ConnectionId='1' Style="{StaticResource AddAppBarButtonStyle}"                     />
-                    <Button x:ConnectionId='2' x:Name="button" Style="{StaticResource RemoveAppBarButtonStyle}" AutomationProperties.Name="Remove All"                               />
+                    <Button x:ConnectionId='2' Style="{StaticResource AddAppBarButtonStyle}"                     />
+                    <Button x:ConnectionId='3' x:Name="button" Style="{StaticResource RemoveAppBarButtonStyle}" AutomationProperties.Name="Remove All"                               />
                 </StackPanel>
             </Grid>
         </AppBar>
@@ -53,7 +53,7 @@
         </Grid.ColumnDefinitions>
         
         <!-- Horizontal scrolling grid used in most view states -->
-        <GridView x:ConnectionId='5'
+        <GridView x:ConnectionId='6'
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemsGridView"
             AutomationProperties.Name="Items"
@@ -63,11 +63,11 @@
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
             SelectionMode="Multiple"
             IsRightTapEnabled="True"
-                                       
+                                                                             
             IsSwipeEnabled="True" Margin="10,0,0,0"                         IsItemClickEnabled="True">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Border CornerRadius="40" Margin="4,0,0,0" BorderThickness="1" >
+                    <Border x:ConnectionId='11' CornerRadius="40" Margin="4,0,0,0" BorderThickness="1"                                >
                         <Grid HorizontalAlignment="Left" Width="250" Height="250">
                             <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" CornerRadius="45">
                                 <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
@@ -76,7 +76,7 @@
                             <Border VerticalAlignment="Bottom" CornerRadius="50" BorderThickness="1" Background="Transparent">
                                 <StackPanel VerticalAlignment="Bottom">
 
-                                    <TextBlock Text="{Binding CreatedTime}" HorizontalAlignment="Center" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Count}" HorizontalAlignment="Center" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontWeight="Bold"/>
                                 </StackPanel>
                             </Border>
                         </Grid>
@@ -88,18 +88,18 @@
                     AppId="24355" 
                     Size="160x600"
                     />
-        <Popup x:ConnectionId='6' x:Name="ParentedPopup" Height="140" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Bottom"                      IsLightDismissEnabled="True" >
+        <Popup x:ConnectionId='7' x:Name="ParentedPopup" Height="140" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Bottom"                      IsLightDismissEnabled="True" >
             <Popup.ChildTransitions>
                 <TransitionCollection>
                     <PopupThemeTransition />
                 </TransitionCollection>
             </Popup.ChildTransitions>
-            <local:NewShoppingList />
+            <local:NewShoppingList x:Name="newShoppingList" />
         </Popup>
         
-        <Button x:ConnectionId='7' Grid.Row="1" Name="btnAddList" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                      Style="{StaticResource AddAppBarButtonStyle}" ></Button>
+        <Button x:ConnectionId='8' Grid.Row="1" Name="btnAddList" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                      Style="{StaticResource AddAppBarButtonStyle}" ></Button>
             <!-- Vertical scrolling list only used when snapped -->
-        <ListView x:ConnectionId='8'
+        <ListView x:ConnectionId='9'
             x:Name="itemListView"
             AutomationProperties.AutomationId="ItemsListView"
             AutomationProperties.Name="Items"
@@ -120,7 +120,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-            <Button x:ConnectionId='9' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
+            <Button x:ConnectionId='10' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
             <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 
