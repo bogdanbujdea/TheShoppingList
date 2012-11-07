@@ -33,14 +33,14 @@
                     <TextBox x:ConnectionId='2' Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"                                Background="White" VerticalAlignment="Center" Width="250" Name="txtProductName" Padding="0,0,0,0" ToolTipService.ToolTip="Name of product" Foreground="Black" />
 
 
-                    <TextBlock Grid.Row="2" Foreground="Black"  Grid.Column="0" Text="Price: " Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="2" Foreground="Black"  Grid.Column="0" Text="Price: " Name="txtPriceLabel" Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
-                        <TextBox x:ConnectionId='10' Background="White" VerticalAlignment="Center" Width="250" Name="txtPrice" Padding="0,0,0,0" ToolTipService.ToolTip="Name of product"                                Foreground="Black" />
+                        <TextBox x:ConnectionId='9' Background="White" VerticalAlignment="Center" Width="250" Name="txtPrice" Padding="0,0,0,0" ToolTipService.ToolTip="Name of product"                                Foreground="Black" />
                         <TextBlock Name="txtPriceWarning" HorizontalAlignment="Right" Width="Auto" Text="*only digits are allowed" Visibility="Collapsed" VerticalAlignment="Center" Foreground="Red" Margin="10,0,0,0"></TextBlock>
                     </StackPanel>
                     <TextBlock Grid.Row="3" Foreground="Black"  Grid.Column="0" Text="Quantity: " Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-                        <TextBox x:ConnectionId='9'  Name="txtQuantity"                                HorizontalAlignment="Left" Background="White" VerticalAlignment="Center" Width="250"  Padding="0,0,0,0" ToolTipService.ToolTip="Name of product" Foreground="Black" />
+                        <TextBox x:ConnectionId='8'  Name="txtQuantity"                                HorizontalAlignment="Left" Background="White" VerticalAlignment="Center" Width="250"  Padding="0,0,0,0" ToolTipService.ToolTip="Name of product" Foreground="Black" />
                         <TextBlock Name="txtQuantityWarning" Width="Auto" Text="*only digits are allowed" Visibility="Collapsed" VerticalAlignment="Center" Foreground="Red" Margin="10,0,0,0"></TextBlock>
                     </StackPanel>
 
@@ -49,6 +49,7 @@
                     <ComboBox x:ConnectionId='3' Grid.Row="4" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" Height="Auto" Name="quantityType"                                       >
                         <ComboBoxItem>Pieces (pcs)</ComboBoxItem>
                         <ComboBoxItem>Kilograms (kg)</ComboBoxItem>
+                        <ComboBoxItem>Litres (l)</ComboBoxItem>
                         <ComboBoxItem>Metres (m)</ComboBoxItem>
                         <ComboBoxItem>Feet (ft)</ComboBoxItem>
                         <ComboBoxItem>Pounds (lb)</ComboBoxItem>
@@ -58,12 +59,12 @@
                     <TextBlock Grid.Row="5" Foreground="Black"  Grid.Column="0" Text="Shop name: " Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <TextBox x:ConnectionId='4' Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Background="White" VerticalAlignment="Center" Width="250" Name="txtShopName" Padding="0,0,0,0" ToolTipService.ToolTip="Name of product"                                 Foreground="Black" />
                     <TextBlock Grid.Row="6" HorizontalAlignment="Right" Foreground="Black" Text="Bought" FontSize="20" VerticalAlignment="Bottom" Margin="0,0,15,0"></TextBlock>
-                    <ToggleSwitch x:ConnectionId='5' Grid.Row="6" Grid.Column="1" OnContent="" OffContent="" Foreground="Black" Width="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,10"  Height="Auto" Name="btnIsBought"                               HorizontalContentAlignment="Center"></ToggleSwitch>
+                    <ToggleSwitch Grid.Row="6" Grid.Column="1" OnContent="" OffContent="" Foreground="Black" Width="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,10"  Height="Auto" Name="btnIsBought" HorizontalContentAlignment="Center"></ToggleSwitch>
 
                     <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Button x:ConnectionId='6' x:Name="btnSave" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center"                              AutomationProperties.Name="Save" Style="{StaticResource SaveAppBarButtonStyle}" Foreground="Black" />
-                        <Button x:ConnectionId='7' Name="btnClear" Width="100" Style="{StaticResource ClearSelectionAppBarButtonStyle}"                 Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" AutomationProperties.Name="Clear All"></Button>
-                        <Button x:ConnectionId='8' Name="btnCancelOrClose" Width="100" Style="{StaticResource NoAppBarButtonStyle}" Foreground="Black"                VerticalAlignment="Center" HorizontalAlignment="Center" AutomationProperties.Name="Close"></Button>
+                        <Button x:ConnectionId='5' x:Name="btnSave" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center"                              AutomationProperties.Name="Save" Style="{StaticResource SaveAppBarButtonStyle}" Foreground="Black" />
+                        <Button x:ConnectionId='6' Name="btnClear" Width="100" Style="{StaticResource ClearSelectionAppBarButtonStyle}"                 Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center" AutomationProperties.Name="Clear All"></Button>
+                        <Button x:ConnectionId='7' Name="btnCancelOrClose" Width="100" Style="{StaticResource NoAppBarButtonStyle}" Foreground="Black"                VerticalAlignment="Center" HorizontalAlignment="Center" AutomationProperties.Name="Close"></Button>
                     </StackPanel>
                 </Grid>
             </Border>

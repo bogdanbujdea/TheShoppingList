@@ -78,10 +78,7 @@ namespace TheShoppingList.Classes
 
         public string Currency
         {
-            get
-            {
-                return RegionInfo.CurrentRegion.ISOCurrencySymbol;
-            }
+            get { return Utils.GetCountryInfo().CurrencySymbol; }
         }
 
         public string ShopName

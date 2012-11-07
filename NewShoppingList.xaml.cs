@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using TheShoppingList.Classes;
 using Windows.UI;
 using Windows.UI.Popups;
@@ -47,6 +48,8 @@ namespace TheShoppingList
             transparentBorder.Height = size.Height;
             newListBorder.Width = transparentBorder.Width;
             transparentBorder.Visibility=Visibility.Visible;
+            txtListName.Focus(FocusState.Programmatic);
+            txtBalanceLabel.Text = "Price(" + Utils.GetCountryInfo().CurrencySymbol + "):";
         }
 
         private async void OnSaveListName(object sender, RoutedEventArgs e)
@@ -76,6 +79,8 @@ namespace TheShoppingList
 
         private void txtListName_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if(Mode == NewProduct.InputMode.Edit)
+                return;
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source == null) return;
             foreach (ShoppingList list in source.ShoppingLists)
@@ -83,9 +88,6 @@ namespace TheShoppingList
                 if (String.Compare(list.Name, txtListName.Text, StringComparison.Ordinal) == 0)
                 {
                     txtListName.BorderBrush = new SolidColorBrush(Colors.Red);
-                    var color = new Color();
-                    //string colorcode = "#FFD87474";
-                    //int argb = Int32.Parse(colorcode.Replace("#", ""), NumberStyles.HexNumber);
                     Color clr = Color.FromArgb(0xFF, 0xD8, 0x74, 0x74);
                     txtListName.Background = new SolidColorBrush(clr);
                     btnSave.IsEnabled = false;

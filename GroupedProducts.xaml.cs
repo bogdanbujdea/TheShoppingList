@@ -294,7 +294,7 @@ namespace TheShoppingList
 
         private string GetCurrency()
         {
-            return RegionInfo.CurrentRegion.CurrencySymbol;
+            return Utils.GetCountryInfo().CurrencySymbol;
         }
 
         private void OnBalanceTextDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)

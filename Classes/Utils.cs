@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.System.UserProfile;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
@@ -69,11 +72,18 @@ namespace TheShoppingList.Classes
             for (int i = 0; i < childrenCount; i++)
             {
                 DependencyObject child = FindDescendant<T>(VisualTreeHelper.GetChild(obj, i));
-                if (child != null && child is T)
+                if (child != null)
                     return child as T;
             }
-
+            
             return null;
+        }
+
+        public static RegionInfo GetCountryInfo()
+        {
+            string geo = GlobalizationPreferences.HomeGeographicRegion;
+            var region = new RegionInfo(geo);
+            return region;
         }
 
         public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
@@ -94,6 +104,36 @@ namespace TheShoppingList.Classes
                     }
                 }
             }
+        }
+
+        public static int IndexFromQuantityType(QuantityType type)
+        {
+            int index;
+            switch (type)
+            {
+                case QuantityType.pcs:
+                    index = 0;
+                    break;
+                case QuantityType.kg:
+                    index = 1;
+                    break;
+                case QuantityType.l:
+                    index = 2;
+                    break;
+                case QuantityType.m:
+                    index = 3;
+                    break;
+                case QuantityType.ft:
+                    index = 4;
+                    break;
+                case QuantityType.lb:
+                    index = 5;
+                    break;
+                default:
+                    index = -1;
+                    break;
+            }
+            return index;
         }
 
     }

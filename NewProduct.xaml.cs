@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using TheShoppingList.Classes;
 using Windows.UI;
@@ -32,13 +33,15 @@ namespace TheShoppingList
             InitializeComponent();
             Loaded += PopupLoaded;
             ProductAdded = false;
-            InputPaneHelper helper = new InputPaneHelper();
+            var helper = new InputPaneHelper();
             helper.SubscribeToKeyboard(true);
             helper.AddShowingHandler(txtProductName, CustomKeyboardHandler);
             helper.AddShowingHandler(txtPrice, CustomKeyboardHandler);
             helper.AddShowingHandler(txtQuantity, CustomKeyboardHandler);
             helper.AddShowingHandler(txtShopName, CustomKeyboardHandler);
             helper.SetHidingHandler(InputPanelHiding);
+            quantityType.SelectedIndex = 0;
+            txtPriceLabel.Text = "Price(" + Utils.GetCountryInfo().CurrencySymbol + "):";
         }
 
         private void InputPanelHiding(InputPane input, InputPaneVisibilityEventArgs e)
@@ -98,42 +101,15 @@ namespace TheShoppingList
                 txtQuantity.Text = Product.Quantity.ToString();
                 if (Product.ShopName != null)
                     txtShopName.Text = Product.ShopName;
-                quantityType.SelectedIndex = IndexFromQuantityType(Product.QuantityType);
+                quantityType.SelectedIndex = Utils.IndexFromQuantityType(Product.QuantityType);
             }
         }
 
-        private int IndexFromQuantityType(QuantityType type)
-        {
-            int index;
-            switch (type)
-            {
-                case QuantityType.pcs:
-                    index = 0;
-                    break;
-                case QuantityType.kg:
-                    index = 1;
-                    break;
-                case QuantityType.l:
-                    index = 2;
-                    break;
-                case QuantityType.m:
-                    index = 3;
-                    break;
-                case QuantityType.ft:
-                    index = 4;
-                    break;
-                case QuantityType.lb:
-                    index = 5;
-                    break;
-                default:
-                    index = -1;
-                    break;
-            }
-            return index;
-        }
+        
 
         private void OnSaveProductDetails(object sender, RoutedEventArgs e)
         {
+           
             Product = new Product();
             if (txtProductName.Text == string.Empty)
             {
@@ -315,15 +291,7 @@ namespace TheShoppingList
             }
         }
 
-        private void BtnIsBought_OnChecked(object sender, RoutedEventArgs e)
-        {
 
-        }
-
-        private void btnIsBought_Toggled(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 
     public delegate void ProductAdded(object sender, ProductAddedArgs args);
