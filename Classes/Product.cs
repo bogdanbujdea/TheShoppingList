@@ -119,7 +119,7 @@ namespace TheShoppingList.Classes
                 }
                 else
                 {
-                    Category = "Remaining Products";
+                    Category = "On List";
                     _image = @"Assets/unchecked.png";
                 }
                 OnPropertyChanged("IsBought");

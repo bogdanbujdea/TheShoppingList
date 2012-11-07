@@ -57,7 +57,7 @@
 
                     <TextBlock Grid.Row="5" Foreground="Black"  Grid.Column="0" Text="Shop name: " Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <TextBox x:ConnectionId='4' Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Background="White" VerticalAlignment="Center" Width="250" Name="txtShopName" Padding="0,0,0,0" ToolTipService.ToolTip="Name of product"                                 Foreground="Black" />
-                    <TextBlock Grid.Row="6" HorizontalAlignment="Right" Foreground="Black" Text="Is Bought" FontSize="20" VerticalAlignment="Bottom" Margin="0,0,15,0"></TextBlock>
+                    <TextBlock Grid.Row="6" HorizontalAlignment="Right" Foreground="Black" Text="Bought" FontSize="20" VerticalAlignment="Bottom" Margin="0,0,15,0"></TextBlock>
                     <ToggleSwitch x:ConnectionId='5' Grid.Row="6" Grid.Column="1" OnContent="" OffContent="" Foreground="Black" Width="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0,0,0,10"  Height="Auto" Name="btnIsBought"                               HorizontalContentAlignment="Center"></ToggleSwitch>
 
                     <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">

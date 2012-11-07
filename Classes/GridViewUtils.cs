@@ -14,7 +14,7 @@ namespace TheShoppingList.Classes
     {
         public void AddCategories(ref ProductsPageViewModel viewModel)
         {
-            viewModel.Items.Add(new ProductsCategory { Title = "Remaining Products" });
+            viewModel.Items.Add(new ProductsCategory { Title = "On List" });
             viewModel.Items.Add(new ProductsCategory { Title = "In Cart" });
         }
 
@@ -25,13 +25,13 @@ namespace TheShoppingList.Classes
 
             if (viewModel.Items.Count == 1)
             {
-                string title = "Remaining Products";
-                if (viewModel.Items[0].Title == "Remaining Products") //if the first category is remaining products
+                string title = "On List";
+                if (viewModel.Items[0].Title == "On List") //if the first category is On List
                 {
                     title = "In Cart"; //add "In Cart" as the last one
                     viewModel.Items.Add(new ProductsCategory { Title = title });
                 }
-                else viewModel.Items.Insert(0, new ProductsCategory { Title = title }); //insert the "Remaining Products" as the first one
+                else viewModel.Items.Insert(0, new ProductsCategory { Title = title }); //insert the "On List" as the first one
             }
 
             if(viewModel.Items.Count == 2 && viewModel.Items[0].Title == "In Cart")

@@ -196,6 +196,7 @@ namespace TheShoppingList
             ProductAdded = true;
 
             OnNewProductAdded(new ProductAddedArgs { Product = Product });
+            txtProductName.Focus(FocusState.Programmatic);
         }
 
         private void ProductNameChanged(object sender, TextChangedEventArgs e)
