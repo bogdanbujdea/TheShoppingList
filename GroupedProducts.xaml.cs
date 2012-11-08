@@ -137,7 +137,13 @@ namespace TheShoppingList
                 SetProductsPrice(); //initialize prices
                 itemGridView.SelectedIndex = -1; //deselect the first item
             }
+            ShoppingList.Products.CollectionChanged += Products_CollectionChanged;
             await LoadAppListingUriProxyFileAsync();
+        }
+
+        void Products_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            Utils.UpdateSecondaryTile(ShoppingList.UniqueID, ShoppingList.Products);
         }
 
         private void SetProductsPrice()

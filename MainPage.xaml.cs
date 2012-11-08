@@ -6,14 +6,19 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Store;
 using Windows.Data.Xml.Dom;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
+using Windows.UI.StartScreen;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml.Navigation;
 using Point = TheShoppingList.Classes.Point;
 
@@ -143,6 +148,92 @@ namespace TheShoppingList
 
         #endregion
 
+        #region Tiles
+        private async void OnPinList(object sender, RoutedEventArgs e)
+        {
+            var button1 = sender as Button;
+            if (button1 != null)
+            {
+                string tiles = null;
+                bottomAppBar.IsSticky = true;
+                foreach (var tile in await SecondaryTile.FindAllAsync())
+                {
+                    if (System.String.Compare(tile.Arguments, SelectedList.UniqueID, System.StringComparison.Ordinal) == 0)
+                    {
+
+                        // Now make the delete request.
+                        bool isUnpinned = await tile.RequestDeleteForSelectionAsync(Utils.GetElementRect((FrameworkElement)sender), Windows.UI.Popups.Placement.Above);
+                        if (isUnpinned)
+                        {
+                            SelectedList.IsPinned = false;
+                        }
+
+                        ToggleAppBarButton();
+                        bottomAppBar.IsSticky = false;
+                        return;
+                    }
+                }
+
+                // Prepare package images for use as the Tile Logo and small Logo in our tile to be pinned
+                var logo = new Uri("ms-appx:///Assets/squareTile-sdk.png");
+                var smallLogo = new Uri("ms-appx:///Assets/smallTile-sdk.png");
+
+                // During creation of secondary tile, an application may set additional arguments on the tile that will be passed in during activation.
+                // These arguments should be meaningful to the application. In this sample, we'll pass in the date and time the secondary tile was pinned.
+                string tileActivationArguments = SelectedList.UniqueID;
+
+                // Create a 1x1 Secondary tile
+                var secondaryTile = new SecondaryTile(SelectedList.UniqueID,
+                                                      SelectedList.Name,
+                                                      SelectedList.Name,
+                                                      tileActivationArguments,
+                                                      TileOptions.ShowNameOnLogo,
+                                                      logo);
+
+                // Specify a foreground text value.
+                // The tile background color is inherited from the parent unless a separate value is specified.
+                secondaryTile.ForegroundText = ForegroundText.Dark;
+                secondaryTile.BackgroundColor = Colors.YellowGreen;
+
+                // Like the background color, the small tile logo is inherited from the parent application tile by default. Let's override it, just to see how that's done.
+                secondaryTile.SmallLogo = smallLogo;
+
+                // OK, the tile is created and we can now attempt to pin the tile.
+                // Note that the status message is updated when the async operation to pin the tile completes.
+                bool isPinned =
+                    await
+                    secondaryTile.RequestCreateForSelectionAsync(Utils.GetElementRect((FrameworkElement)sender),
+                                                                 Placement.Above);
+                if (isPinned)
+                {
+                    SelectedList.IsPinned = true;
+                    Utils.UpdateSecondaryTile(SelectedList.UniqueID, SelectedList.Products);
+                }
+                else
+                {
+                    SelectedList.IsPinned = false;
+                }
+                ToggleAppBarButton();
+            }
+        }
+
+
+
+        private void ToggleAppBarButton()
+        {
+            
+            if (SelectedList.IsPinned)
+            {
+                btnPinList.SetValue(AutomationProperties.NameProperty, "Unpin from Start");
+                btnPinList.Style = App.Current.Resources["UnPinAppBarButtonStyle"] as Style;
+            }
+            else
+            {
+                btnPinList.SetValue(AutomationProperties.NameProperty, "Pin to Start");
+                btnPinList.Style = App.Current.Resources["PinAppBarButtonStyle"] as Style;
+            }
+        }
+
         private void InitializeTile()
         {
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
@@ -161,7 +252,17 @@ namespace TheShoppingList
             }
             var tileNotification = new TileNotification(tileXml);
             TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
+            foreach (var shoppingList in source.ShoppingLists)
+            {
+                if (SecondaryTile.Exists(shoppingList.UniqueID))
+                {
+                    Utils.UpdateSecondaryTile(shoppingList.UniqueID, shoppingList.Products);
+                }
+            }
         }
+        #endregion
+
+
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
@@ -186,89 +287,9 @@ namespace TheShoppingList
             }
         }
 
-        private async void OnPinList(object sender, RoutedEventArgs e)
-        {
-            var button1 = sender as Button;
-            if (button1 != null)
-            {
-                string tiles = null;
-                bottomAppBar.IsSticky = true;
-                foreach (var tile in await SecondaryTile.FindAllAsync())
-                {
-                    if(System.String.Compare(tile.Arguments, SelectedList.UniqueID, System.StringComparison.Ordinal) == 0)
-                    {
-                        
-                        // Now make the delete request.
-                        bool isUnpinned = await tile.RequestDeleteForSelectionAsync(GetElementRect((FrameworkElement)sender), Windows.UI.Popups.Placement.Above);
-                        if (isUnpinned)
-                        {
-                            SelectedList.IsPinned = false;
-                        }
 
-                        ToggleAppBarButton();
-                        bottomAppBar.IsSticky = false;
-                        return;
-                    }
-                }
-                
-                // Prepare package images for use as the Tile Logo and small Logo in our tile to be pinned
-                var logo = new Uri("ms-appx:///Assets/squareTile-sdk.png");
-                var smallLogo = new Uri("ms-appx:///Assets/smallTile-sdk.png");
 
-                // During creation of secondary tile, an application may set additional arguments on the tile that will be passed in during activation.
-                // These arguments should be meaningful to the application. In this sample, we'll pass in the date and time the secondary tile was pinned.
-                string tileActivationArguments = SelectedList.UniqueID;
 
-                // Create a 1x1 Secondary tile
-                var secondaryTile = new SecondaryTile(SelectedList.UniqueID,
-                                                      SelectedList.Name,
-                                                      SelectedList.Name,
-                                                      tileActivationArguments,
-                                                      TileOptions.ShowNameOnLogo,
-                                                      logo);
-
-                // Specify a foreground text value.
-                // The tile background color is inherited from the parent unless a separate value is specified.
-                secondaryTile.ForegroundText = ForegroundText.Dark;
-
-                // Like the background color, the small tile logo is inherited from the parent application tile by default. Let's override it, just to see how that's done.
-                secondaryTile.SmallLogo = smallLogo;
-
-                // OK, the tile is created and we can now attempt to pin the tile.
-                // Note that the status message is updated when the async operation to pin the tile completes.
-                bool isPinned =
-                    await
-                    secondaryTile.RequestCreateForSelectionAsync(GetElementRect((FrameworkElement)sender),
-                                                                 Placement.Above);
-                
-                if (isPinned)
-                {
-                    SelectedList.IsPinned = true;
-                    new MessageDialog("Secondary tile successfully pinned.").ShowAsync();
-                }
-                else
-                {
-                    SelectedList.IsPinned = false;
-                    new MessageDialog("Secondary tile not pinned.").ShowAsync();
-                }
-                ToggleAppBarButton();
-            }
-        }
-
-        private void ToggleAppBarButton()
-        {
-            if (SelectedList.IsPinned)
-                btnPinList.Style = App.Current.Resources["UnPinAppBarButtonStyle"] as Style;
-            else
-                btnPinList.Style = App.Current.Resources["PinAppBarButtonStyle"] as Style;
-        }
-
-        public Rect GetElementRect(FrameworkElement element)
-        {
-            GeneralTransform buttonTransform = element.TransformToVisual(null);
-            Windows.Foundation.Point point = buttonTransform.TransformPoint(new Windows.Foundation.Point());
-            return new Rect(point, new Size(element.ActualWidth, element.ActualHeight));
-        }
 
         #region App State
 
@@ -284,7 +305,7 @@ namespace TheShoppingList
         protected override async void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
             SecondaryTileID = navigationParameter as string;
-            
+
         }
 
         protected override async void SaveState(Dictionary<string, object> pageState)
@@ -475,7 +496,7 @@ namespace TheShoppingList
             if (e.AddedItems.Count <= 0)
             {
                 SelectedList = null;
-                
+
                 return;
             }
             SelectedList = e.AddedItems[0] as ShoppingList;
@@ -487,9 +508,15 @@ namespace TheShoppingList
         private void OnAppBarOpened(object sender, object e)
         {
             if (SelectedList == null)
+            {
                 ItemControls.Visibility = Visibility.Collapsed;
+                btnPinList.Visibility = Visibility.Collapsed;
+            }
             else
+            {
                 ItemControls.Visibility = Visibility.Visible;
+                btnPinList.Visibility = Visibility.Visible;
+            }
         }
 
         #endregion

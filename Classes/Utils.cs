@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Data.Xml.Dom;
+using Windows.Foundation;
 using Windows.System.UserProfile;
+using Windows.UI.Notifications;
 using Windows.UI.Popups;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
@@ -22,6 +27,26 @@ namespace TheShoppingList.Classes
             return !regex.IsMatch(text);
         }
 
+        public static void UpdateSecondaryTile(string tileID, ObservableCollection<Product> products)
+        {
+            if(SecondaryTile.Exists(tileID)  == false)
+                return;
+            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText03);
+            XmlNodeList textAttributes = tileXml.GetElementsByTagName("text");
+            int i = 0;
+            foreach (var product in products)
+            {
+                if (products.Count > i)
+                    textAttributes[i].InnerText = products[i].Title;
+                else break;
+                if (i++ == 3)
+                    break;
+            }
+            TileNotification tileNotification = new TileNotification(tileXml);
+            // Send the notification to the secondary tile by creating a secondary tile updater
+            TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).Update(tileNotification);
+        }
+
         public static void SortProducts(ShoppingList list)
         {
             var products = new Product[list.Products.Count];
@@ -34,6 +59,13 @@ namespace TheShoppingList.Classes
                 if (product != null)
                     list.Products.Add(product);
             }
+        }
+
+        public static Rect GetElementRect(FrameworkElement element)
+        {
+            GeneralTransform buttonTransform = element.TransformToVisual(null);
+            Windows.Foundation.Point point = buttonTransform.TransformPoint(new Windows.Foundation.Point());
+            return new Rect(point, new Size(element.ActualWidth, element.ActualHeight));
         }
 
         public static int Comparison(Product product, Product product1)

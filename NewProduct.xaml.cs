@@ -161,6 +161,7 @@ namespace TheShoppingList
                     new MessageDialog("The quantity must have only digits!").ShowAsync();
                     return;
                 }
+
             Product.QuantityType = type;
             if (txtShopName.Text != string.Empty)
                 Product.ShopName = txtShopName.Text;
