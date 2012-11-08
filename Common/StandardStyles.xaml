@@ -656,11 +656,7 @@
         <Setter Property="AutomationProperties.Name" Value="View All"/>
         <Setter Property="Content" Value="&#xE138;"/>
     </Style>
-    <Style x:Key="MapPinAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
-        <Setter Property="AutomationProperties.AutomationId" Value="MapPinAppBarButton"/>
-        <Setter Property="AutomationProperties.Name" Value="Map Pin"/>
-        <Setter Property="Content" Value="&#xE139;"/>
-    </Style>
+    
     <Style x:Key="PhoneAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="PhoneAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Phone"/>
@@ -691,11 +687,7 @@
         <Setter Property="AutomationProperties.Name" Value="Rename"/>
         <Setter Property="Content" Value="&#xE13E;"/>
     </Style>
-    <Style x:Key="PinAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
-        <Setter Property="AutomationProperties.AutomationId" Value="PinAppBarButton"/>
-        <Setter Property="AutomationProperties.Name" Value="Pin"/>
-        <Setter Property="Content" Value="&#xE141;"/>
-    </Style>
+    
     <Style x:Key="MusicInfoAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="MusicInfoAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Music Info"/>
@@ -1067,11 +1059,7 @@
         <Setter Property="AutomationProperties.Name" Value="Unfavorite"/>
         <Setter Property="Content" Value="&#xE195;"/>
     </Style>
-    <Style x:Key="UnPinAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
-        <Setter Property="AutomationProperties.AutomationId" Value="UnPinAppBarButton"/>
-        <Setter Property="AutomationProperties.Name" Value="Unpin"/>
-        <Setter Property="Content" Value="&#xE196;"/>
-    </Style>
+
     <Style x:Key="OpenLocalAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="OpenLocalAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Open Loal"/>
@@ -1357,6 +1345,22 @@
 
     <!-- Title area styles -->
 
+    <Style x:Key="UnPinAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="UnPinAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Unpin"/>
+        <Setter Property="Content" Value="&#xE196;"/>
+    </Style>
+
+    <Style x:Key="PinAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="PinAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Pin"/>
+        <Setter Property="Content" Value="&#xE141;"/>
+    </Style>
+    <Style x:Key="MapPinAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="MapPinAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Map Pin"/>
+        <Setter Property="Content" Value="&#xE139;"/>
+    </Style>
 
     <Style x:Key="DiscardAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="DiscardAppBarButton"/>

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using TheShoppingList.Classes;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -31,7 +33,7 @@ namespace TheShoppingList
         {
             var size = Application.Current.Resources["newListSize"] as Point;
             var CurrentViewState = ApplicationView.Value;
-            if(CurrentViewState == ApplicationViewState.Snapped)
+            if (CurrentViewState == ApplicationViewState.Snapped)
             {
                 transparentBorder.Width = 300;
                 control.Width = 300;
@@ -39,7 +41,7 @@ namespace TheShoppingList
             }
             else
                 transparentBorder.Width = size.Width;
-            if(Mode == NewProduct.InputMode.Edit)
+            if (Mode == NewProduct.InputMode.Edit)
             {
                 List = MainPage.Page.SelectedList;
                 txtBalance.Text = List.Balance.ToString();
@@ -47,7 +49,7 @@ namespace TheShoppingList
             }
             transparentBorder.Height = size.Height;
             newListBorder.Width = transparentBorder.Width;
-            transparentBorder.Visibility=Visibility.Visible;
+            transparentBorder.Visibility = Visibility.Visible;
             txtListName.Focus(FocusState.Programmatic);
             txtBalanceLabel.Text = "Price(" + Utils.GetCountryInfo().CurrencySymbol + "):";
         }
@@ -65,12 +67,26 @@ namespace TheShoppingList
                 balance = double.Parse(txtBalance.Text);
             if (Mode == NewProduct.InputMode.Edit)
             {
+                //IReadOnlyList<SecondaryTile> tilelist = await Windows.UI.StartScreen.SecondaryTile.FindAllAsync();
+                
+                //if (tilelist.Count > 0)
+                //{
+                //    for (int i = 0; i < tilelist.Count; i++)
+                //    {
+                //        if (System.String.Compare(tilelist[i].Arguments, List.UniqueID, System.StringComparison.Ordinal) == 0)
+                //        {
+                //            tilelist[i].Arguments = txtListName.Text;
+                //            break;
+                //        }
+                //    }
+
+                //}
                 List.Name = txtListName.Text;
                 List.Balance = balance;
             }
             else
-            if (source != null)
-                source.ShoppingLists.Add(new ShoppingList {Name = txtListName.Text, Balance = balance, TotalCost = 0, CreatedTime = DateTime.Now});
+                if (source != null)
+                    source.ShoppingLists.Add(new ShoppingList { Name = txtListName.Text, Balance = balance, TotalCost = 0, CreatedTime = DateTime.Now });
             transparentBorder.Visibility = Visibility.Collapsed;
             txtListName.Text = string.Empty;
             txtBalance.Text = string.Empty;
@@ -79,7 +95,7 @@ namespace TheShoppingList
 
         private void txtListName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(Mode == NewProduct.InputMode.Edit)
+            if (Mode == NewProduct.InputMode.Edit)
                 return;
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source == null) return;

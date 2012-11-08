@@ -13,7 +13,7 @@ namespace TheShoppingList.Classes
         public ShoppingList()
         {
             _products = new ObservableCollection<Product>();
-            
+            _uniqueId = Guid.NewGuid().ToString();
            Image = @"Assets/cart.png";
         }
         private ObservableCollection<Product> _products;
@@ -23,6 +23,8 @@ namespace TheShoppingList.Classes
         private double _balance;
         private double _totalCost;
         private int _count;
+        private string _uniqueId;
+        private bool _isPinned;
         public string Image { get; set; }
 
         public double TotalCost
@@ -39,12 +41,24 @@ namespace TheShoppingList.Classes
             set { _products = value; }
         }
 
+        public bool IsPinned
+        {
+            get { return _isPinned; }
+            set { _isPinned = value; OnPropertyChanged("IsPinned");}
+        }
+
         public int Count
         {
             get
             {
                 _count = Products.Count; return _count; }
             set { _count = value; OnPropertyChanged("Count");}
+        }
+
+        public string UniqueID
+        {
+            get { return _uniqueId; }
+            set { _uniqueId = value; OnPropertyChanged("UniqueID");}
         }
 
         public Double Balance

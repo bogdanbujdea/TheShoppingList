@@ -607,5 +607,11 @@ namespace TheShoppingList
 
         #endregion
 
+        private void GoBack(object sender, RoutedEventArgs e)
+        {
+            if (Frame.CanGoBack == true)
+                Frame.Navigate(typeof (MainPage));
+        }
+
     }
 }

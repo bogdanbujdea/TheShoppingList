@@ -32,6 +32,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource AddAppBarButtonStyle}" Click="OnAddNewList"/>
                     <Button x:Name="button" Style="{StaticResource RemoveAppBarButtonStyle}" AutomationProperties.Name="Remove All" Click="RemoveAllShoppingLists"/>
+                    <Button x:Name="btnPinList" Click="OnPinList" Style="{StaticResource PinAppBarButtonStyle}"></Button>
                 </StackPanel>
             </Grid>
         </AppBar>

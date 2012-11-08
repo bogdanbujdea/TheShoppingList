@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 using TheShoppingList.Classes;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.StartScreen;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation;
@@ -107,7 +109,7 @@ namespace TheShoppingList
 
         
 
-        private void OnSaveProductDetails(object sender, RoutedEventArgs e)
+        private async void OnSaveProductDetails(object sender, RoutedEventArgs e)
         {
            
             Product = new Product();
@@ -140,6 +142,7 @@ namespace TheShoppingList
                     type = QuantityType.lb;
                     break;
             }
+            
             if (txtProductName.Text != string.Empty)
                 Product.Title = txtProductName.Text;
             if (txtPrice.Text != string.Empty)
@@ -170,7 +173,8 @@ namespace TheShoppingList
             btnCancelOrClose.SetValue(AutomationProperties.NameProperty, "Close");
 
             ProductAdded = true;
-
+            
+            
             OnNewProductAdded(new ProductAddedArgs { Product = Product });
             txtProductName.Focus(FocusState.Programmatic);
         }

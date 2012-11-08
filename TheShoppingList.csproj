@@ -149,7 +149,13 @@
     <Content Include="Assets\Logo.png" />
     <Content Include="Assets\removefromcart.png" />
     <Content Include="Assets\SmallLogo.png" />
+    <Content Include="Assets\smallTile-sdk.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\SplashScreen.png" />
+    <Content Include="Assets\squareTile-sdk.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\cart.png" />
     <Content Include="Assets\unchecked.png" />
