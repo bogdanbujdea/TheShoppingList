@@ -44,7 +44,19 @@ namespace TheShoppingList.Classes
             }
             TileNotification tileNotification = new TileNotification(tileXml);
             // Send the notification to the secondary tile by creating a secondary tile updater
-            TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).Update(tileNotification);
+            try
+            {
+                ScheduledTileNotification scheduledTile = new ScheduledTileNotification(tileXml, DateTimeOffset.UtcNow.AddSeconds(5));
+
+                TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).EnableNotificationQueue(true);
+                TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).AddToSchedule(scheduledTile);
+                TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).Update(tileNotification);
+                //TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).Update(tileNotification);
+            }
+            catch (Exception)
+            {
+                
+            }
         }
 
         public static void SortProducts(ShoppingList list)

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -43,7 +44,9 @@ namespace TheShoppingList.Classes
 
         public bool IsPinned
         {
-            get { return _isPinned; }
+            get
+            {
+                _isPinned = SecondaryTile.Exists(_uniqueId); return _isPinned; }
             set { _isPinned = value; OnPropertyChanged("IsPinned");}
         }
 
