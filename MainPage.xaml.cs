@@ -121,8 +121,7 @@ namespace TheShoppingList
             {
                 if (SelectedList != null)
                 {
-                    string htmlFile = SelectedList.ToHtml();
-                    request.Data.SetHtmlFormat(htmlFile);
+                    request.Data.SetHtmlFormat(SelectedList.ToHtml());
                     request.Data.SetText(SelectedList.ToString());
 
                     sender.TargetApplicationChosen += sender_TargetApplicationChosen;
@@ -249,7 +248,6 @@ namespace TheShoppingList
                 }
             }
             var tileNotification = new TileNotification(tileXml);
-            tileNotification.ExpirationTime = DateTimeOffset.UtcNow.AddSeconds(5);
             TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
             
             foreach (ShoppingList shoppingList in source.ShoppingLists)
@@ -308,7 +306,14 @@ namespace TheShoppingList
         {
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source != null)
-                await source.SaveListsAsync();
+                try
+                {
+                    source.SaveListsAsync();
+                }
+                catch (Exception)
+                {
+                    
+                }
         }
 
         private void Current_Resuming(object sender, object e)

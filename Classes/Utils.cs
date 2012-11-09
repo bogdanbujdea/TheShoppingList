@@ -31,10 +31,36 @@ namespace TheShoppingList.Classes
         {
             if(SecondaryTile.Exists(tileID)  == false)
                 return;
+            var textXmlTile = GetXmlTextTile(products);
+            TileNotification tileTextNotification = new TileNotification(textXmlTile) {Tag = "products"};
+            var imageXmlTile = GetXmlImageTile(products);
+            TileNotification tileImageNotification = new TileNotification(imageXmlTile) {Tag = "image"};
+            // Send the notification to the secondary tile by creating a secondary tile updater
+            try
+            {
+                TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).Update(tileTextNotification);
+                TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).Update(tileImageNotification);
+            }
+            catch (Exception)
+            {
+                
+            }
+        }
+
+        private static XmlDocument GetXmlImageTile(ObservableCollection<Product> products)
+        {
+            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareImage);
+            XmlNodeList imageTags = tileXml.GetElementsByTagName("image");
+            imageTags[0].Attributes[1].InnerText = "ms-appx:///Assets/squareTile-sdk.png";
+            return tileXml;
+        }
+
+        private static XmlDocument GetXmlTextTile(ObservableCollection<Product> products)
+        {
             XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText03);
             XmlNodeList textAttributes = tileXml.GetElementsByTagName("text");
             int i = 0;
-            foreach (var product in products)
+            for (int index = 0; index < products.Count; index++)
             {
                 if (products.Count > i)
                     textAttributes[i].InnerText = products[i].Title;
@@ -42,21 +68,7 @@ namespace TheShoppingList.Classes
                 if (i++ == 3)
                     break;
             }
-            TileNotification tileNotification = new TileNotification(tileXml);
-            // Send the notification to the secondary tile by creating a secondary tile updater
-            try
-            {
-                ScheduledTileNotification scheduledTile = new ScheduledTileNotification(tileXml, DateTimeOffset.UtcNow.AddSeconds(5));
-
-                TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).EnableNotificationQueue(true);
-                TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).AddToSchedule(scheduledTile);
-                TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).Update(tileNotification);
-                //TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).Update(tileNotification);
-            }
-            catch (Exception)
-            {
-                
-            }
+            return tileXml;
         }
 
         public static void SortProducts(ShoppingList list)

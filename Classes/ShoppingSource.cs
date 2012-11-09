@@ -21,6 +21,8 @@ namespace TheShoppingList.Classes
             backupFile = "backup.xml";
         }
 
+        public bool IsLocked { get; set; }
+
         private ObservableCollection<ShoppingList> _shoppingLists;
 
         public ObservableCollection<ShoppingList> ShoppingLists
@@ -106,6 +108,7 @@ namespace TheShoppingList.Classes
 
         private async Task<bool> SaveToFileAsync(string fileName)
         {
+            
             StorageFile sessionFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(
             fileName, CreationCollisionOption.ReplaceExisting);
             IRandomAccessStream sessionRandomAccess = await sessionFile.OpenAsync(FileAccessMode.ReadWrite);
@@ -118,6 +121,7 @@ namespace TheShoppingList.Classes
             await sessionOutputStream.FlushAsync();
             sessionOutputStream.Dispose();
             await sessionFile.CopyAsync(ApplicationData.Current.LocalFolder, "backup.xml", NameCollisionOption.ReplaceExisting);
+            
             return true;
 
 
@@ -127,6 +131,8 @@ namespace TheShoppingList.Classes
         {
             try
             {
+                if (IsLocked)
+                    return false;
                 int i = 0;
                 while (await SaveToFileAsync(listsFile) == false)
                 {
@@ -139,11 +145,13 @@ namespace TheShoppingList.Classes
                         return true;
                     }
                 }
+                IsLocked = false;
                 return true;
             }
             catch (Exception exception)
             {
-                new MessageDialog(exception.Message).ShowAsync();
+                if(exception.Message.Contains("denied"))
+                    new MessageDialog("Stop it!").ShowAsync();
                 IAsyncOperation<StorageFile> sessionFile = ApplicationData.Current.LocalFolder.CreateFileAsync(
                         backupFile, CreationCollisionOption.ReplaceExisting);
                 sessionFile.GetResults().CopyAsync(ApplicationData.Current.LocalFolder, listsFile, NameCollisionOption.ReplaceExisting);

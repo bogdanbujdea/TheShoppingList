@@ -188,12 +188,12 @@ namespace TheShoppingList.Classes
                         stringList.Append(" " + product.QuantityType.ToString() + ", ");
                     }
                 }
-                if (string.IsNullOrEmpty(product.ShopName))
+                if (string.IsNullOrEmpty(product.ShopName) == false)
                 {
                     stringList.Append("From: ");
                     stringList.Append(product.ShopName);
                 }
-                stringList.AppendLine();
+                stringList.AppendLine("|");
             }
             
 

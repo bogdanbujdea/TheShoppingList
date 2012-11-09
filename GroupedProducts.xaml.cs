@@ -103,8 +103,6 @@ namespace TheShoppingList
         }
         #endregion
 
-
-
         public int ListIndex { get; set; }
         public ShoppingList ShoppingList { get; set; }
         public NewProduct ProductControl { get; set; }
@@ -126,6 +124,7 @@ namespace TheShoppingList
         /// session.  This will be null the first time a page is visited.</param>
         protected async override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
+            
             gridViewUtils = new GridViewUtils();
             ListIndex = navigationParameter is int ? (int)navigationParameter : -1; //get the List Index
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource; //load the source
@@ -133,6 +132,7 @@ namespace TheShoppingList
             if (source != null) //if we have shopping lists
             {
                 ShoppingList = source.ShoppingLists[ListIndex]; //set the property list
+                pageTitle.Text = ShoppingList.Name; //change the page name
                 SetGridBinding(); //set the binding
                 SetProductsPrice(); //initialize prices
                 itemGridView.SelectedIndex = -1; //deselect the first item

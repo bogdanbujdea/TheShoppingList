@@ -181,14 +181,14 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button IsEnabled="True" Width="100" Height="70" Click="OnClickDiscard" Style="{StaticResource DiscardAppBarButtonStyle}" AllowDrop="True" Drop="ItemDropDelete" VerticalAlignment="Center"></Button>
-                <TextBlock x:Name="txblockBalance" Grid.Column="1" Width="Auto" Height="70" Text="Your balance: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
+                <TextBlock x:Name="txblockBalance" Width="Auto" Height="70" Text="Your budget: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="164,0,24,0"/>
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
-                    <TextBox Name="txtBalance" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True" TextChanged="OnTextBalanceTextChanged" IsReadOnly="True" DoubleTapped="OnBalanceTextDoubleTapped" Height="60" LostFocus="OnTxtBalanceLostFocus" ></TextBox>
-                    <TextBlock Name="balanceCurrency" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Height="60"></TextBlock>
+                    <TextBox Name="txtBalance" Margin="0, -4, 0, 0" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True" TextChanged="OnTextBalanceTextChanged" IsReadOnly="True" DoubleTapped="OnBalanceTextDoubleTapped" Height="60" LostFocus="OnTxtBalanceLostFocus" ></TextBox>
+                    <TextBlock Name="balanceCurrency" Margin="-20,0,0,0" HorizontalAlignment="Left" TextAlignment="Left" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Height="Auto"></TextBlock>
                 </StackPanel>
 
                 <TextBlock x:Name="textBlock1" Grid.Column="3" Text="Total:" Height="70"  VerticalAlignment="Center"  FontSize="26" HorizontalAlignment="Center"></TextBlock>
-                <StackPanel Grid.Column="4" Orientation="Horizontal">
+                <StackPanel Grid.Column="3" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="131,0,39,0">
                     <TextBlock Name="txtTotal"   Margin="5" Foreground="White" VerticalAlignment="Center"  FontWeight="Bold" FontSize="26"  Height="70" ></TextBlock>
                     <TextBlock Name="totalCurrency" Height="70"  VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
                 </StackPanel>

@@ -194,6 +194,10 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 xamlType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlSystemBaseType(typeName, typeof(global::System.Object));
                 break;
 
+            case "Boolean":
+                xamlType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlSystemBaseType(typeName, typeof(global::System.Boolean));
+                break;
+
             case "String":
                 xamlType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlSystemBaseType(typeName, typeof(global::System.String));
                 break;
@@ -204,10 +208,6 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
 
             case "Int32":
                 xamlType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlSystemBaseType(typeName, typeof(global::System.Int32));
-                break;
-
-            case "Boolean":
-                xamlType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlSystemBaseType(typeName, typeof(global::System.Boolean));
                 break;
 
             case "Windows.UI.Xaml.Controls.Page":
@@ -225,6 +225,9 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
             case "TheShoppingList.Classes.ShoppingSource":
                 userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.Classes.ShoppingSource), GetXamlTypeByName("Object"));
                 userType.Activator = Activate_0_ShoppingSource;
+                userType.AddMemberName("IsLocked");
+                AddToMapOfTypeToStandardName(typeof(global::System.Boolean),
+                                                   "Boolean");
                 userType.AddMemberName("ShoppingLists");
                 AddToMapOfTypeToStandardName(typeof(global::System.Collections.ObjectModel.ObservableCollection<global::TheShoppingList.Classes.ShoppingList>),
                                                    "System.Collections.ObjectModel.ObservableCollection<TheShoppingList.Classes.ShoppingList>");
@@ -537,442 +540,452 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
             return null;
         }
 
-        private object get_0_ShoppingSource_ShoppingLists(object instance)
+        private object get_0_ShoppingSource_IsLocked(object instance)
+        {
+            var that = (global::TheShoppingList.Classes.ShoppingSource)instance;
+            return that.IsLocked;
+        }
+        private void set_0_ShoppingSource_IsLocked(object instance, object Value)
+        {
+            var that = (global::TheShoppingList.Classes.ShoppingSource)instance;
+            that.IsLocked = (global::System.Boolean)Value;
+        }
+        private object get_1_ShoppingSource_ShoppingLists(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingSource)instance;
             return that.ShoppingLists;
         }
-        private void set_0_ShoppingSource_ShoppingLists(object instance, object Value)
+        private void set_1_ShoppingSource_ShoppingLists(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingSource)instance;
             that.ShoppingLists = (global::System.Collections.ObjectModel.ObservableCollection<global::TheShoppingList.Classes.ShoppingList>)Value;
         }
-        private object get_1_ShoppingList_Image(object instance)
+        private object get_2_ShoppingList_Image(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.Image;
         }
-        private void set_1_ShoppingList_Image(object instance, object Value)
+        private void set_2_ShoppingList_Image(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.Image = (global::System.String)Value;
         }
-        private object get_2_ShoppingList_TotalCost(object instance)
+        private object get_3_ShoppingList_TotalCost(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.TotalCost;
         }
-        private void set_2_ShoppingList_TotalCost(object instance, object Value)
+        private void set_3_ShoppingList_TotalCost(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.TotalCost = (global::System.Double)Value;
         }
-        private object get_3_ShoppingList_Products(object instance)
+        private object get_4_ShoppingList_Products(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.Products;
         }
-        private void set_3_ShoppingList_Products(object instance, object Value)
+        private void set_4_ShoppingList_Products(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.Products = (global::System.Collections.ObjectModel.ObservableCollection<global::TheShoppingList.Classes.Product>)Value;
         }
-        private object get_4_Product_Index(object instance)
+        private object get_5_Product_Index(object instance)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             return that.Index;
         }
-        private void set_4_Product_Index(object instance, object Value)
+        private void set_5_Product_Index(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             that.Index = (global::System.Int32)Value;
         }
-        private object get_5_Product_Image(object instance)
+        private object get_6_Product_Image(object instance)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             return that.Image;
         }
-        private void set_5_Product_Image(object instance, object Value)
+        private void set_6_Product_Image(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             that.Image = (global::System.String)Value;
         }
-        private object get_6_Product_Title(object instance)
+        private object get_7_Product_Title(object instance)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             return that.Title;
         }
-        private void set_6_Product_Title(object instance, object Value)
+        private void set_7_Product_Title(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             that.Title = (global::System.String)Value;
         }
-        private object get_7_Product_ListPrice(object instance)
+        private object get_8_Product_ListPrice(object instance)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             return that.ListPrice;
         }
-        private void set_7_Product_ListPrice(object instance, object Value)
+        private void set_8_Product_ListPrice(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             that.ListPrice = (global::System.String)Value;
         }
-        private object get_8_Product_Currency(object instance)
+        private object get_9_Product_Currency(object instance)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             return that.Currency;
         }
-        private object get_9_Product_ShopName(object instance)
+        private object get_10_Product_ShopName(object instance)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             return that.ShopName;
         }
-        private void set_9_Product_ShopName(object instance, object Value)
+        private void set_10_Product_ShopName(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             that.ShopName = (global::System.String)Value;
         }
-        private object get_10_Product_Price(object instance)
+        private object get_11_Product_Price(object instance)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             return that.Price;
         }
-        private void set_10_Product_Price(object instance, object Value)
+        private void set_11_Product_Price(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             that.Price = (global::System.Double)Value;
         }
-        private object get_11_Product_IsBought(object instance)
+        private object get_12_Product_IsBought(object instance)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             return that.IsBought;
         }
-        private void set_11_Product_IsBought(object instance, object Value)
+        private void set_12_Product_IsBought(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             that.IsBought = (global::System.Boolean)Value;
         }
-        private object get_12_Product_Quantity(object instance)
+        private object get_13_Product_Quantity(object instance)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             return that.Quantity;
         }
-        private void set_12_Product_Quantity(object instance, object Value)
+        private void set_13_Product_Quantity(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             that.Quantity = (global::System.Double)Value;
         }
-        private object get_13_Product_QuantityType(object instance)
+        private object get_14_Product_QuantityType(object instance)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             return that.QuantityType;
         }
-        private void set_13_Product_QuantityType(object instance, object Value)
+        private void set_14_Product_QuantityType(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             that.QuantityType = (global::TheShoppingList.Classes.QuantityType)Value;
         }
-        private object get_14_Product_Category(object instance)
+        private object get_15_Product_Category(object instance)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             return that.Category;
         }
-        private void set_14_Product_Category(object instance, object Value)
+        private void set_15_Product_Category(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Product)instance;
             that.Category = (global::System.String)Value;
         }
-        private object get_15_ShoppingList_IsPinned(object instance)
+        private object get_16_ShoppingList_IsPinned(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.IsPinned;
         }
-        private void set_15_ShoppingList_IsPinned(object instance, object Value)
+        private void set_16_ShoppingList_IsPinned(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.IsPinned = (global::System.Boolean)Value;
         }
-        private object get_16_ShoppingList_Count(object instance)
+        private object get_17_ShoppingList_Count(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.Count;
         }
-        private void set_16_ShoppingList_Count(object instance, object Value)
+        private void set_17_ShoppingList_Count(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.Count = (global::System.Int32)Value;
         }
-        private object get_17_ShoppingList_UniqueID(object instance)
+        private object get_18_ShoppingList_UniqueID(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.UniqueID;
         }
-        private void set_17_ShoppingList_UniqueID(object instance, object Value)
+        private void set_18_ShoppingList_UniqueID(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.UniqueID = (global::System.String)Value;
         }
-        private object get_18_ShoppingList_Budget(object instance)
+        private object get_19_ShoppingList_Budget(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.Budget;
         }
-        private void set_18_ShoppingList_Budget(object instance, object Value)
+        private void set_19_ShoppingList_Budget(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.Budget = (global::System.Double)Value;
         }
-        private object get_19_ShoppingList_UIBudget(object instance)
+        private object get_20_ShoppingList_UIBudget(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.UIBudget;
         }
-        private void set_19_ShoppingList_UIBudget(object instance, object Value)
+        private void set_20_ShoppingList_UIBudget(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.UIBudget = (global::System.String)Value;
         }
-        private object get_20_ShoppingList_InlistCount(object instance)
+        private object get_21_ShoppingList_InlistCount(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.InlistCount;
         }
-        private object get_21_ShoppingList_Name(object instance)
+        private object get_22_ShoppingList_Name(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.Name;
         }
-        private void set_21_ShoppingList_Name(object instance, object Value)
+        private void set_22_ShoppingList_Name(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.Name = (global::System.String)Value;
         }
-        private object get_22_ShoppingList_CreatedTime(object instance)
+        private object get_23_ShoppingList_CreatedTime(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.CreatedTime;
         }
-        private void set_22_ShoppingList_CreatedTime(object instance, object Value)
+        private void set_23_ShoppingList_CreatedTime(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.CreatedTime = (global::System.DateTime)Value;
         }
-        private object get_23_ShoppingList_ReminderTime(object instance)
+        private object get_24_ShoppingList_ReminderTime(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             return that.ReminderTime;
         }
-        private void set_23_ShoppingList_ReminderTime(object instance, object Value)
+        private void set_24_ShoppingList_ReminderTime(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.ReminderTime = (global::System.DateTime)Value;
         }
-        private object get_24_Point_Width(object instance)
+        private object get_25_Point_Width(object instance)
         {
             var that = (global::TheShoppingList.Classes.Point)instance;
             return that.Width;
         }
-        private void set_24_Point_Width(object instance, object Value)
+        private void set_25_Point_Width(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Point)instance;
             that.Width = (global::System.Double)Value;
         }
-        private object get_25_Point_Height(object instance)
+        private object get_26_Point_Height(object instance)
         {
             var that = (global::TheShoppingList.Classes.Point)instance;
             return that.Height;
         }
-        private void set_25_Point_Height(object instance, object Value)
+        private void set_26_Point_Height(object instance, object Value)
         {
             var that = (global::TheShoppingList.Classes.Point)instance;
             that.Height = (global::System.Double)Value;
         }
-        private object get_26_AdControl_AppId(object instance)
+        private object get_27_AdControl_AppId(object instance)
         {
             var that = (global::AdDuplex.Controls.AdControl)instance;
             return that.AppId;
         }
-        private void set_26_AdControl_AppId(object instance, object Value)
+        private void set_27_AdControl_AppId(object instance, object Value)
         {
             var that = (global::AdDuplex.Controls.AdControl)instance;
             that.AppId = (global::System.String)Value;
         }
-        private object get_27_AdControl_Size(object instance)
+        private object get_28_AdControl_Size(object instance)
         {
             var that = (global::AdDuplex.Controls.AdControl)instance;
             return that.Size;
         }
-        private void set_27_AdControl_Size(object instance, object Value)
+        private void set_28_AdControl_Size(object instance, object Value)
         {
             var that = (global::AdDuplex.Controls.AdControl)instance;
             that.Size = (global::System.String)Value;
         }
-        private object get_28_AdControl_IsTest(object instance)
+        private object get_29_AdControl_IsTest(object instance)
         {
             var that = (global::AdDuplex.Controls.AdControl)instance;
             return that.IsTest;
         }
-        private void set_28_AdControl_IsTest(object instance, object Value)
+        private void set_29_AdControl_IsTest(object instance, object Value)
         {
             var that = (global::AdDuplex.Controls.AdControl)instance;
             that.IsTest = (global::System.Boolean)Value;
         }
-        private object get_29_AdControl_RefreshInterval(object instance)
+        private object get_30_AdControl_RefreshInterval(object instance)
         {
             var that = (global::AdDuplex.Controls.AdControl)instance;
             return that.RefreshInterval;
         }
-        private void set_29_AdControl_RefreshInterval(object instance, object Value)
+        private void set_30_AdControl_RefreshInterval(object instance, object Value)
         {
             var that = (global::AdDuplex.Controls.AdControl)instance;
             that.RefreshInterval = (global::System.Int32)Value;
         }
-        private object get_30_NewProduct_ProductAdded(object instance)
+        private object get_31_NewProduct_ProductAdded(object instance)
         {
             var that = (global::TheShoppingList.NewProduct)instance;
             return that.ProductAdded;
         }
-        private void set_30_NewProduct_ProductAdded(object instance, object Value)
+        private void set_31_NewProduct_ProductAdded(object instance, object Value)
         {
             var that = (global::TheShoppingList.NewProduct)instance;
             that.ProductAdded = (global::System.Boolean)Value;
         }
-        private object get_31_NewProduct_Mode(object instance)
+        private object get_32_NewProduct_Mode(object instance)
         {
             var that = (global::TheShoppingList.NewProduct)instance;
             return that.Mode;
         }
-        private void set_31_NewProduct_Mode(object instance, object Value)
+        private void set_32_NewProduct_Mode(object instance, object Value)
         {
             var that = (global::TheShoppingList.NewProduct)instance;
             that.Mode = (global::TheShoppingList.NewProduct.InputMode)Value;
         }
-        private object get_32_NewProduct_Product(object instance)
+        private object get_33_NewProduct_Product(object instance)
         {
             var that = (global::TheShoppingList.NewProduct)instance;
             return that.Product;
         }
-        private void set_32_NewProduct_Product(object instance, object Value)
+        private void set_33_NewProduct_Product(object instance, object Value)
         {
             var that = (global::TheShoppingList.NewProduct)instance;
             that.Product = (global::TheShoppingList.Classes.Product)Value;
         }
-        private object get_33_GroupedProducts_ListIndex(object instance)
+        private object get_34_GroupedProducts_ListIndex(object instance)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             return that.ListIndex;
         }
-        private void set_33_GroupedProducts_ListIndex(object instance, object Value)
+        private void set_34_GroupedProducts_ListIndex(object instance, object Value)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             that.ListIndex = (global::System.Int32)Value;
         }
-        private object get_34_GroupedProducts_ShoppingList(object instance)
+        private object get_35_GroupedProducts_ShoppingList(object instance)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             return that.ShoppingList;
         }
-        private void set_34_GroupedProducts_ShoppingList(object instance, object Value)
+        private void set_35_GroupedProducts_ShoppingList(object instance, object Value)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             that.ShoppingList = (global::TheShoppingList.Classes.ShoppingList)Value;
         }
-        private object get_35_GroupedProducts_ProductControl(object instance)
+        private object get_36_GroupedProducts_ProductControl(object instance)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             return that.ProductControl;
         }
-        private void set_35_GroupedProducts_ProductControl(object instance, object Value)
+        private void set_36_GroupedProducts_ProductControl(object instance, object Value)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             that.ProductControl = (global::TheShoppingList.NewProduct)Value;
         }
-        private object get_36_GroupedProducts_SelectedProduct(object instance)
+        private object get_37_GroupedProducts_SelectedProduct(object instance)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             return that.SelectedProduct;
         }
-        private void set_36_GroupedProducts_SelectedProduct(object instance, object Value)
+        private void set_37_GroupedProducts_SelectedProduct(object instance, object Value)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             that.SelectedProduct = (global::TheShoppingList.Classes.Product)Value;
         }
-        private object get_37_GroupedProducts_SelectedIndex(object instance)
+        private object get_38_GroupedProducts_SelectedIndex(object instance)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             return that.SelectedIndex;
         }
-        private void set_37_GroupedProducts_SelectedIndex(object instance, object Value)
+        private void set_38_GroupedProducts_SelectedIndex(object instance, object Value)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             that.SelectedIndex = (global::System.Int32)Value;
         }
-        private object get_38_GroupedProducts_DraggedProduct(object instance)
+        private object get_39_GroupedProducts_DraggedProduct(object instance)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             return that.DraggedProduct;
         }
-        private void set_38_GroupedProducts_DraggedProduct(object instance, object Value)
+        private void set_39_GroupedProducts_DraggedProduct(object instance, object Value)
         {
             var that = (global::TheShoppingList.GroupedProducts)instance;
             that.DraggedProduct = (global::TheShoppingList.Classes.Product)Value;
         }
-        private object get_39_NewShoppingList_NewListSaved(object instance)
+        private object get_40_NewShoppingList_NewListSaved(object instance)
         {
             var that = (global::TheShoppingList.NewShoppingList)instance;
             return that.NewListSaved;
         }
-        private void set_39_NewShoppingList_NewListSaved(object instance, object Value)
+        private void set_40_NewShoppingList_NewListSaved(object instance, object Value)
         {
             var that = (global::TheShoppingList.NewShoppingList)instance;
             that.NewListSaved = (global::System.Boolean)Value;
         }
-        private object get_40_NewShoppingList_List(object instance)
+        private object get_41_NewShoppingList_List(object instance)
         {
             var that = (global::TheShoppingList.NewShoppingList)instance;
             return that.List;
         }
-        private void set_40_NewShoppingList_List(object instance, object Value)
+        private void set_41_NewShoppingList_List(object instance, object Value)
         {
             var that = (global::TheShoppingList.NewShoppingList)instance;
             that.List = (global::TheShoppingList.Classes.ShoppingList)Value;
         }
-        private object get_41_NewShoppingList_Mode(object instance)
+        private object get_42_NewShoppingList_Mode(object instance)
         {
             var that = (global::TheShoppingList.NewShoppingList)instance;
             return that.Mode;
         }
-        private void set_41_NewShoppingList_Mode(object instance, object Value)
+        private void set_42_NewShoppingList_Mode(object instance, object Value)
         {
             var that = (global::TheShoppingList.NewShoppingList)instance;
             that.Mode = (global::TheShoppingList.NewProduct.InputMode)Value;
         }
-        private object get_42_MainPage_SecondaryTileID(object instance)
+        private object get_43_MainPage_SecondaryTileID(object instance)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             return that.SecondaryTileID;
         }
-        private void set_42_MainPage_SecondaryTileID(object instance, object Value)
+        private void set_43_MainPage_SecondaryTileID(object instance, object Value)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             that.SecondaryTileID = (global::System.String)Value;
         }
-        private object get_43_MainPage_RegisteredForShare(object instance)
+        private object get_44_MainPage_RegisteredForShare(object instance)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             return that.RegisteredForShare;
         }
-        private void set_43_MainPage_RegisteredForShare(object instance, object Value)
+        private void set_44_MainPage_RegisteredForShare(object instance, object Value)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             that.RegisteredForShare = (global::System.Boolean)Value;
         }
-        private object get_44_MainPage_SelectedList(object instance)
+        private object get_45_MainPage_SelectedList(object instance)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             return that.SelectedList;
         }
-        private void set_44_MainPage_SelectedList(object instance, object Value)
+        private void set_45_MainPage_SelectedList(object instance, object Value)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             that.SelectedList = (global::TheShoppingList.Classes.ShoppingList)Value;
@@ -985,279 +998,285 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
 
             switch (longMemberName)
             {
+            case "TheShoppingList.Classes.ShoppingSource.IsLocked":
+                userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingSource");
+                xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "IsLocked", "Boolean");
+                xamlMember.Getter = get_0_ShoppingSource_IsLocked;
+                xamlMember.Setter = set_0_ShoppingSource_IsLocked;
+                break;
             case "TheShoppingList.Classes.ShoppingSource.ShoppingLists":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingSource");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "ShoppingLists", "System.Collections.ObjectModel.ObservableCollection<TheShoppingList.Classes.ShoppingList>");
-                xamlMember.Getter = get_0_ShoppingSource_ShoppingLists;
-                xamlMember.Setter = set_0_ShoppingSource_ShoppingLists;
+                xamlMember.Getter = get_1_ShoppingSource_ShoppingLists;
+                xamlMember.Setter = set_1_ShoppingSource_ShoppingLists;
                 break;
             case "TheShoppingList.Classes.ShoppingList.Image":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Image", "String");
-                xamlMember.Getter = get_1_ShoppingList_Image;
-                xamlMember.Setter = set_1_ShoppingList_Image;
+                xamlMember.Getter = get_2_ShoppingList_Image;
+                xamlMember.Setter = set_2_ShoppingList_Image;
                 break;
             case "TheShoppingList.Classes.ShoppingList.TotalCost":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "TotalCost", "Double");
-                xamlMember.Getter = get_2_ShoppingList_TotalCost;
-                xamlMember.Setter = set_2_ShoppingList_TotalCost;
+                xamlMember.Getter = get_3_ShoppingList_TotalCost;
+                xamlMember.Setter = set_3_ShoppingList_TotalCost;
                 break;
             case "TheShoppingList.Classes.ShoppingList.Products":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Products", "System.Collections.ObjectModel.ObservableCollection<TheShoppingList.Classes.Product>");
-                xamlMember.Getter = get_3_ShoppingList_Products;
-                xamlMember.Setter = set_3_ShoppingList_Products;
+                xamlMember.Getter = get_4_ShoppingList_Products;
+                xamlMember.Setter = set_4_ShoppingList_Products;
                 break;
             case "TheShoppingList.Classes.Product.Index":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Product");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Index", "Int32");
-                xamlMember.Getter = get_4_Product_Index;
-                xamlMember.Setter = set_4_Product_Index;
+                xamlMember.Getter = get_5_Product_Index;
+                xamlMember.Setter = set_5_Product_Index;
                 break;
             case "TheShoppingList.Classes.Product.Image":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Product");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Image", "String");
-                xamlMember.Getter = get_5_Product_Image;
-                xamlMember.Setter = set_5_Product_Image;
+                xamlMember.Getter = get_6_Product_Image;
+                xamlMember.Setter = set_6_Product_Image;
                 break;
             case "TheShoppingList.Classes.Product.Title":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Product");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Title", "String");
-                xamlMember.Getter = get_6_Product_Title;
-                xamlMember.Setter = set_6_Product_Title;
+                xamlMember.Getter = get_7_Product_Title;
+                xamlMember.Setter = set_7_Product_Title;
                 break;
             case "TheShoppingList.Classes.Product.ListPrice":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Product");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "ListPrice", "String");
-                xamlMember.Getter = get_7_Product_ListPrice;
-                xamlMember.Setter = set_7_Product_ListPrice;
+                xamlMember.Getter = get_8_Product_ListPrice;
+                xamlMember.Setter = set_8_Product_ListPrice;
                 break;
             case "TheShoppingList.Classes.Product.Currency":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Product");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Currency", "String");
-                xamlMember.Getter = get_8_Product_Currency;
+                xamlMember.Getter = get_9_Product_Currency;
                 xamlMember.SetIsReadOnly();
                 break;
             case "TheShoppingList.Classes.Product.ShopName":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Product");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "ShopName", "String");
-                xamlMember.Getter = get_9_Product_ShopName;
-                xamlMember.Setter = set_9_Product_ShopName;
+                xamlMember.Getter = get_10_Product_ShopName;
+                xamlMember.Setter = set_10_Product_ShopName;
                 break;
             case "TheShoppingList.Classes.Product.Price":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Product");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Price", "Double");
-                xamlMember.Getter = get_10_Product_Price;
-                xamlMember.Setter = set_10_Product_Price;
+                xamlMember.Getter = get_11_Product_Price;
+                xamlMember.Setter = set_11_Product_Price;
                 break;
             case "TheShoppingList.Classes.Product.IsBought":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Product");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "IsBought", "Boolean");
-                xamlMember.Getter = get_11_Product_IsBought;
-                xamlMember.Setter = set_11_Product_IsBought;
+                xamlMember.Getter = get_12_Product_IsBought;
+                xamlMember.Setter = set_12_Product_IsBought;
                 break;
             case "TheShoppingList.Classes.Product.Quantity":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Product");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Quantity", "Double");
-                xamlMember.Getter = get_12_Product_Quantity;
-                xamlMember.Setter = set_12_Product_Quantity;
+                xamlMember.Getter = get_13_Product_Quantity;
+                xamlMember.Setter = set_13_Product_Quantity;
                 break;
             case "TheShoppingList.Classes.Product.QuantityType":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Product");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "QuantityType", "TheShoppingList.Classes.QuantityType");
-                xamlMember.Getter = get_13_Product_QuantityType;
-                xamlMember.Setter = set_13_Product_QuantityType;
+                xamlMember.Getter = get_14_Product_QuantityType;
+                xamlMember.Setter = set_14_Product_QuantityType;
                 break;
             case "TheShoppingList.Classes.Product.Category":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Product");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Category", "String");
-                xamlMember.Getter = get_14_Product_Category;
-                xamlMember.Setter = set_14_Product_Category;
+                xamlMember.Getter = get_15_Product_Category;
+                xamlMember.Setter = set_15_Product_Category;
                 break;
             case "TheShoppingList.Classes.ShoppingList.IsPinned":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "IsPinned", "Boolean");
-                xamlMember.Getter = get_15_ShoppingList_IsPinned;
-                xamlMember.Setter = set_15_ShoppingList_IsPinned;
+                xamlMember.Getter = get_16_ShoppingList_IsPinned;
+                xamlMember.Setter = set_16_ShoppingList_IsPinned;
                 break;
             case "TheShoppingList.Classes.ShoppingList.Count":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Count", "Int32");
-                xamlMember.Getter = get_16_ShoppingList_Count;
-                xamlMember.Setter = set_16_ShoppingList_Count;
+                xamlMember.Getter = get_17_ShoppingList_Count;
+                xamlMember.Setter = set_17_ShoppingList_Count;
                 break;
             case "TheShoppingList.Classes.ShoppingList.UniqueID":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "UniqueID", "String");
-                xamlMember.Getter = get_17_ShoppingList_UniqueID;
-                xamlMember.Setter = set_17_ShoppingList_UniqueID;
+                xamlMember.Getter = get_18_ShoppingList_UniqueID;
+                xamlMember.Setter = set_18_ShoppingList_UniqueID;
                 break;
             case "TheShoppingList.Classes.ShoppingList.Budget":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Budget", "Double");
-                xamlMember.Getter = get_18_ShoppingList_Budget;
-                xamlMember.Setter = set_18_ShoppingList_Budget;
+                xamlMember.Getter = get_19_ShoppingList_Budget;
+                xamlMember.Setter = set_19_ShoppingList_Budget;
                 break;
             case "TheShoppingList.Classes.ShoppingList.UIBudget":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "UIBudget", "String");
-                xamlMember.Getter = get_19_ShoppingList_UIBudget;
-                xamlMember.Setter = set_19_ShoppingList_UIBudget;
+                xamlMember.Getter = get_20_ShoppingList_UIBudget;
+                xamlMember.Setter = set_20_ShoppingList_UIBudget;
                 break;
             case "TheShoppingList.Classes.ShoppingList.InlistCount":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "InlistCount", "Int32");
-                xamlMember.Getter = get_20_ShoppingList_InlistCount;
+                xamlMember.Getter = get_21_ShoppingList_InlistCount;
                 xamlMember.SetIsReadOnly();
                 break;
             case "TheShoppingList.Classes.ShoppingList.Name":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Name", "String");
-                xamlMember.Getter = get_21_ShoppingList_Name;
-                xamlMember.Setter = set_21_ShoppingList_Name;
+                xamlMember.Getter = get_22_ShoppingList_Name;
+                xamlMember.Setter = set_22_ShoppingList_Name;
                 break;
             case "TheShoppingList.Classes.ShoppingList.CreatedTime":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "CreatedTime", "System.DateTime");
-                xamlMember.Getter = get_22_ShoppingList_CreatedTime;
-                xamlMember.Setter = set_22_ShoppingList_CreatedTime;
+                xamlMember.Getter = get_23_ShoppingList_CreatedTime;
+                xamlMember.Setter = set_23_ShoppingList_CreatedTime;
                 break;
             case "TheShoppingList.Classes.ShoppingList.ReminderTime":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "ReminderTime", "System.DateTime");
-                xamlMember.Getter = get_23_ShoppingList_ReminderTime;
-                xamlMember.Setter = set_23_ShoppingList_ReminderTime;
+                xamlMember.Getter = get_24_ShoppingList_ReminderTime;
+                xamlMember.Setter = set_24_ShoppingList_ReminderTime;
                 break;
             case "TheShoppingList.Classes.Point.Width":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Point");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Width", "Double");
-                xamlMember.Getter = get_24_Point_Width;
-                xamlMember.Setter = set_24_Point_Width;
+                xamlMember.Getter = get_25_Point_Width;
+                xamlMember.Setter = set_25_Point_Width;
                 break;
             case "TheShoppingList.Classes.Point.Height":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.Point");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Height", "Double");
-                xamlMember.Getter = get_25_Point_Height;
-                xamlMember.Setter = set_25_Point_Height;
+                xamlMember.Getter = get_26_Point_Height;
+                xamlMember.Setter = set_26_Point_Height;
                 break;
             case "AdDuplex.Controls.AdControl.AppId":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("AdDuplex.Controls.AdControl");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "AppId", "String");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_26_AdControl_AppId;
-                xamlMember.Setter = set_26_AdControl_AppId;
+                xamlMember.Getter = get_27_AdControl_AppId;
+                xamlMember.Setter = set_27_AdControl_AppId;
                 break;
             case "AdDuplex.Controls.AdControl.Size":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("AdDuplex.Controls.AdControl");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Size", "String");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_27_AdControl_Size;
-                xamlMember.Setter = set_27_AdControl_Size;
+                xamlMember.Getter = get_28_AdControl_Size;
+                xamlMember.Setter = set_28_AdControl_Size;
                 break;
             case "AdDuplex.Controls.AdControl.IsTest":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("AdDuplex.Controls.AdControl");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "IsTest", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_28_AdControl_IsTest;
-                xamlMember.Setter = set_28_AdControl_IsTest;
+                xamlMember.Getter = get_29_AdControl_IsTest;
+                xamlMember.Setter = set_29_AdControl_IsTest;
                 break;
             case "AdDuplex.Controls.AdControl.RefreshInterval":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("AdDuplex.Controls.AdControl");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "RefreshInterval", "Int32");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_29_AdControl_RefreshInterval;
-                xamlMember.Setter = set_29_AdControl_RefreshInterval;
+                xamlMember.Getter = get_30_AdControl_RefreshInterval;
+                xamlMember.Setter = set_30_AdControl_RefreshInterval;
                 break;
             case "TheShoppingList.NewProduct.ProductAdded":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.NewProduct");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "ProductAdded", "Boolean");
-                xamlMember.Getter = get_30_NewProduct_ProductAdded;
-                xamlMember.Setter = set_30_NewProduct_ProductAdded;
+                xamlMember.Getter = get_31_NewProduct_ProductAdded;
+                xamlMember.Setter = set_31_NewProduct_ProductAdded;
                 break;
             case "TheShoppingList.NewProduct.Mode":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.NewProduct");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Mode", "TheShoppingList.NewProduct.InputMode");
-                xamlMember.Getter = get_31_NewProduct_Mode;
-                xamlMember.Setter = set_31_NewProduct_Mode;
+                xamlMember.Getter = get_32_NewProduct_Mode;
+                xamlMember.Setter = set_32_NewProduct_Mode;
                 break;
             case "TheShoppingList.NewProduct.Product":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.NewProduct");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Product", "TheShoppingList.Classes.Product");
-                xamlMember.Getter = get_32_NewProduct_Product;
-                xamlMember.Setter = set_32_NewProduct_Product;
+                xamlMember.Getter = get_33_NewProduct_Product;
+                xamlMember.Setter = set_33_NewProduct_Product;
                 break;
             case "TheShoppingList.GroupedProducts.ListIndex":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.GroupedProducts");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "ListIndex", "Int32");
-                xamlMember.Getter = get_33_GroupedProducts_ListIndex;
-                xamlMember.Setter = set_33_GroupedProducts_ListIndex;
+                xamlMember.Getter = get_34_GroupedProducts_ListIndex;
+                xamlMember.Setter = set_34_GroupedProducts_ListIndex;
                 break;
             case "TheShoppingList.GroupedProducts.ShoppingList":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.GroupedProducts");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "ShoppingList", "TheShoppingList.Classes.ShoppingList");
-                xamlMember.Getter = get_34_GroupedProducts_ShoppingList;
-                xamlMember.Setter = set_34_GroupedProducts_ShoppingList;
+                xamlMember.Getter = get_35_GroupedProducts_ShoppingList;
+                xamlMember.Setter = set_35_GroupedProducts_ShoppingList;
                 break;
             case "TheShoppingList.GroupedProducts.ProductControl":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.GroupedProducts");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "ProductControl", "TheShoppingList.NewProduct");
-                xamlMember.Getter = get_35_GroupedProducts_ProductControl;
-                xamlMember.Setter = set_35_GroupedProducts_ProductControl;
+                xamlMember.Getter = get_36_GroupedProducts_ProductControl;
+                xamlMember.Setter = set_36_GroupedProducts_ProductControl;
                 break;
             case "TheShoppingList.GroupedProducts.SelectedProduct":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.GroupedProducts");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "SelectedProduct", "TheShoppingList.Classes.Product");
-                xamlMember.Getter = get_36_GroupedProducts_SelectedProduct;
-                xamlMember.Setter = set_36_GroupedProducts_SelectedProduct;
+                xamlMember.Getter = get_37_GroupedProducts_SelectedProduct;
+                xamlMember.Setter = set_37_GroupedProducts_SelectedProduct;
                 break;
             case "TheShoppingList.GroupedProducts.SelectedIndex":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.GroupedProducts");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "SelectedIndex", "Int32");
-                xamlMember.Getter = get_37_GroupedProducts_SelectedIndex;
-                xamlMember.Setter = set_37_GroupedProducts_SelectedIndex;
+                xamlMember.Getter = get_38_GroupedProducts_SelectedIndex;
+                xamlMember.Setter = set_38_GroupedProducts_SelectedIndex;
                 break;
             case "TheShoppingList.GroupedProducts.DraggedProduct":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.GroupedProducts");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "DraggedProduct", "TheShoppingList.Classes.Product");
-                xamlMember.Getter = get_38_GroupedProducts_DraggedProduct;
-                xamlMember.Setter = set_38_GroupedProducts_DraggedProduct;
+                xamlMember.Getter = get_39_GroupedProducts_DraggedProduct;
+                xamlMember.Setter = set_39_GroupedProducts_DraggedProduct;
                 break;
             case "TheShoppingList.NewShoppingList.NewListSaved":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.NewShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "NewListSaved", "Boolean");
-                xamlMember.Getter = get_39_NewShoppingList_NewListSaved;
-                xamlMember.Setter = set_39_NewShoppingList_NewListSaved;
+                xamlMember.Getter = get_40_NewShoppingList_NewListSaved;
+                xamlMember.Setter = set_40_NewShoppingList_NewListSaved;
                 break;
             case "TheShoppingList.NewShoppingList.List":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.NewShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "List", "TheShoppingList.Classes.ShoppingList");
-                xamlMember.Getter = get_40_NewShoppingList_List;
-                xamlMember.Setter = set_40_NewShoppingList_List;
+                xamlMember.Getter = get_41_NewShoppingList_List;
+                xamlMember.Setter = set_41_NewShoppingList_List;
                 break;
             case "TheShoppingList.NewShoppingList.Mode":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.NewShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Mode", "TheShoppingList.NewProduct.InputMode");
-                xamlMember.Getter = get_41_NewShoppingList_Mode;
-                xamlMember.Setter = set_41_NewShoppingList_Mode;
+                xamlMember.Getter = get_42_NewShoppingList_Mode;
+                xamlMember.Setter = set_42_NewShoppingList_Mode;
                 break;
             case "TheShoppingList.MainPage.SecondaryTileID":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.MainPage");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "SecondaryTileID", "String");
-                xamlMember.Getter = get_42_MainPage_SecondaryTileID;
-                xamlMember.Setter = set_42_MainPage_SecondaryTileID;
+                xamlMember.Getter = get_43_MainPage_SecondaryTileID;
+                xamlMember.Setter = set_43_MainPage_SecondaryTileID;
                 break;
             case "TheShoppingList.MainPage.RegisteredForShare":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.MainPage");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "RegisteredForShare", "Boolean");
-                xamlMember.Getter = get_43_MainPage_RegisteredForShare;
-                xamlMember.Setter = set_43_MainPage_RegisteredForShare;
+                xamlMember.Getter = get_44_MainPage_RegisteredForShare;
+                xamlMember.Setter = set_44_MainPage_RegisteredForShare;
                 break;
             case "TheShoppingList.MainPage.SelectedList":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.MainPage");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "SelectedList", "TheShoppingList.Classes.ShoppingList");
-                xamlMember.Getter = get_44_MainPage_SelectedList;
-                xamlMember.Setter = set_44_MainPage_SelectedList;
+                xamlMember.Getter = get_45_MainPage_SelectedList;
+                xamlMember.Setter = set_45_MainPage_SelectedList;
                 break;
             }
             return xamlMember;
