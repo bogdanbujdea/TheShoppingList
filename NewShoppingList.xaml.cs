@@ -44,14 +44,14 @@ namespace TheShoppingList
             if (Mode == NewProduct.InputMode.Edit)
             {
                 List = MainPage.Page.SelectedList;
-                txtBalance.Text = List.Balance.ToString();
+                txtBalance.Text = List.Budget.ToString();
                 txtListName.Text = List.Name;
             }
             transparentBorder.Height = size.Height;
             newListBorder.Width = transparentBorder.Width;
             transparentBorder.Visibility = Visibility.Visible;
             txtListName.Focus(FocusState.Programmatic);
-            txtBalanceLabel.Text = "Price(" + Utils.GetCountryInfo().CurrencySymbol + "):";
+            txtBalanceLabel.Text = "Budget (" + Utils.GetCountryInfo().CurrencySymbol + "):";
         }
 
         private async void OnSaveListName(object sender, RoutedEventArgs e)
@@ -82,11 +82,11 @@ namespace TheShoppingList
 
                 //}
                 List.Name = txtListName.Text;
-                List.Balance = balance;
+                List.Budget = balance;
             }
             else
                 if (source != null)
-                    source.ShoppingLists.Add(new ShoppingList { Name = txtListName.Text, Balance = balance, TotalCost = 0, CreatedTime = DateTime.Now });
+                    source.ShoppingLists.Add(new ShoppingList { Name = txtListName.Text, Budget = balance, TotalCost = 0, CreatedTime = DateTime.Now });
             transparentBorder.Visibility = Visibility.Collapsed;
             txtListName.Text = string.Empty;
             txtBalance.Text = string.Empty;

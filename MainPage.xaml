@@ -75,10 +75,16 @@
                             </Border>
                             <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" Text="{Binding Name}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,5" FontFamily="Segoe Print" FontSize="24" Foreground="DarkCyan"/>
                             <Border VerticalAlignment="Bottom" CornerRadius="50" BorderThickness="1" Background="Transparent">
-                                <StackPanel VerticalAlignment="Bottom">
-
-                                    <TextBlock Text="{Binding Count}" HorizontalAlignment="Center" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontWeight="Bold"/>
-                                </StackPanel>
+                                <Grid VerticalAlignment="Bottom" Margin="25,0,25,5" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Budget: " HorizontalAlignment="Left" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
+                                    <TextBlock Grid.Column="1" Text="{Binding UIBudget}" Margin="5,0,0,0" HorizontalAlignment="Left" Style="{StaticResource CaptionTextStyle}" Foreground="#9905188F" FontSize="18.667"></TextBlock>
+                                    <TextBlock Grid.Column="2" Text="{Binding InListCount}" FontWeight="ExtraBlack" Foreground="#FF09090A" HorizontalAlignment="Right" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontSize="26.667"/>
+                                </Grid>
                             </Border>
                         </Grid>
                     </Border>

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml.Controls;
@@ -21,11 +22,13 @@ namespace TheShoppingList.Classes
         private string _name;
         private DateTime _createdTime;
         private DateTime _reminderTime;
-        private double _balance;
+        private double _budget;
         private double _totalCost;
         private int _count;
         private string _uniqueId;
         private bool _isPinned;
+        private string _uiBudget;
+        private int _inlistCount;
         public string Image { get; set; }
 
         public double TotalCost
@@ -64,10 +67,30 @@ namespace TheShoppingList.Classes
             set { _uniqueId = value; OnPropertyChanged("UniqueID");}
         }
 
-        public Double Balance
+        public Double Budget
         {
-            get { return _balance; }
-            set { _balance = value; OnPropertyChanged("Balance");}
+            get { return _budget; }
+            set { _budget = value; OnPropertyChanged("Budget");}
+        }
+
+        public string UIBudget
+        {
+            get
+            {
+                _uiBudget = Budget + " " + Utils.GetCountryInfo().CurrencySymbol;
+                return _uiBudget; 
+            }
+            set { _uiBudget = value; OnPropertyChanged("UIBudget");}
+        }
+
+        public int InlistCount
+        {
+            get
+            {
+                int s = Products.Count(product => product.IsBought == false);
+                _inlistCount = s;
+                return _inlistCount;
+            }
         }
 
         public string Name

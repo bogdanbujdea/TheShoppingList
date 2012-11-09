@@ -158,8 +158,8 @@ namespace TheShoppingList
 
             ShoppingList.TotalCost = totalPrice;
             txtTotal.Text = totalPrice.ToString();
-            txtBalance.Text = ShoppingList.Balance.ToString();
-            txtRest.Text = (ShoppingList.Balance - ShoppingList.TotalCost).ToString();
+            txtBalance.Text = ShoppingList.Budget.ToString();
+            txtRest.Text = (ShoppingList.Budget - ShoppingList.TotalCost).ToString();
             CheckForTotalCostOverflow();
         }
 
@@ -315,7 +315,7 @@ namespace TheShoppingList
             txtBalance.IsReadOnly = true;
             Color blueBkg = Color.FromArgb(0xff, 0x16, 0x49, 0x9A);
             txtBalance.Background = new SolidColorBrush(blueBkg);
-            txtBalance.Text = ShoppingList.Balance.ToString();
+            txtBalance.Text = ShoppingList.Budget.ToString();
             txtBalance.Foreground = new SolidColorBrush(Colors.White);
             CheckForTotalCostOverflow();
         }
@@ -331,7 +331,7 @@ namespace TheShoppingList
                     double rest = balance - ShoppingList.TotalCost;
                     txtRest.Text = rest.ToString();
                 }
-                ShoppingList.Balance = Convert.ToDouble(txtBalance.Text);
+                ShoppingList.Budget = Convert.ToDouble(txtBalance.Text);
             }
             else
             {
@@ -342,12 +342,12 @@ namespace TheShoppingList
 
         private void CheckForTotalCostOverflow()
         {
-            if (ShoppingList.Balance < ShoppingList.TotalCost)
+            if (ShoppingList.Budget < ShoppingList.TotalCost)
             {
                 txtTotal.Foreground = new SolidColorBrush(Colors.Red);
                 txtRest.Foreground = new SolidColorBrush(Colors.Red);
             }
-            else if (ShoppingList.Balance == ShoppingList.TotalCost)
+            else if (ShoppingList.Budget == ShoppingList.TotalCost)
             {
                 txtBalance.Foreground = new SolidColorBrush(Colors.White);
                 txtTotal.Foreground = new SolidColorBrush(Colors.OrangeRed);
@@ -477,7 +477,7 @@ namespace TheShoppingList
                 source.ShoppingLists[ListIndex].Products.Remove(product);
                 ShoppingList.TotalCost -= product.Price;
                 txtTotal.Text = ShoppingList.TotalCost.ToString();
-                txtRest.Text = (ShoppingList.Balance - ShoppingList.TotalCost).ToString();
+                txtRest.Text = (ShoppingList.Budget - ShoppingList.TotalCost).ToString();
                 CheckForTotalCostOverflow();
                 SetGridBinding();
                 await source.SaveListsAsync();
@@ -499,7 +499,7 @@ namespace TheShoppingList
                     source.ShoppingLists[ListIndex].Products.Add(args.Product);
                     source.ShoppingLists[ListIndex].TotalCost += args.Product.Price;
                 }
-                double rest = source.ShoppingLists[ListIndex].Balance - source.ShoppingLists[ListIndex].TotalCost;
+                double rest = source.ShoppingLists[ListIndex].Budget - source.ShoppingLists[ListIndex].TotalCost;
                 txtRest.Text = rest.ToString();
                 CheckForTotalCostOverflow();
                 await source.SaveListsAsync();

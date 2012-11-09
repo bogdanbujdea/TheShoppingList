@@ -26,7 +26,7 @@
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Name: " Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                 <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Background="White" VerticalAlignment="Center" Width="250" Name="txtListName" Padding="0,0,0,0" ToolTipService.ToolTip="Name of the shopping list" TextChanged="txtListName_TextChanged" Foreground="Black" />
 
-                <TextBlock  Grid.Row="2" Grid.Column="0" Text="Balance: " Name="txtBalanceLabel" Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                <TextBlock  Grid.Row="2" Grid.Column="0" Text="Budget: " Name="txtBalanceLabel" Margin="0,0,15,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                 <TextBox  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Background="White" VerticalAlignment="Center" Width="250" Name="txtBalance" Padding="0,0,0,0" ToolTipService.ToolTip="How much money can you spend?" TextChanged="txtListName_TextChanged" Foreground="Black" />
 
                 <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
