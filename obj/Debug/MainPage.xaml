@@ -27,7 +27,7 @@
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Name="ItemControls">
                     <Button x:ConnectionId='5' Style="{StaticResource EditAppBarButtonStyle}"                 />
-                    <Button x:ConnectionId='6' Style="{StaticResource RemoveAppBarButtonStyle}"                   />
+                    <Button x:ConnectionId='6' Style="{StaticResource DeleteAppBarButtonStyle}"                   />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button x:ConnectionId='2' Style="{StaticResource AddAppBarButtonStyle}"                     />
@@ -83,7 +83,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Budget: " HorizontalAlignment="Left" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
                                     <TextBlock Grid.Column="1" Text="{Binding UIBudget}" Margin="5,0,0,0" HorizontalAlignment="Left" Style="{StaticResource CaptionTextStyle}" Foreground="#9905188F" FontSize="18.667"></TextBlock>
-                                    <TextBlock Grid.Column="2" Text="{Binding InListCount}" FontWeight="ExtraBlack" Foreground="#FF09090A" HorizontalAlignment="Right" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontSize="26.667"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding InListCount}" FontWeight="ExtraBlack" Foreground="#FF09090A" HorizontalAlignment="Center" TextWrapping="NoWrap" Margin="15,0,15,10" FontSize="15" Width="Auto"/>
                                 </Grid>
                             </Border>
                         </Grid>

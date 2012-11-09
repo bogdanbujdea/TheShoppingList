@@ -28,9 +28,10 @@ namespace TheShoppingList
     /// </summary>
     public sealed partial class MainPage
     {
-        private readonly LicenseInformation licenseInformation;
-        private int listCount;
-        private bool rightTapped;
+        private LicenseInformation licenseInformation;
+        public string SecondaryTileID { get; set; }
+        public static MainPage Page { get; set; }
+        public ShoppingList SelectedList { get; set; }
 
         public MainPage()
         {
@@ -38,21 +39,22 @@ namespace TheShoppingList
             Loaded += MainPage_Loaded;
             Application.Current.Suspending += Current_Suspending;
             Application.Current.Resuming += Current_Resuming;
-            listCount = 0;
-            var size = new Point();
+            var windowSize = new Point();
             Rect bounds = Window.Current.Bounds;
-            size.Width = bounds.Width;
-            size.Height = bounds.Height;
-            Application.Current.Resources["newListSize"] = size;
+            windowSize.Width = bounds.Width;
+            windowSize.Height = bounds.Height;
+            Application.Current.Resources["newListSize"] = windowSize;
             Page = this;
 
             SettingsPane.GetForCurrentView().CommandsRequested += onCommandsRequested;
+            RegisterForShare();
+        }
+
+
+        #region Initialize App
+        private void InitializeLicense()
+        {
             licenseInformation = CurrentAppSimulator.LicenseInformation;
-            if (RegisteredForShare == false)
-            {
-                RegisterForShare();
-                RegisteredForShare = true;
-            }
             if (licenseInformation.IsActive)
             {
                 if (licenseInformation.IsTrial == false)
@@ -66,201 +68,6 @@ namespace TheShoppingList
             }
         }
 
-        public string SecondaryTileID { get; set; }
-
-        public bool RegisteredForShare { get; set; }
-
-        public static MainPage Page { get; set; }
-        public ShoppingList SelectedList { get; set; }
-
-        #region ShareContract
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            // Unregister the current page as a share source.
-            UnregisterForShare();
-            base.OnNavigatedFrom(e);
-        }
-
-        public void RegisterForShare()
-        {
-            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
-
-            dataTransferManager.DataRequested += ShareStorageItemsHandler;
-        }
-
-        public void UnregisterForShare()
-        {
-            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
-            dataTransferManager.DataRequested -= ShareStorageItemsHandler;
-        }
-
-        private async void ShareStorageItemsHandler(DataTransferManager sender,
-                                                    DataRequestedEventArgs e)
-        {
-            //var point = App.Current.Resources["recordingSent"] as Point;
-            //if (point != null)
-            //    if (point.Width != 500)
-            //        if (point.Height == 200)
-            //        {
-            //            await new MessageDialog("You already shared a recording. Please restart the app in order to send another one!")
-            //                .ShowAsync();
-            //            return;
-            //        }
-
-            DataRequest request = e.Request;
-            request.Data.Properties.Title = "Send this list";
-            request.Data.Properties.Description = "Use any of the options below";
-
-            // Because we are making async calls in the DataRequested event handler,
-            // we need to get the deferral first.
-            DataRequestDeferral deferral = request.GetDeferral();
-
-            // Make sure we always call Complete on the deferral.
-            try
-            {
-                if (SelectedList != null)
-                {
-                    request.Data.SetHtmlFormat(SelectedList.ToHtml());
-                    request.Data.SetText(SelectedList.ToString());
-
-                    sender.TargetApplicationChosen += sender_TargetApplicationChosen;
-                }
-                else
-                {
-                    e.Request.FailWithDisplayText(
-                        "You haven't selected anything. Please click on a shopping list before trying to share it!");
-                }
-            }
-            finally
-            {
-                deferral.Complete();
-            }
-        }
-
-
-        private void sender_TargetApplicationChosen(DataTransferManager sender, TargetApplicationChosenEventArgs args)
-        {
-        }
-
-        #endregion
-
-        #region Tiles
-
-        private async void OnPinList(object sender, RoutedEventArgs e)
-        {
-            bottomAppBar.IsSticky = true;
-            foreach (SecondaryTile tile in await SecondaryTile.FindAllAsync())
-            {
-                if (String.Compare(tile.Arguments, SelectedList.UniqueID, StringComparison.Ordinal) == 0)
-                {
-                    // Now make the delete request.
-                    bool isUnpinned =
-                        await
-                        tile.RequestDeleteForSelectionAsync(Utils.GetElementRect((FrameworkElement) sender),
-                                                            Placement.Above);
-                    if (isUnpinned)
-                    {
-                        SelectedList.IsPinned = false;
-                    }
-
-                    ToggleAppBarButton();
-                    bottomAppBar.IsSticky = false;
-                    return;
-                }
-            }
-
-            // Prepare package images for use as the Tile Logo and small Logo in our tile to be pinned
-            var logo = new Uri("ms-appx:///Assets/squareTile-sdk.png");
-            var smallLogo = new Uri("ms-appx:///Assets/smallTile-sdk.png");
-
-            // During creation of secondary tile, an application may set additional arguments on the tile that will be passed in during activation.
-            // These arguments should be meaningful to the application. In this sample, we'll pass in the date and time the secondary tile was pinned.
-            string tileActivationArguments = SelectedList.UniqueID;
-
-            // Create a 1x1 Secondary tile
-            var secondaryTile = new SecondaryTile(SelectedList.UniqueID,
-                                                  SelectedList.Name,
-                                                  SelectedList.Name,
-                                                  tileActivationArguments,
-                                                  TileOptions.ShowNameOnLogo,
-                                                  logo);
-
-            // Specify a foreground text value.
-            // The tile background color is inherited from the parent unless a separate value is specified.
-            secondaryTile.ForegroundText = ForegroundText.Dark;
-            secondaryTile.BackgroundColor = Colors.GreenYellow;
-
-            // Like the background color, the small tile logo is inherited from the parent application tile by default. Let's override it, just to see how that's done.
-            secondaryTile.SmallLogo = smallLogo;
-
-            // OK, the tile is created and we can now attempt to pin the tile.
-            // Note that the status message is updated when the async operation to pin the tile completes.
-            bool isPinned =
-                await
-                secondaryTile.RequestCreateForSelectionAsync(Utils.GetElementRect((FrameworkElement) sender),
-                                                             Placement.Above);
-            if (isPinned)
-            {
-                SelectedList.IsPinned = true;
-                TileUpdateManager.CreateTileUpdaterForSecondaryTile(SelectedList.UniqueID).EnableNotificationQueue(true);
-                
-                Utils.UpdateSecondaryTile(SelectedList.UniqueID, SelectedList.Products);
-            }
-            else
-            {
-                SelectedList.IsPinned = false;
-            }
-            ToggleAppBarButton();
-        }
-
-
-        private void ToggleAppBarButton()
-        {
-            if(SelectedList == null) return;
-            btnPinList.Visibility = Visibility.Visible;
-            if (SelectedList.IsPinned)
-            {
-                btnPinList.SetValue(AutomationProperties.NameProperty, "Unpin from Start");
-                btnPinList.Style = Application.Current.Resources["UnPinAppBarButtonStyle"] as Style;
-            }
-            else
-            {
-                btnPinList.SetValue(AutomationProperties.NameProperty, "Pin to Start");
-                btnPinList.Style = Application.Current.Resources["PinAppBarButtonStyle"] as Style;
-            }
-        }
-
-        private void InitializeTile()
-        {
-            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
-
-            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText03);
-            XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
-
-            if (source != null)
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    if (source.ShoppingLists.Count > i)
-                        tileTextAttributes[i].InnerText = source.ShoppingLists[i].Name;
-                    else break;
-                }
-            }
-            var tileNotification = new TileNotification(tileXml);
-            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
-            
-            foreach (ShoppingList shoppingList in source.ShoppingLists)
-            {
-                if (SecondaryTile.Exists(shoppingList.UniqueID))
-                {
-                    Utils.UpdateSecondaryTile(shoppingList.UniqueID, shoppingList.Products);
-                }
-            }
-        }
-
-        #endregion
-
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
@@ -272,20 +79,23 @@ namespace TheShoppingList
                 btnAddList.Visibility = Visibility.Visible;
                 return;
             }
-            DefaultViewModel["Items"] = source.ShoppingLists;
-            InitializeTile();
-            itemGridView.SelectionMode = ListViewSelectionMode.Single;
-            bottomAppBar.IsOpen = false;
-            itemGridView.SelectedIndex = -1;
             foreach (ShoppingList list in source.ShoppingLists)
             {
                 if (String.Compare(list.UniqueID, SecondaryTileID, StringComparison.Ordinal) == 0)
                 {
-                    Frame.Navigate(typeof (GroupedProducts), source.ShoppingLists.IndexOf(list));
+                    Frame.Navigate(typeof(GroupedProducts), source.ShoppingLists.IndexOf(list));
                 }
             }
+            DefaultViewModel["Items"] = source.ShoppingLists;
+            InitializeTiles();
+            itemGridView.SelectionMode = ListViewSelectionMode.Single;
+            bottomAppBar.IsOpen = false;
+            itemGridView.SelectedIndex = -1;
+            
         }
 
+        #endregion
+        
         #region App State
 
         /// <summary>
@@ -297,7 +107,7 @@ namespace TheShoppingList
         /// </param>
         /// <param name="pageState">A dictionary of state preserved by this page during an earlier
         /// session.  This will be null the first time a page is visited.</param>
-        protected override async void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
+        protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
             SecondaryTileID = navigationParameter as string;
         }
@@ -308,11 +118,10 @@ namespace TheShoppingList
             if (source != null)
                 try
                 {
-                    source.SaveListsAsync();
+                    await source.SaveListsAsync();
                 }
                 catch (Exception)
                 {
-                    
                 }
         }
 
@@ -467,7 +276,6 @@ namespace TheShoppingList
 
         private void OnRightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            rightTapped = true;
         }
 
         private async void RemoveAllShoppingLists(object sender, RoutedEventArgs e)
@@ -489,7 +297,6 @@ namespace TheShoppingList
 
         private void OnItemRightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            rightTapped = true;
         }
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -537,6 +344,186 @@ namespace TheShoppingList
 
         private void onSettingsCommand(IUICommand command)
         {
+        }
+
+        #endregion
+
+        #region ShareContract
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            // Unregister the current page as a share source.
+            UnregisterForShare();
+            base.OnNavigatedFrom(e);
+        }
+
+        public void RegisterForShare()
+        {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+
+            dataTransferManager.DataRequested += ShareStorageItemsHandler;
+        }
+
+        public void UnregisterForShare()
+        {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested -= ShareStorageItemsHandler;
+        }
+
+        private void ShareStorageItemsHandler(DataTransferManager sender,
+                                                    DataRequestedEventArgs e)
+        {
+            DataRequest request = e.Request;
+            request.Data.Properties.Title = "Send this list";
+            request.Data.Properties.Description = "Use any of the options below";
+
+            // Because we are making async calls in the DataRequested event handler,
+            // we need to get the deferral first.
+            DataRequestDeferral deferral = request.GetDeferral();
+
+            // Make sure we always call Complete on the deferral.
+            try
+            {
+                if (SelectedList != null)
+                {
+                    request.Data.SetHtmlFormat(SelectedList.ToHtml());
+                    request.Data.SetText(SelectedList.ToString());
+
+                    sender.TargetApplicationChosen += sender_TargetApplicationChosen;
+                }
+                else
+                {
+                    e.Request.FailWithDisplayText(
+                        "You haven't selected anything. Please click on a shopping list before trying to share it!");
+                }
+            }
+            finally
+            {
+                deferral.Complete();
+            }
+        }
+
+
+        private void sender_TargetApplicationChosen(DataTransferManager sender, TargetApplicationChosenEventArgs args)
+        {
+        }
+
+        #endregion
+
+        #region Tiles
+
+        private async void OnPinList(object sender, RoutedEventArgs e)
+        {
+            bottomAppBar.IsSticky = true;
+            foreach (SecondaryTile tile in await SecondaryTile.FindAllAsync())
+            {
+                if (String.Compare(tile.Arguments, SelectedList.UniqueID, StringComparison.Ordinal) == 0)
+                {
+                    // Now make the delete request.
+                    bool isUnpinned =
+                        await
+                        tile.RequestDeleteForSelectionAsync(Utils.GetElementRect((FrameworkElement) sender),
+                                                            Placement.Above);
+                    if (isUnpinned)
+                    {
+                        SelectedList.IsPinned = false;
+                    }
+
+                    ToggleAppBarButton();
+                    bottomAppBar.IsSticky = false;
+                    return;
+                }
+            }
+
+            // Prepare package images for use as the Tile Logo and small Logo in our tile to be pinned
+            var logo = new Uri("ms-appx:///Assets/squareTile-sdk.png");
+            var smallLogo = new Uri("ms-appx:///Assets/smallTile-sdk.png");
+
+            // During creation of secondary tile, an application may set additional arguments on the tile that will be passed in during activation.
+            // These arguments should be meaningful to the application. In this sample, we'll pass in the date and time the secondary tile was pinned.
+            string tileActivationArguments = SelectedList.UniqueID;
+
+            // Create a 1x1 Secondary tile
+            var secondaryTile = new SecondaryTile(SelectedList.UniqueID,
+                                                  SelectedList.Name,
+                                                  SelectedList.Name,
+                                                  tileActivationArguments,
+                                                  TileOptions.ShowNameOnLogo,
+                                                  logo);
+
+            // Specify a foreground text value.
+            // The tile background color is inherited from the parent unless a separate value is specified.
+            secondaryTile.ForegroundText = ForegroundText.Dark;
+            secondaryTile.BackgroundColor = Colors.GreenYellow;
+
+            // Like the background color, the small tile logo is inherited from the parent application tile by default. Let's override it, just to see how that's done.
+            secondaryTile.SmallLogo = smallLogo;
+
+            // OK, the tile is created and we can now attempt to pin the tile.
+            // Note that the status message is updated when the async operation to pin the tile completes.
+            bool isPinned =
+                await
+                secondaryTile.RequestCreateForSelectionAsync(Utils.GetElementRect((FrameworkElement) sender),
+                                                             Placement.Above);
+            if (isPinned)
+            {
+                SelectedList.IsPinned = true;
+                TileUpdateManager.CreateTileUpdaterForSecondaryTile(SelectedList.UniqueID).EnableNotificationQueue(true);
+
+                Utils.UpdateSecondaryTile(SelectedList.UniqueID, SelectedList.Products);
+            }
+            else
+            {
+                SelectedList.IsPinned = false;
+            }
+            ToggleAppBarButton();
+        }
+
+
+        private void ToggleAppBarButton()
+        {
+            if (SelectedList == null) return;
+            btnPinList.Visibility = Visibility.Visible;
+            if (SelectedList.IsPinned)
+            {
+                btnPinList.SetValue(AutomationProperties.NameProperty, "Unpin from Start");
+                btnPinList.Style = Application.Current.Resources["UnPinAppBarButtonStyle"] as Style;
+            }
+            else
+            {
+                btnPinList.SetValue(AutomationProperties.NameProperty, "Pin to Start");
+                btnPinList.Style = Application.Current.Resources["PinAppBarButtonStyle"] as Style;
+            }
+        }
+
+        private void InitializeTiles()
+        {
+            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
+
+            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText03);
+            XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
+
+            if (source != null)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (source.ShoppingLists.Count > i)
+                        tileTextAttributes[i].InnerText = source.ShoppingLists[i].Name;
+                    else break;
+                }
+            }
+            var tileNotification = new TileNotification(tileXml);
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
+
+            foreach (ShoppingList shoppingList in source.ShoppingLists)
+            {
+                if (SecondaryTile.Exists(shoppingList.UniqueID))
+                {
+                    Utils.UpdateSecondaryTile(shoppingList.UniqueID, shoppingList.Products);
+                }
+            }
+
+
         }
 
         #endregion

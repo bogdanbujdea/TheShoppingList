@@ -23,13 +23,26 @@ namespace TheShoppingList
             Loaded += NewShoppingList_Loaded;
         }
 
-        public bool NewListSaved { get; set; }
-
         public ShoppingList List { get; set; }
 
         public NewProduct.InputMode Mode { get; set; }
 
+        #region InitializeWindow
         private void NewShoppingList_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetWindowSize();
+            if (Mode == NewProduct.InputMode.Edit)
+            {
+                List = MainPage.Page.SelectedList;
+                txtBalance.Text = List.Budget.ToString();
+                txtListName.Text = List.Name;
+            }
+            
+            txtListName.Focus(FocusState.Programmatic);
+            txtBalanceLabel.Text = "Budget (" + Utils.GetCountryInfo().CurrencySymbol + "):";
+        }
+
+        private void SetWindowSize()
         {
             var size = Application.Current.Resources["newListSize"] as Point;
             var CurrentViewState = ApplicationView.Value;
@@ -41,18 +54,11 @@ namespace TheShoppingList
             }
             else
                 transparentBorder.Width = size.Width;
-            if (Mode == NewProduct.InputMode.Edit)
-            {
-                List = MainPage.Page.SelectedList;
-                txtBalance.Text = List.Budget.ToString();
-                txtListName.Text = List.Name;
-            }
             transparentBorder.Height = size.Height;
-            newListBorder.Width = transparentBorder.Width;
             transparentBorder.Visibility = Visibility.Visible;
-            txtListName.Focus(FocusState.Programmatic);
-            txtBalanceLabel.Text = "Budget (" + Utils.GetCountryInfo().CurrencySymbol + "):";
+            newListBorder.Width = transparentBorder.Width;
         }
+        #endregion
 
         private async void OnSaveListName(object sender, RoutedEventArgs e)
         {
@@ -67,20 +73,6 @@ namespace TheShoppingList
                 balance = double.Parse(txtBalance.Text);
             if (Mode == NewProduct.InputMode.Edit)
             {
-                //IReadOnlyList<SecondaryTile> tilelist = await Windows.UI.StartScreen.SecondaryTile.FindAllAsync();
-                
-                //if (tilelist.Count > 0)
-                //{
-                //    for (int i = 0; i < tilelist.Count; i++)
-                //    {
-                //        if (System.String.Compare(tilelist[i].Arguments, List.UniqueID, System.StringComparison.Ordinal) == 0)
-                //        {
-                //            tilelist[i].Arguments = txtListName.Text;
-                //            break;
-                //        }
-                //    }
-
-                //}
                 List.Name = txtListName.Text;
                 List.Budget = balance;
             }
@@ -93,7 +85,13 @@ namespace TheShoppingList
             ClosePopup();
         }
 
-        private void txtListName_TextChanged(object sender, TextChangedEventArgs e)
+        /// <summary>
+        /// Warn the user by changing the background and foreground of the textbox, if he tries
+        /// to add a list with the same name
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnListNameChanged(object sender, TextChangedEventArgs e)
         {
             if (Mode == NewProduct.InputMode.Edit)
                 return;

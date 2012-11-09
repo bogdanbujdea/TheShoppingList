@@ -20,16 +20,25 @@ namespace TheShoppingList
 {
     public sealed partial class NewProduct
     {
-        private Product _product;
-
-        public bool ProductAdded { get; set; }
-
         public enum InputMode
         {
             Add,
             Edit
         }
 
+        private Product _product;
+
+        public bool ProductAdded { get; set; }
+
+        public InputMode Mode { get; set; }
+
+        public Product Product
+        {
+            get { return _product; }
+            set { _product = value; }
+        }
+
+        
         public NewProduct()
         {
             InitializeComponent();
@@ -56,17 +65,10 @@ namespace TheShoppingList
             this.Margin = new Thickness(0, -100, 0, 0);
         }
 
-        public InputMode Mode { get; set; }
 
-        public Product Product
-        {
-            get { return _product; }
-            set { _product = value; }
-        }
 
         private void PopupLoaded(object sender, RoutedEventArgs e)
         {
-            var size = Application.Current.Resources["newListSize"] as Point;
             if (Mode == InputMode.Add)
             {
                 btnIsBought.IsOn = false;
@@ -78,12 +80,16 @@ namespace TheShoppingList
                 FillProperties();
                 btnSave.SetValue(AutomationProperties.NameProperty, "Save");
             }
+            SetWindowSize();
+        }
 
+        private void SetWindowSize()
+        {
+            var size = Application.Current.Resources["newListSize"] as Point;
             if (size != null)
             {
                 transparentBorder.Width = size.Width;
                 transparentBorder.Height = size.Height;
-                //transparentBorder.Margin= new Thickness(0);
                 newProductBorder.Width = transparentBorder.Width;
                 transparentBorder.Visibility = Visibility.Visible;
             }
@@ -109,7 +115,7 @@ namespace TheShoppingList
 
         
 
-        private async void OnSaveProductDetails(object sender, RoutedEventArgs e)
+        private void OnSaveProductDetails(object sender, RoutedEventArgs e)
         {
            
             Product = new Product();

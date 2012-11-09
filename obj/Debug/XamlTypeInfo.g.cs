@@ -279,7 +279,7 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 userType.AddMemberName("UIBudget");
                 AddToMapOfTypeToStandardName(typeof(global::System.String),
                                                    "String");
-                userType.AddMemberName("InlistCount");
+                userType.AddMemberName("InListCount");
                 AddToMapOfTypeToStandardName(typeof(global::System.Int32),
                                                    "Int32");
                 userType.AddMemberName("Name");
@@ -483,9 +483,6 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 userType.AddMemberName("SecondaryTileID");
                 AddToMapOfTypeToStandardName(typeof(global::System.String),
                                                    "String");
-                userType.AddMemberName("RegisteredForShare");
-                AddToMapOfTypeToStandardName(typeof(global::System.Boolean),
-                                                   "Boolean");
                 userType.AddMemberName("SelectedList");
                 xamlType = userType;
                 break;
@@ -745,10 +742,10 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
             that.UIBudget = (global::System.String)Value;
         }
-        private object get_21_ShoppingList_InlistCount(object instance)
+        private object get_21_ShoppingList_InListCount(object instance)
         {
             var that = (global::TheShoppingList.Classes.ShoppingList)instance;
-            return that.InlistCount;
+            return that.InListCount;
         }
         private object get_22_ShoppingList_Name(object instance)
         {
@@ -970,22 +967,12 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
             var that = (global::TheShoppingList.MainPage)instance;
             that.SecondaryTileID = (global::System.String)Value;
         }
-        private object get_44_MainPage_RegisteredForShare(object instance)
-        {
-            var that = (global::TheShoppingList.MainPage)instance;
-            return that.RegisteredForShare;
-        }
-        private void set_44_MainPage_RegisteredForShare(object instance, object Value)
-        {
-            var that = (global::TheShoppingList.MainPage)instance;
-            that.RegisteredForShare = (global::System.Boolean)Value;
-        }
-        private object get_45_MainPage_SelectedList(object instance)
+        private object get_44_MainPage_SelectedList(object instance)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             return that.SelectedList;
         }
-        private void set_45_MainPage_SelectedList(object instance, object Value)
+        private void set_44_MainPage_SelectedList(object instance, object Value)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             that.SelectedList = (global::TheShoppingList.Classes.ShoppingList)Value;
@@ -1124,10 +1111,10 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 xamlMember.Getter = get_20_ShoppingList_UIBudget;
                 xamlMember.Setter = set_20_ShoppingList_UIBudget;
                 break;
-            case "TheShoppingList.Classes.ShoppingList.InlistCount":
+            case "TheShoppingList.Classes.ShoppingList.InListCount":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.Classes.ShoppingList");
-                xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "InlistCount", "Int32");
-                xamlMember.Getter = get_21_ShoppingList_InlistCount;
+                xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "InListCount", "Int32");
+                xamlMember.Getter = get_21_ShoppingList_InListCount;
                 xamlMember.SetIsReadOnly();
                 break;
             case "TheShoppingList.Classes.ShoppingList.Name":
@@ -1266,17 +1253,11 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 xamlMember.Getter = get_43_MainPage_SecondaryTileID;
                 xamlMember.Setter = set_43_MainPage_SecondaryTileID;
                 break;
-            case "TheShoppingList.MainPage.RegisteredForShare":
-                userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.MainPage");
-                xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "RegisteredForShare", "Boolean");
-                xamlMember.Getter = get_44_MainPage_RegisteredForShare;
-                xamlMember.Setter = set_44_MainPage_RegisteredForShare;
-                break;
             case "TheShoppingList.MainPage.SelectedList":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.MainPage");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "SelectedList", "TheShoppingList.Classes.ShoppingList");
-                xamlMember.Getter = get_45_MainPage_SelectedList;
-                xamlMember.Setter = set_45_MainPage_SelectedList;
+                xamlMember.Getter = get_44_MainPage_SelectedList;
+                xamlMember.Setter = set_44_MainPage_SelectedList;
                 break;
             }
             return xamlMember;

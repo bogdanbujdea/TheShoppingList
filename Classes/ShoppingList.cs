@@ -83,7 +83,7 @@ namespace TheShoppingList.Classes
             set { _uiBudget = value; OnPropertyChanged("UIBudget");}
         }
 
-        public int InlistCount
+        public int InListCount
         {
             get
             {
