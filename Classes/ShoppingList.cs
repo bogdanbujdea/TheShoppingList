@@ -169,7 +169,6 @@ namespace TheShoppingList.Classes
             StringBuilder stringList = new StringBuilder();
 
             stringList.Append(Name);
-            stringList.AppendLine();
             foreach (var product in Products)
             {
                 stringList.Append(product.Title + " :   ");
@@ -177,8 +176,7 @@ namespace TheShoppingList.Classes
 
                 if (Math.Abs(product.Price - 0) > 0)
                 {
-
-                    stringList.Append(product.Price.ToString() + " " + RegionInfo.CurrentRegion.CurrencySymbol + ", ");
+                    stringList.Append(product.Price.ToString() + " " + Utils.GetCountryInfo().CurrencySymbol + ", ");
                 }
                 if (Math.Abs(product.Quantity - 0) > 0)
                 {
@@ -193,7 +191,7 @@ namespace TheShoppingList.Classes
                     stringList.Append("From: ");
                     stringList.Append(product.ShopName);
                 }
-                stringList.AppendLine("|");
+                stringList.Append("|");
             }
             
 
