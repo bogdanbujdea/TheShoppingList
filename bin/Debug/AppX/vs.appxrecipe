@@ -22,11 +22,11 @@
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\TheShoppingList.exe">
       <PackagePath>TheShoppingList.exe</PackagePath>
-      <Modified>2012-11-09T17:17:22.665</Modified>
+      <Modified>2012-11-09T17:27:21.199</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\TheShoppingList.pdb">
       <PackagePath>TheShoppingList.pdb</PackagePath>
-      <Modified>2012-11-09T17:17:22.642</Modified>
+      <Modified>2012-11-09T17:27:21.174</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\AdDuplexWindows.8.0.1.0\lib\winrt45\AdDuplex.Windows.dll">
       <PackagePath>AdDuplex.Windows.dll</PackagePath>
@@ -122,7 +122,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\NewShoppingList.xaml">
       <PackagePath>NewShoppingList.xaml</PackagePath>
-      <Modified>2012-11-09T00:02:51.969</Modified>
+      <Modified>2012-11-09T17:27:19.290</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\AdDuplexWindows.8.0.1.0\lib\winrt45\AdDuplex.Windows\Themes\Generic.xaml">
       <PackagePath>AdDuplex.Windows\Themes\Generic.xaml</PackagePath>

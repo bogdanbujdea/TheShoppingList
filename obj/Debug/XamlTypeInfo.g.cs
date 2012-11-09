@@ -467,9 +467,6 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
             case "TheShoppingList.NewShoppingList":
                 userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.NewShoppingList), GetXamlTypeByName("Windows.UI.Xaml.Controls.UserControl"));
                 userType.Activator = Activate_20_NewShoppingList;
-                userType.AddMemberName("NewListSaved");
-                AddToMapOfTypeToStandardName(typeof(global::System.Boolean),
-                                                   "Boolean");
                 userType.AddMemberName("List");
                 userType.AddMemberName("Mode");
                 AddToMapOfTypeToStandardName(typeof(global::TheShoppingList.NewProduct.InputMode),
@@ -927,52 +924,42 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
             var that = (global::TheShoppingList.GroupedProducts)instance;
             that.DraggedProduct = (global::TheShoppingList.Classes.Product)Value;
         }
-        private object get_40_NewShoppingList_NewListSaved(object instance)
-        {
-            var that = (global::TheShoppingList.NewShoppingList)instance;
-            return that.NewListSaved;
-        }
-        private void set_40_NewShoppingList_NewListSaved(object instance, object Value)
-        {
-            var that = (global::TheShoppingList.NewShoppingList)instance;
-            that.NewListSaved = (global::System.Boolean)Value;
-        }
-        private object get_41_NewShoppingList_List(object instance)
+        private object get_40_NewShoppingList_List(object instance)
         {
             var that = (global::TheShoppingList.NewShoppingList)instance;
             return that.List;
         }
-        private void set_41_NewShoppingList_List(object instance, object Value)
+        private void set_40_NewShoppingList_List(object instance, object Value)
         {
             var that = (global::TheShoppingList.NewShoppingList)instance;
             that.List = (global::TheShoppingList.Classes.ShoppingList)Value;
         }
-        private object get_42_NewShoppingList_Mode(object instance)
+        private object get_41_NewShoppingList_Mode(object instance)
         {
             var that = (global::TheShoppingList.NewShoppingList)instance;
             return that.Mode;
         }
-        private void set_42_NewShoppingList_Mode(object instance, object Value)
+        private void set_41_NewShoppingList_Mode(object instance, object Value)
         {
             var that = (global::TheShoppingList.NewShoppingList)instance;
             that.Mode = (global::TheShoppingList.NewProduct.InputMode)Value;
         }
-        private object get_43_MainPage_SecondaryTileID(object instance)
+        private object get_42_MainPage_SecondaryTileID(object instance)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             return that.SecondaryTileID;
         }
-        private void set_43_MainPage_SecondaryTileID(object instance, object Value)
+        private void set_42_MainPage_SecondaryTileID(object instance, object Value)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             that.SecondaryTileID = (global::System.String)Value;
         }
-        private object get_44_MainPage_SelectedList(object instance)
+        private object get_43_MainPage_SelectedList(object instance)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             return that.SelectedList;
         }
-        private void set_44_MainPage_SelectedList(object instance, object Value)
+        private void set_43_MainPage_SelectedList(object instance, object Value)
         {
             var that = (global::TheShoppingList.MainPage)instance;
             that.SelectedList = (global::TheShoppingList.Classes.ShoppingList)Value;
@@ -1229,35 +1216,29 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 xamlMember.Getter = get_39_GroupedProducts_DraggedProduct;
                 xamlMember.Setter = set_39_GroupedProducts_DraggedProduct;
                 break;
-            case "TheShoppingList.NewShoppingList.NewListSaved":
-                userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.NewShoppingList");
-                xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "NewListSaved", "Boolean");
-                xamlMember.Getter = get_40_NewShoppingList_NewListSaved;
-                xamlMember.Setter = set_40_NewShoppingList_NewListSaved;
-                break;
             case "TheShoppingList.NewShoppingList.List":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.NewShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "List", "TheShoppingList.Classes.ShoppingList");
-                xamlMember.Getter = get_41_NewShoppingList_List;
-                xamlMember.Setter = set_41_NewShoppingList_List;
+                xamlMember.Getter = get_40_NewShoppingList_List;
+                xamlMember.Setter = set_40_NewShoppingList_List;
                 break;
             case "TheShoppingList.NewShoppingList.Mode":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.NewShoppingList");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "Mode", "TheShoppingList.NewProduct.InputMode");
-                xamlMember.Getter = get_42_NewShoppingList_Mode;
-                xamlMember.Setter = set_42_NewShoppingList_Mode;
+                xamlMember.Getter = get_41_NewShoppingList_Mode;
+                xamlMember.Setter = set_41_NewShoppingList_Mode;
                 break;
             case "TheShoppingList.MainPage.SecondaryTileID":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.MainPage");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "SecondaryTileID", "String");
-                xamlMember.Getter = get_43_MainPage_SecondaryTileID;
-                xamlMember.Setter = set_43_MainPage_SecondaryTileID;
+                xamlMember.Getter = get_42_MainPage_SecondaryTileID;
+                xamlMember.Setter = set_42_MainPage_SecondaryTileID;
                 break;
             case "TheShoppingList.MainPage.SelectedList":
                 userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.MainPage");
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "SelectedList", "TheShoppingList.Classes.ShoppingList");
-                xamlMember.Getter = get_44_MainPage_SelectedList;
-                xamlMember.Setter = set_44_MainPage_SelectedList;
+                xamlMember.Getter = get_43_MainPage_SelectedList;
+                xamlMember.Setter = set_43_MainPage_SelectedList;
                 break;
             }
             return xamlMember;
