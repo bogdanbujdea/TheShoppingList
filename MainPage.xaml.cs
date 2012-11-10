@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Callisto.Controls;
@@ -15,6 +16,7 @@ using Windows.Data.Xml.Dom;
 using Windows.Foundation;
 using Windows.Security.Authentication.Web;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.ApplicationSettings;
@@ -127,14 +129,12 @@ namespace TheShoppingList
             
         }
 
-        private async Task<bool> LoadList(FileActivatedEventArgs args)
+        private async Task<bool> LoadList(StorageFile args)
         {
             try
             {
-                IStorageItem file = args.Files[0];
-                StorageFile storageFile = (file as StorageFile);
+                StorageFile storageFile = args;
 
-                string path = args.Files[0].Path;
                 var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
                 IInputStream sessionInputStream = await storageFile.OpenReadAsync();
                 var serializer = new XmlSerializer(typeof(ShoppingList));
@@ -382,7 +382,13 @@ namespace TheShoppingList
             // Unregister the current page as a share source.
             UnregisterForShare();
             if (e.Parameter is FileActivatedEventArgs)
-                LoadList(e.Parameter as FileActivatedEventArgs);
+            {
+                var files = (e.Parameter as FileActivatedEventArgs).Files;
+                foreach (var storageItem in files)
+                {
+                    LoadList(storageItem as StorageFile);
+                }
+            }
             base.OnNavigatedFrom(e);
         }
 
@@ -424,6 +430,7 @@ namespace TheShoppingList
                 if (SelectedList != null)
                 {
                     //request.Data.SetHtmlFormat(SelectedList.ToHtml());
+                    
                     request.Data.SetText(SelectedList.ToFacebook());
                     var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
                     if (source != null)
@@ -667,6 +674,29 @@ namespace TheShoppingList
 
             popup.Margin = new Thickness((width - 400) / 2, (height - 300)/2, (width - 400)/2, (height - 400)/2);
             popup.IsOpen = true;
+        }
+
+        private async void OnFilePickerOpen(object sender, RoutedEventArgs e)
+        {
+
+            
+                FileOpenPicker openPicker = new FileOpenPicker();
+                openPicker.ViewMode = PickerViewMode.List;
+                openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                openPicker.FileTypeFilter.Add(".shoplist");
+                IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
+                if (files.Count > 0)
+                {
+                    // Application now has read/write access to the picked file(s)
+                    foreach (StorageFile file in files)
+                    {
+                        LoadList(file);
+                    }
+                }
+                else
+                {
+                    new MessageDialog("Operation cancelled.").ShowAsync();
+                }
         }
     }
 }

@@ -34,6 +34,7 @@
                     <Button Style="{StaticResource AddAppBarButtonStyle}" Click="OnAddNewList"/>
                     <Button x:Name="button" Style="{StaticResource RemoveAppBarButtonStyle}" AutomationProperties.Name="Remove All" Click="RemoveAllShoppingLists"/>
                     <Button x:Name="btnPinList" Click="OnPinList" Style="{StaticResource PinAppBarButtonStyle}"></Button>
+                    <Button Name="btnAddListFromPicker" Click="OnFilePickerOpen" Style="{StaticResource AddAppBarButtonStyle}" AutomationProperties.Name="Pick a list" ></Button>
                 </StackPanel>
             </Grid>
         </AppBar>
