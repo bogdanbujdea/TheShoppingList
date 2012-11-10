@@ -133,8 +133,10 @@
       <DependentUpon>NewShoppingList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\Point.cs" />
+    <Compile Include="PostDetails.cs" />
     <Compile Include="ProductsCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Social\FacebookClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -196,6 +198,9 @@
     </Reference>
     <Reference Include="Callisto">
       <HintPath>..\packages\Callisto.1.2.5\lib\winrt45\Callisto.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook">
+      <HintPath>..\packages\Facebook.6.0.24\lib\WinRT\Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup />

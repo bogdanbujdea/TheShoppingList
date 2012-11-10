@@ -28,6 +28,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Name="ItemControls">
                     <Button Style="{StaticResource EditAppBarButtonStyle}" Click="EditList"/>
                     <Button Style="{StaticResource DeleteAppBarButtonStyle}" Click="RemoveList"/>
+                    <Button Style="{StaticResource ShareAppBarButtonStyle}" Click="OnShareList"></Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource AddAppBarButtonStyle}" Click="OnAddNewList"/>

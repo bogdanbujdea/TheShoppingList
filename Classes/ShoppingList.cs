@@ -164,6 +164,42 @@ namespace TheShoppingList.Classes
             return htmlList.ToString();
         }
 
+        public string ToFacebook()
+        {
+            StringBuilder stringList = new StringBuilder();
+
+            stringList.Append(Name);
+            stringList.AppendLine();
+            int i = 0;
+            foreach (var product in Products)
+            {
+                stringList.Append(i++.ToString() + ". " + product.Title + ", " );
+
+                
+                if (Math.Abs(product.Price - 0) > 0)
+                {
+                    stringList.Append("Price: " + product.Price.ToString() + " " + Utils.GetCountryInfo().CurrencySymbol + ", ");
+                }
+                if (Math.Abs(product.Quantity - 0) > 0)
+                {
+                    stringList.Append("Quantity: " + product.Quantity.ToString() + " ");
+                    if (product.QuantityType != QuantityType.Default)
+                    {
+                        stringList.Append(" " + product.QuantityType.ToString() + ", ");
+                    }
+                }
+                if (string.IsNullOrEmpty(product.ShopName) == false)
+                {
+                    stringList.Append("buy from: ");
+                    stringList.Append(product.ShopName);
+                }
+                stringList.AppendLine();
+            }
+
+
+            return stringList.ToString();
+        }
+
         public override string ToString()
         {
             StringBuilder stringList = new StringBuilder();

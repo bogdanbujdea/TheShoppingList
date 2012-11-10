@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TheShoppingList.Classes;
+using TheShoppingList.Social;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Store;
 using Windows.Data.Xml.Dom;
 using Windows.Foundation;
+using Windows.Security.Authentication.Web;
 using Windows.UI;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Notifications;
@@ -14,6 +17,7 @@ using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using Point = TheShoppingList.Classes.Point;
@@ -32,7 +36,7 @@ namespace TheShoppingList
         public string SecondaryTileID { get; set; }
         public static MainPage Page { get; set; }
         public ShoppingList SelectedList { get; set; }
-
+        private FacebookClient fbClient;
         public MainPage()
         {
             InitializeComponent();
@@ -48,6 +52,7 @@ namespace TheShoppingList
 
             SettingsPane.GetForCurrentView().CommandsRequested += onCommandsRequested;
             RegisterForShare();
+            fbClient = new FacebookClient();
         }
 
 
@@ -91,11 +96,10 @@ namespace TheShoppingList
             itemGridView.SelectionMode = ListViewSelectionMode.Single;
             bottomAppBar.IsOpen = false;
             itemGridView.SelectedIndex = -1;
-            
         }
 
         #endregion
-        
+
         #region App State
 
         /// <summary>
@@ -233,7 +237,7 @@ namespace TheShoppingList
             if (list != null)
             {
                 SortProducts(list);
-                Frame.Navigate(typeof (GroupedProducts), itemGridView.Items.IndexOf(e.ClickedItem));
+                Frame.Navigate(typeof(GroupedProducts), itemGridView.Items.IndexOf(e.ClickedItem));
             }
         }
 
@@ -270,7 +274,7 @@ namespace TheShoppingList
             if (list != null)
             {
                 SortProducts(list);
-                Frame.Navigate(typeof (GroupedProducts), itemListView.Items.IndexOf(e.ClickedItem));
+                Frame.Navigate(typeof(GroupedProducts), itemListView.Items.IndexOf(e.ClickedItem));
             }
         }
 
@@ -422,7 +426,7 @@ namespace TheShoppingList
                     // Now make the delete request.
                     bool isUnpinned =
                         await
-                        tile.RequestDeleteForSelectionAsync(Utils.GetElementRect((FrameworkElement) sender),
+                        tile.RequestDeleteForSelectionAsync(Utils.GetElementRect((FrameworkElement)sender),
                                                             Placement.Above);
                     if (isUnpinned)
                     {
@@ -463,7 +467,7 @@ namespace TheShoppingList
             // Note that the status message is updated when the async operation to pin the tile completes.
             bool isPinned =
                 await
-                secondaryTile.RequestCreateForSelectionAsync(Utils.GetElementRect((FrameworkElement) sender),
+                secondaryTile.RequestCreateForSelectionAsync(Utils.GetElementRect((FrameworkElement)sender),
                                                              Placement.Above);
             if (isPinned)
             {
@@ -527,5 +531,47 @@ namespace TheShoppingList
         }
 
         #endregion
+
+        private void OnShareList(object sender, RoutedEventArgs e)
+        {
+            Popup popUp = new Popup();
+            popUp.IsLightDismissEnabled = true;
+            StackPanel panel = new StackPanel();
+            panel.Background = bottomAppBar.Background;
+            panel.Height = 60;
+            panel.Width = 180;
+            Button btnFaceboook = new Button();
+            btnFaceboook.Content = "On Facebook";
+            btnFaceboook.Style = (Style)App.Current.Resources["TextButtonStyle"];
+            btnFaceboook.Margin = new Thickness(20, 5, 20, 5);
+            btnFaceboook.Click += ShareOnFacebookClick;
+            Button btnTwitter = new Button();
+            btnTwitter.Content = "On Twitter";
+            btnTwitter.Style = (Style)App.Current.Resources["TextButtonStyle"];
+            btnTwitter.Margin = new Thickness(20, 5, 20, 5);
+            btnTwitter.Click += ShareOnTwitterClick;
+            panel.Children.Add(btnFaceboook);
+            popUp.Child = panel;
+            popUp.HorizontalOffset = Window.Current.CoreWindow.Bounds.Right - (Window.Current.CoreWindow.Bounds.Right - panel.Width - 4);
+            popUp.VerticalOffset = Window.Current.CoreWindow.Bounds.Bottom - bottomAppBar.ActualHeight - panel.Height - 4;
+            popUp.IsOpen = true;
+
+        }
+
+        private void ShareOnTwitterClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void ShareOnFacebookClick(object sender, RoutedEventArgs e)
+        {
+            if (fbClient.IsLoggedIn == false)
+                fbClient.Login();
+            PostDetails postDetails = new PostDetails();
+            postDetails.Caption = "This is my shopping list";
+            postDetails.Name = SelectedList.Name;
+            postDetails.Message = SelectedList.ToFacebook();
+            bool postMessage = await fbClient.PostMessage("me", postDetails);
+        }
     }
 }
