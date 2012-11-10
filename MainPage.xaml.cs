@@ -568,7 +568,7 @@ namespace TheShoppingList
         {
             try
             {
-                await fbClient.GetUserDetails("dsa");
+                await fbClient.GetUserDetails("me");
             }
             catch (Exception)
             {
