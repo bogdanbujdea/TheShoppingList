@@ -44,6 +44,29 @@ namespace TheShoppingList.Classes
             }
         }
 
+        public async Task<StorageFile> SerializeList(ShoppingList list)
+        {
+            try
+            {
+                StorageFile storageList = await ApplicationData.Current.LocalFolder.CreateFileAsync(
+            list.Name + ".shoplist", CreationCollisionOption.ReplaceExisting);
+                IRandomAccessStream sessionRandomAccess = await storageList.OpenAsync(FileAccessMode.ReadWrite);
+                IOutputStream sessionOutputStream = sessionRandomAccess.GetOutputStreamAt(0);
+                var serializer = new XmlSerializer(typeof(ShoppingList));
+
+
+                serializer.Serialize(sessionOutputStream.AsStreamForWrite(), list);
+                sessionRandomAccess.Dispose();
+                await sessionOutputStream.FlushAsync();
+                sessionOutputStream.Dispose();
+                return storageList;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public async Task<bool> GetListsAsync()
         {
             try

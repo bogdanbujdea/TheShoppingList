@@ -167,7 +167,6 @@
     </Content>
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\cart.png" />
-    <Content Include="Assets\unchecked.png" />
     <Content Include="Assets\WideLogo.png" />
     <Content Include="Common\ReadMe.txt" />
     <Content Include="Data\app-listing-uri.xml" />

@@ -407,7 +407,7 @@ namespace TheShoppingList
             dataTransferManager.DataRequested -= ShareStorageItemsHandler;
         }
 
-        private void ShareStorageItemsHandler(DataTransferManager sender,
+        private async  void ShareStorageItemsHandler(DataTransferManager sender,
                                                     DataRequestedEventArgs e)
         {
             DataRequest request = e.Request;
@@ -423,8 +423,15 @@ namespace TheShoppingList
             {
                 if (SelectedList != null)
                 {
-                    request.Data.SetHtmlFormat(SelectedList.ToHtml());
-                    request.Data.SetText(SelectedList.ToString());
+                    //request.Data.SetHtmlFormat(SelectedList.ToHtml());
+                    request.Data.SetText(SelectedList.ToFacebook());
+                    var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+                    if (source != null)
+                    {
+                        List<StorageFile> storageFiles = new List<StorageFile>();
+                        storageFiles.Add(await source.SerializeList(SelectedList));
+                        request.Data.SetStorageItems(storageFiles);
+                    }
                     //request.Data.SetUri();
                     sender.TargetApplicationChosen += sender_TargetApplicationChosen;
                 }
