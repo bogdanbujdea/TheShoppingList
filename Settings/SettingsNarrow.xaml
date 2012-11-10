@@ -1,0 +1,17 @@
+﻿<UserControl
+    x:Class="TheShoppingList.Settings.SettingsNarrow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="768"
+    d:DesignWidth="346" Width="Auto" Height="768" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+
+    <Grid >
+		<StackPanel Margin="0">
+			<TextBlock Text="Settings" Margin="0,0,0,30" FontSize="24" />
+			<CheckBox Background="Gray" Name="checkFacebook" Foreground="Black" Content="Facebook Sharing" Checked="OnFacebookChecked" HorizontalAlignment="Left" Width="270" Click="checkFacebook_Click"/>
+			<Button Content="Refresh App" Click="OnRefreshApp" Background="Gray" Foreground="Black" HorizontalAlignment="Left" Margin="0,30,0,0" Width="270"/>
+		</StackPanel>
+    </Grid>
+</UserControl>
