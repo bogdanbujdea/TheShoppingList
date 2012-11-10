@@ -1,4 +1,5 @@
 Assets\addtocart.png
+Assets\badge.png
 Assets\cart.png
 Assets\checked.png
 Assets\Logo.png
@@ -9,6 +10,7 @@ Assets\SplashScreen.png
 Assets\squareTile-sdk.png
 Assets\StoreLogo.png
 Assets\unchecked.png
+Assets\WideLogo.png
 App.xaml
 Common\StandardStyles.xaml
 FacebookDialog.xaml
@@ -18,5 +20,4 @@ NewProduct.xaml
 NewShoppingList.xaml
 Common\ReadMe.txt
 Data\app-listing-uri.xml
-list.html
 ShoppingList1.xml

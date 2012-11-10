@@ -151,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\addtocart.png" />
+    <Content Include="Assets\badge.png" />
     <Content Include="Assets\checked.png" />
     <Content Include="Assets\Logo.png" />
     <Content Include="Assets\removefromcart.png" />
@@ -165,9 +166,9 @@
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\cart.png" />
     <Content Include="Assets\unchecked.png" />
+    <Content Include="Assets\WideLogo.png" />
     <Content Include="Common\ReadMe.txt" />
     <Content Include="Data\app-listing-uri.xml" />
-    <Content Include="list.html" />
     <Content Include="ShoppingList1.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +210,9 @@
     </Reference>
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.6.0.24\lib\WinRT\Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="NotificationsExtensions">
+      <HintPath>.\NotificationsExtensions.winmd</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup />

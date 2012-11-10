@@ -34,6 +34,20 @@ namespace TheShoppingList
             this.Suspending += OnSuspending;
         }
 
+        protected override void OnFileActivated(FileActivatedEventArgs args)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            rootFrame.Navigate(typeof(MainPage), args);
+            Window.Current.Content = rootFrame;
+            MainPage p = rootFrame.Content as MainPage;
+            //p.RootNamespace = this.GetType().Namespace;
+
+            //// Shuttle the event args to the scenario selector to display the proper scenario.
+            //p.ProtocolEvent = null;
+
+            Window.Current.Activate();
+        }
+
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used when the application is launched to open a specific file, to display

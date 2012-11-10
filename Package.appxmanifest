@@ -15,16 +15,23 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="TheShoppingList.App">
-      <VisualElements DisplayName="TheShoppingList" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="TheShoppingList" ForegroundText="light" BackgroundColor="#464646">
-        <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="Assets\SplashScreen.png" />
+      <VisualElements DisplayName="TheShoppingList" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="TheShoppingList" ForegroundText="dark" BackgroundColor="#16499A" ToastCapable="false">
+        <DefaultTile ShowName="noLogos" ShortName="The Shopping List" WideLogo="Assets\WideLogo.png" />
+        <SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#16499A" />
+        <InitialRotationPreference>
+          <Rotation Preference="portrait" />
+          <Rotation Preference="landscape" />
+          <Rotation Preference="portraitFlipped" />
+          <Rotation Preference="landscapeFlipped" />
+        </InitialRotationPreference>
       </VisualElements>
       <Extensions>
-        <Extension Category="windows.fileTypeAssociation">
-          <FileTypeAssociation Name="xml">
+        <Extension Category="windows.fileTypeAssociation" Executable="TheShoppingList.exe" EntryPoint="TheShoppingList.app">
+          <FileTypeAssociation Name="shoplist">
+            <Logo>Assets\Logo.png</Logo>
             <EditFlags OpenIsSafe="true" />
             <SupportedFileTypes>
-              <FileType>.xml</FileType>
+              <FileType>.shoplist</FileType>
             </SupportedFileTypes>
           </FileTypeAssociation>
         </Extension>

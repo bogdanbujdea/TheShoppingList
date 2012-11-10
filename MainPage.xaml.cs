@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
+using Callisto.Controls;
+using NotificationsExtensions.TileContent;
 using TheShoppingList.Classes;
 using TheShoppingList.Social;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Store;
 using Windows.Data.Xml.Dom;
 using Windows.Foundation;
 using Windows.Security.Authentication.Web;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Notifications;
@@ -76,6 +83,7 @@ namespace TheShoppingList
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source == null)
                 source = new ShoppingSource();
@@ -93,7 +101,7 @@ namespace TheShoppingList
                 }
             }
             DefaultViewModel["Items"] = source.ShoppingLists;
-            InitializeTiles();
+            InitializeAppTiles();
             itemGridView.SelectionMode = ListViewSelectionMode.Single;
             bottomAppBar.IsOpen = false;
             itemGridView.SelectedIndex = -1;
@@ -114,7 +122,34 @@ namespace TheShoppingList
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            SecondaryTileID = navigationParameter as string;
+            if (navigationParameter is string)
+                SecondaryTileID = navigationParameter as string;
+            
+        }
+
+        private async Task<bool> LoadList(FileActivatedEventArgs args)
+        {
+            try
+            {
+                IStorageItem file = args.Files[0];
+                StorageFile storageFile = (file as StorageFile);
+
+                string path = args.Files[0].Path;
+                var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+                IInputStream sessionInputStream = await storageFile.OpenReadAsync();
+                var serializer = new XmlSerializer(typeof(ShoppingList));
+                var list = serializer.Deserialize(sessionInputStream.AsStreamForRead()) as ShoppingList;
+                if (list != null)
+                    source.ShoppingLists.Add(list);
+                sessionInputStream.Dispose();
+                new MessageDialog("New list added").ShowAsync();
+                return true;
+            }
+            catch (Exception exception)
+            {
+                new MessageDialog(exception.Message).ShowAsync();
+                return false;
+            }
         }
 
         protected override async void SaveState(Dictionary<string, object> pageState)
@@ -123,6 +158,7 @@ namespace TheShoppingList
             if (source != null)
                 try
                 {
+                    InitializeAppTiles();
                     await source.SaveListsAsync();
                 }
                 catch (Exception)
@@ -351,6 +387,21 @@ namespace TheShoppingList
         {
         }
 
+        private void Settings_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            // Settings Wide
+            SettingsCommand settingsw = new SettingsCommand("SettingsW", "Settings Wide", (x) =>
+            {
+                SettingsFlyout settings = new SettingsFlyout();
+                settings.FlyoutWidth = Callisto.Controls.SettingsFlyout.SettingsFlyoutWidth.Wide;
+                settings.HeaderText = "Settings Wide";
+
+                //settings.Content = new CallistoSettings.SettingsViews.SettingsWide();
+                settings.IsOpen = true;
+            });
+            args.Request.ApplicationCommands.Add(settingsw);
+        }
+
         #endregion
 
         #region ShareContract
@@ -359,14 +410,24 @@ namespace TheShoppingList
         {
             // Unregister the current page as a share source.
             UnregisterForShare();
+            if (e.Parameter is FileActivatedEventArgs)
+                LoadList(e.Parameter as FileActivatedEventArgs);
             base.OnNavigatedFrom(e);
         }
 
         public void RegisterForShare()
         {
-            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            try
+            {
 
-            dataTransferManager.DataRequested += ShareStorageItemsHandler;
+                DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+
+                dataTransferManager.DataRequested += ShareStorageItemsHandler;
+            }
+            catch (Exception)
+            {
+                
+            }
         }
 
         public void UnregisterForShare()
@@ -393,7 +454,7 @@ namespace TheShoppingList
                 {
                     request.Data.SetHtmlFormat(SelectedList.ToHtml());
                     request.Data.SetText(SelectedList.ToString());
-
+                    //request.Data.SetUri();
                     sender.TargetApplicationChosen += sender_TargetApplicationChosen;
                 }
                 else
@@ -475,7 +536,7 @@ namespace TheShoppingList
                 SelectedList.IsPinned = true;
                 TileUpdateManager.CreateTileUpdaterForSecondaryTile(SelectedList.UniqueID).EnableNotificationQueue(true);
 
-                Utils.UpdateSecondaryTile(SelectedList.UniqueID, SelectedList.Products);
+                Utils.UpdateSecondaryTile(SelectedList.UniqueID, SelectedList.Products, SelectedList.Name);
             }
             else
             {
@@ -501,34 +562,76 @@ namespace TheShoppingList
             }
         }
 
-        private void InitializeTiles()
+        private void InitializeAppTiles()
         {
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
+            ITileWidePeekImage02 appTile = TileContentFactory.CreateTileWidePeekImage02();
+            appTile.Image.Src = "ms-appx:///Assets/WideLogo.png";
+            appTile.Image.Alt = "Shopping List";
 
-            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText03);
-            XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
-
+            appTile.TextHeading.Text = "Latest Shopping Lists";
+            //XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText03);
+            //XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
+            List<string> listNames = new List<string>();
             if (source != null)
             {
                 for (int i = 0; i < 4; i++)
                 {
                     if (source.ShoppingLists.Count > i)
-                        tileTextAttributes[i].InnerText = source.ShoppingLists[i].Name;
+                        listNames.Add(source.ShoppingLists[i].Name);
                     else break;
                 }
             }
-            var tileNotification = new TileNotification(tileXml);
-            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
+            
+            if (listNames.Count > 0)
+                appTile.TextBody1.Text = listNames[0];
+            if (listNames.Count > 1)
+                appTile.TextBody2.Text = listNames[1];
+            if (listNames.Count > 2)
+                appTile.TextBody3.Text = listNames[2];
+            if (listNames.Count > 3)
+                appTile.TextBody4.Text = listNames[3];
 
-            foreach (ShoppingList shoppingList in source.ShoppingLists)
-            {
-                if (SecondaryTile.Exists(shoppingList.UniqueID))
+
+            ITileSquarePeekImageAndText01 squareTile = TileContentFactory.CreateTileSquarePeekImageAndText01();
+
+            squareTile.Image.Src = "ms-appx:///Assets/Logo.png";
+            squareTile.Image.Alt = "Lists";
+
+            squareTile.TextHeading.Text = "Lists";
+
+            if (listNames.Count > 0)
+                squareTile.TextBody1.Text = listNames[0];
+            if (listNames.Count > 1)
+                squareTile.TextBody2.Text = listNames[1];
+            if (listNames.Count > 2)
+                squareTile.TextBody3.Text = listNames[2];
+
+            appTile.SquareContent = squareTile;
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(appTile.CreateNotification());
+
+            XmlDocument badgeXml = BadgeUpdateManager.GetTemplateContent(BadgeTemplateType.BadgeGlyph);
+            XmlElement badgeElement = (XmlElement)badgeXml.SelectSingleNode("/badge");
+            badgeElement.SetAttribute("value", source.ShoppingLists.Count.ToString());
+            BadgeNotification badge = new BadgeNotification(badgeXml);
+            BadgeUpdateManager.CreateBadgeUpdaterForApplication().Update(badge);
+
+            //XmlDocument badgeXml = BadgeUpdateManager.GetTemplateContent(BadgeTemplateType.BadgeGlyph);
+            //XmlElement badgeElement = (XmlElement)badgeXml.SelectSingleNode("/badge");
+            //badgeElement.SetAttribute("value", source.ShoppingLists.Count.ToString());
+            //BadgeNotification badge = new BadgeNotification(badgeXml);
+            //BadgeUpdateManager.CreateBadgeUpdaterForApplication().Update(badge);
+            //var tileNotification = new TileNotification(tileXml);
+            //TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
+
+            if (source != null)
+                foreach (ShoppingList shoppingList in source.ShoppingLists)
                 {
-                    Utils.UpdateSecondaryTile(shoppingList.UniqueID, shoppingList.Products);
+                    if (SecondaryTile.Exists(shoppingList.UniqueID))
+                    {
+                        Utils.UpdateSecondaryTile(shoppingList.UniqueID, shoppingList.Products, shoppingList.Name);
+                    }
                 }
-            }
-
-
         }
 
         #endregion

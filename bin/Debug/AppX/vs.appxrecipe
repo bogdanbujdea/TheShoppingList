@@ -5,7 +5,7 @@
     <WindowsUser>Bogdan</WindowsUser>
     <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
     <PackageArchitecture>neutral</PackageArchitecture>
-    <RegisteredManifestChecksum>336CB14162A0994DAC79FCB8F2E8E5E226DDB7A621FE65400B932B209D90AE65</RegisteredManifestChecksum>
+    <RegisteredManifestChecksum>BAF86789D41BC114D4B47E091E57CFC2C619EDEA79DAA407E400BC624DEEF682</RegisteredManifestChecksum>
     <RegisteredPackageMoniker>0fed0162-62d9-438e-bae1-b7737ac76b5c_1.0.0.0_neutral__h72g8cah9ve1a</RegisteredPackageMoniker>
     <RegisteredUserModeAppID>0fed0162-62d9-438e-bae1-b7737ac76b5c_h72g8cah9ve1a!App</RegisteredUserModeAppID>
     <RegisteredPackageID>0fed0162-62d9-438e-bae1-b7737ac76b5c</RegisteredPackageID>
@@ -16,17 +16,17 @@
     <AppXManifest Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2012-11-10T08:30:29.521</Modified>
+      <Modified>2012-11-10T19:28:42.173</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\TheShoppingList.exe">
       <PackagePath>TheShoppingList.exe</PackagePath>
-      <Modified>2012-11-10T11:59:09.695</Modified>
+      <Modified>2012-11-10T21:14:12.105</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\TheShoppingList.pdb">
       <PackagePath>TheShoppingList.pdb</PackagePath>
-      <Modified>2012-11-10T11:59:09.587</Modified>
+      <Modified>2012-11-10T21:14:12.015</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\AdDuplexWindows.8.0.1.0\lib\winrt45\AdDuplex.Windows.dll">
       <PackagePath>AdDuplex.Windows.dll</PackagePath>
@@ -40,6 +40,10 @@
       <PackagePath>Facebook.dll</PackagePath>
       <Modified>2012-11-09T21:40:02.287</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\NotificationsExtensions.winmd">
+      <PackagePath>NotificationsExtensions.winmd</PackagePath>
+      <Modified>2012-11-10T14:12:57.870</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\Facebook.6.0.24\lib\WinRT\Facebook.xml">
       <PackagePath>Facebook.xml</PackagePath>
       <Modified>2012-11-09T21:40:02.291</Modified>
@@ -48,6 +52,10 @@
       <PackagePath>Assets\addtocart.png</PackagePath>
       <Modified>2012-09-29T00:54:28.329</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\badge.png">
+      <PackagePath>Assets\badge.png</PackagePath>
+      <Modified>2012-11-10T14:44:47.531</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\checked.png">
       <PackagePath>Assets\checked.png</PackagePath>
       <Modified>2012-09-28T22:12:12.870</Modified>
@@ -55,7 +63,7 @@
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\Logo.png">
       <PackagePath>Assets\Logo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2012-11-07T23:43:27.259</Modified>
+      <Modified>2012-11-10T13:30:05.797</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\removefromcart.png">
       <PackagePath>Assets\removefromcart.png</PackagePath>
@@ -64,16 +72,16 @@
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\SmallLogo.png">
       <PackagePath>Assets\SmallLogo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2012-11-09T10:22:29.296</Modified>
+      <Modified>2012-11-10T13:54:54.074</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\smallTile-sdk.png">
       <PackagePath>Assets\smallTile-sdk.png</PackagePath>
-      <Modified>2012-11-07T23:43:51.938</Modified>
+      <Modified>2012-11-10T13:53:43.997</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\SplashScreen.png">
       <PackagePath>Assets\SplashScreen.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2012-03-15T17:42:52.000</Modified>
+      <Modified>2012-11-10T15:29:23.499</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\squareTile-sdk.png">
       <PackagePath>Assets\squareTile-sdk.png</PackagePath>
@@ -92,6 +100,11 @@
       <PackagePath>Assets\unchecked.png</PackagePath>
       <Modified>2012-09-28T22:19:24.255</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\WideLogo.png">
+      <PackagePath>Assets\WideLogo.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2012-11-10T14:53:49.938</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Common\ReadMe.txt">
       <PackagePath>Common\ReadMe.txt</PackagePath>
       <Modified>2012-09-22T11:49:45.248</Modified>
@@ -104,10 +117,6 @@
       <PackagePath>ShoppingList1.xml</PackagePath>
       <Modified>2012-11-05T22:34:59.750</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\list.html">
-      <PackagePath>list.html</PackagePath>
-      <Modified>2012-11-06T23:08:01.355</Modified>
-    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\App.xaml">
       <PackagePath>App.xaml</PackagePath>
       <Modified>2012-10-24T22:52:03.527</Modified>
@@ -118,7 +127,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\FacebookDialog.xaml">
       <PackagePath>FacebookDialog.xaml</PackagePath>
-      <Modified>2012-11-10T11:59:03.007</Modified>
+      <Modified>2012-11-10T12:01:59.738</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\GroupedProducts.xaml">
       <PackagePath>GroupedProducts.xaml</PackagePath>
@@ -146,7 +155,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2012-11-10T07:12:15.542</Modified>
+      <Modified>2012-11-10T18:44:18.783</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

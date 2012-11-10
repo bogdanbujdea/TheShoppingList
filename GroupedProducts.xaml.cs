@@ -143,7 +143,7 @@ namespace TheShoppingList
 
         void Products_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            Utils.UpdateSecondaryTile(ShoppingList.UniqueID, ShoppingList.Products);
+            Utils.UpdateSecondaryTile(ShoppingList.UniqueID, ShoppingList.Products, ShoppingList.Name);
         }
 
         private void SetProductsPrice()

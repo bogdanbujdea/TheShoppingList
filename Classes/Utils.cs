@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using NotificationsExtensions.TileContent;
 using Windows.Data.Xml.Dom;
 using Windows.Foundation;
 using Windows.System.UserProfile;
@@ -27,49 +28,62 @@ namespace TheShoppingList.Classes
             return !regex.IsMatch(text);
         }
 
-        public static void UpdateSecondaryTile(string tileID, ObservableCollection<Product> products)
+        public static void UpdateSecondaryTile(string tileID, ObservableCollection<Product> products, string ListName)
         {
             if(SecondaryTile.Exists(tileID)  == false)
                 return;
-            var textXmlTile = GetXmlTextTile(products);
-            TileNotification tileTextNotification = new TileNotification(textXmlTile) {Tag = "products"};
-            var imageXmlTile = GetXmlImageTile(products);
-            TileNotification tileImageNotification = new TileNotification(imageXmlTile) {Tag = "image"};
-            // Send the notification to the secondary tile by creating a secondary tile updater
-            try
-            {
-                TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).Update(tileTextNotification);
-                TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).Update(tileImageNotification);
-            }
-            catch (Exception)
-            {
-                
-            }
+
+
+            //var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
+            ITileWidePeekImage02 secAppTile = TileContentFactory.CreateTileWidePeekImage02();
+            secAppTile.Image.Src = "ms-appx:///Assets/WideLogo.png";
+            secAppTile.Image.Alt = ListName;
+
+            secAppTile.TextHeading.Text = "Products On List";
+            //XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText03);
+            //XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
+            List<string> productNames = new List<string>();
+             for (int i = 0; i < 4; i++)
+                {
+                    if (products.Count > i && products[i].IsBought == false)
+                        productNames.Add(products[i].Title);
+                    else break;
+                }
+            if (productNames.Count > 0)
+                 secAppTile.TextBody1.Text = productNames[0];
+             if (productNames.Count > 1)
+                 secAppTile.TextBody2.Text = productNames[1];
+             if (productNames.Count > 2)
+                 secAppTile.TextBody3.Text = productNames[2];
+             if (productNames.Count > 3)
+                 secAppTile.TextBody4.Text = productNames[3];
+
+
+            ITileSquarePeekImageAndText01 secSquareTile = TileContentFactory.CreateTileSquarePeekImageAndText01();
+
+            secSquareTile.Image.Src = "ms-appx:///Assets/Logo.png";
+            secSquareTile.Image.Alt = "Products";
+
+            secSquareTile.TextHeading.Text = "Products";
+
+            if (productNames.Count > 0)
+                secSquareTile.TextBody1.Text = productNames[0];
+            if (productNames.Count > 1)
+                secSquareTile.TextBody2.Text = productNames[1];
+            if (productNames.Count > 2)
+                secSquareTile.TextBody3.Text = productNames[2];
+
+            secAppTile.SquareContent = secSquareTile;
+            TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID).Update(secAppTile.CreateNotification());
+            XmlDocument badgeXml = BadgeUpdateManager.GetTemplateContent(BadgeTemplateType.BadgeGlyph);
+            XmlElement badgeElement = (XmlElement)badgeXml.SelectSingleNode("/badge");
+            badgeElement.SetAttribute("value",products.Count.ToString());
+            BadgeNotification badge = new BadgeNotification(badgeXml);
+            BadgeUpdateManager.CreateBadgeUpdaterForSecondaryTile(tileID).Update(badge);
+            
         }
 
-        private static XmlDocument GetXmlImageTile(ObservableCollection<Product> products)
-        {
-            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareImage);
-            XmlNodeList imageTags = tileXml.GetElementsByTagName("image");
-            imageTags[0].Attributes[1].InnerText = "ms-appx:///Assets/squareTile-sdk.png";
-            return tileXml;
-        }
-
-        private static XmlDocument GetXmlTextTile(ObservableCollection<Product> products)
-        {
-            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText03);
-            XmlNodeList textAttributes = tileXml.GetElementsByTagName("text");
-            int i = 0;
-            for (int index = 0; index < products.Count; index++)
-            {
-                if (products.Count > i)
-                    textAttributes[i].InnerText = products[i].Title;
-                else break;
-                if (i++ == 3)
-                    break;
-            }
-            return tileXml;
-        }
+        
 
         public static void SortProducts(ShoppingList list)
         {
