@@ -581,7 +581,10 @@ namespace TheShoppingList
             popup.Child = new FacebookDialog();
             popup.VerticalAlignment = VerticalAlignment.Center;
             popup.HorizontalAlignment = HorizontalAlignment.Center;
-            popup.Margin = new Thickness(500, 300,500,300);
+            double height = Window.Current.Bounds.Height;
+            double width = Window.Current.Bounds.Width;
+
+            popup.Margin = new Thickness((width - 400) / 2, (height - 300)/2, (width - 400)/2, (height - 400)/2);
             popup.IsOpen = true;
         }
     }
