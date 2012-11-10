@@ -16,17 +16,17 @@
     <AppXManifest Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2012-11-09T22:09:37.560</Modified>
+      <Modified>2012-11-10T08:30:29.521</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\TheShoppingList.exe">
       <PackagePath>TheShoppingList.exe</PackagePath>
-      <Modified>2012-11-10T01:44:09.756</Modified>
+      <Modified>2012-11-10T09:39:04.334</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\TheShoppingList.pdb">
       <PackagePath>TheShoppingList.pdb</PackagePath>
-      <Modified>2012-11-10T01:44:09.731</Modified>
+      <Modified>2012-11-10T09:39:04.304</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\AdDuplexWindows.8.0.1.0\lib\winrt45\AdDuplex.Windows.dll">
       <PackagePath>AdDuplex.Windows.dll</PackagePath>
@@ -116,6 +116,10 @@
       <PackagePath>Common\StandardStyles.xaml</PackagePath>
       <Modified>2012-11-09T21:00:22.735</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\FacebookDialog.xaml">
+      <PackagePath>FacebookDialog.xaml</PackagePath>
+      <Modified>2012-11-10T09:35:19.210</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\GroupedProducts.xaml">
       <PackagePath>GroupedProducts.xaml</PackagePath>
       <Modified>2012-11-09T20:10:10.911</Modified>
@@ -142,7 +146,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2012-11-07T23:55:42.655</Modified>
+      <Modified>2012-11-10T07:12:15.542</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

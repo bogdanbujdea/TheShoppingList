@@ -86,6 +86,9 @@
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\Common\StandardStyles.xaml">
       <PackagePath>Common\StandardStyles.xaml</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\FacebookDialog.xaml">
+      <PackagePath>FacebookDialog.xaml</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\GroupedProducts.xaml">
       <PackagePath>GroupedProducts.xaml</PackagePath>
     </AppxPackagedFile>

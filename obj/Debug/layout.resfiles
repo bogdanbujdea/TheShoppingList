@@ -11,6 +11,7 @@ Assets\StoreLogo.png
 Assets\unchecked.png
 App.xaml
 Common\StandardStyles.xaml
+FacebookDialog.xaml
 GroupedProducts.xaml
 MainPage.xaml
 NewProduct.xaml

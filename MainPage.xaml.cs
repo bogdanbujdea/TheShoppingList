@@ -36,7 +36,8 @@ namespace TheShoppingList
         public string SecondaryTileID { get; set; }
         public static MainPage Page { get; set; }
         public ShoppingList SelectedList { get; set; }
-        private FacebookClient fbClient;
+        public FacebookClient fbClient;
+
         public MainPage()
         {
             InitializeComponent();
@@ -565,13 +566,23 @@ namespace TheShoppingList
 
         private async void ShareOnFacebookClick(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                await fbClient.GetUserDetails("dsa");
+            }
+            catch (Exception)
+            {
+                fbClient.AccessToken = string.Empty;
+                fbClient.IsLoggedIn = false;
+            }
             if (fbClient.IsLoggedIn == false)
-                fbClient.Login();
-            PostDetails postDetails = new PostDetails();
-            postDetails.Caption = "This is my shopping list";
-            postDetails.Name = SelectedList.Name;
-            postDetails.Message = SelectedList.ToFacebook();
-            bool postMessage = await fbClient.PostMessage("me", postDetails);
+                await fbClient.Login();
+            Popup popup = new Popup();
+            popup.Child = new FacebookDialog();
+            popup.VerticalAlignment = VerticalAlignment.Center;
+            popup.HorizontalAlignment = HorizontalAlignment.Center;
+            popup.Margin = new Thickness(500, 300,500,300);
+            popup.IsOpen = true;
         }
     }
 }

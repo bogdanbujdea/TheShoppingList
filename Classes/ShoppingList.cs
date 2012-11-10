@@ -170,9 +170,11 @@ namespace TheShoppingList.Classes
 
             stringList.Append(Name);
             stringList.AppendLine();
-            int i = 0;
+            int i = 1;
             foreach (var product in Products)
             {
+                if(product.IsBought)
+                    continue;
                 stringList.Append(i++.ToString() + ". " + product.Title + ", " );
 
                 
