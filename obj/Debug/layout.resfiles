@@ -18,6 +18,8 @@ GroupedProducts.xaml
 MainPage.xaml
 NewProduct.xaml
 NewShoppingList.xaml
+Settings\About.xaml
+Settings\SettingsNarrow.xaml
 Common\ReadMe.txt
 Data\app-listing-uri.xml
 ShoppingList1.xml

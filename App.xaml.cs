@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Callisto.Controls;
 using TheShoppingList.Classes;
+using TheShoppingList.Settings;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -69,7 +73,7 @@ namespace TheShoppingList
                 {
                     //TODO: Load state from previously suspended application
                 }
-
+                SettingsPane.GetForCurrentView().CommandsRequested += Settings_CommandsRequested;
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
@@ -86,6 +90,48 @@ namespace TheShoppingList
             }
             // Ensure the current window is active
             Window.Current.Activate();
+        }
+
+        private void Settings_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            // Settings Wide
+            //SettingsCommand storage = new SettingsCommand("SettingsW", "Settings Wide", (x) =>
+            //{
+            //    SettingsFlyout settings = new SettingsFlyout();
+            //    settings.FlyoutWidth = Callisto.Controls.SettingsFlyout.SettingsFlyoutWidth.Wide;
+            //    settings.HeaderText = "Settings Wide";
+
+            //    settings.Content = new SettingsWide();
+            //    settings.IsOpen = true;
+            //});
+            //args.Request.ApplicationCommands.Add(storage);
+
+            // Settings Narrow
+            SettingsCommand settingsNarrow = new SettingsCommand("SettingsNarrow", "List Settings", (x) =>
+            {
+                SettingsFlyout settings = new SettingsFlyout();
+                settings.FlyoutWidth = Callisto.Controls.SettingsFlyout.SettingsFlyoutWidth.Narrow;
+                //settings.HeaderBrush = new SolidColorBrush(Colors.Blue);
+                //settings.Background = new SolidColorBrush(Colors.Gray);
+                settings.HeaderText = "List Settings";
+
+                settings.Content = new SettingsNarrow();
+                settings.IsOpen = true;
+            });
+            args.Request.ApplicationCommands.Add(settingsNarrow);
+
+
+            // About
+            SettingsCommand about = new SettingsCommand("About", "About", (x) =>
+            {
+                SettingsFlyout settings = new SettingsFlyout();
+                settings.FlyoutWidth = SettingsFlyout.SettingsFlyoutWidth.Narrow;
+                settings.HeaderText = "About";
+
+                settings.Content = new About();
+                settings.IsOpen = true;
+            });
+            args.Request.ApplicationCommands.Add(about);
         }
 
         /// <summary>

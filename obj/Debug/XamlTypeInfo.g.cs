@@ -158,6 +158,10 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
 
         private object Activate_23_MainPage() { return new global::TheShoppingList.MainPage(); }
 
+        private object Activate_24_About() { return new global::TheShoppingList.Settings.About(); }
+
+        private object Activate_25_SettingsNarrow() { return new global::TheShoppingList.Settings.SettingsNarrow(); }
+
         private void VectorAdd_1_ObservableCollection(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::TheShoppingList.Classes.ShoppingList>)instance;
@@ -499,6 +503,18 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 AddToMapOfTypeToStandardName(typeof(global::System.String),
                                                    "String");
                 userType.AddMemberName("SelectedList");
+                xamlType = userType;
+                break;
+
+            case "TheShoppingList.Settings.About":
+                userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.Settings.About), GetXamlTypeByName("Windows.UI.Xaml.Controls.UserControl"));
+                userType.Activator = Activate_24_About;
+                xamlType = userType;
+                break;
+
+            case "TheShoppingList.Settings.SettingsNarrow":
+                userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.Settings.SettingsNarrow), GetXamlTypeByName("Windows.UI.Xaml.Controls.UserControl"));
+                userType.Activator = Activate_25_SettingsNarrow;
                 xamlType = userType;
                 break;
 

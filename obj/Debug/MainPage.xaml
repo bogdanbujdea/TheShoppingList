@@ -28,7 +28,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Name="ItemControls">
                     <Button x:ConnectionId='5' Style="{StaticResource EditAppBarButtonStyle}"                 />
                     <Button x:ConnectionId='6' Style="{StaticResource DeleteAppBarButtonStyle}"                   />
-                    <Button x:ConnectionId='7' Style="{StaticResource ShareAppBarButtonStyle}"                    ></Button>
+                    <Button x:ConnectionId='7' Style="{StaticResource ShareAppBarButtonStyle}" Name="btnShare" x:FieldModifier="public"                    ></Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button x:ConnectionId='2' Style="{StaticResource AddAppBarButtonStyle}"                     />
@@ -105,7 +105,7 @@
             <local:NewShoppingList x:Name="newShoppingList" />
         </Popup>
         
-        <Button x:ConnectionId='10' Grid.Row="1" Name="btnAddList" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                      Style="{StaticResource AddAppBarButtonStyle}" ></Button>
+        <Button x:ConnectionId='10' Grid.Row="1" Name="btnAddList" x:FieldModifier="public" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                      Style="{StaticResource AddAppBarButtonStyle}" ></Button>
             <!-- Vertical scrolling list only used when snapped -->
         <ListView x:ConnectionId='11'
             x:Name="itemListView"

@@ -44,10 +44,11 @@ namespace TheShoppingList
         public static MainPage Page { get; set; }
         public ShoppingList SelectedList { get; set; }
         public FacebookClient fbClient;
-
+        public bool FacebookShare;
         public MainPage()
         {
             InitializeComponent();
+            FacebookShare = true;
             Loaded += MainPage_Loaded;
             Application.Current.Suspending += Current_Suspending;
             Application.Current.Resuming += Current_Resuming;
@@ -58,7 +59,6 @@ namespace TheShoppingList
             Application.Current.Resources["newListSize"] = windowSize;
             Page = this;
 
-            SettingsPane.GetForCurrentView().CommandsRequested += onCommandsRequested;
             RegisterForShare();
             fbClient = new FacebookClient();
         }
@@ -350,6 +350,8 @@ namespace TheShoppingList
             }
             SelectedList = e.AddedItems[0] as ShoppingList;
             ItemControls.Visibility = Visibility.Visible;
+            if(FacebookShare == false)
+                btnShare.Visibility = Visibility.Collapsed;
             ToggleAppBarButton();
             bottomAppBar.IsOpen = true;
         }
@@ -364,46 +366,15 @@ namespace TheShoppingList
             else
             {
                 ItemControls.Visibility = Visibility.Visible;
+                if (FacebookShare == false)
+                    btnShare.Visibility = Visibility.Collapsed;
                 btnPinList.Visibility = Visibility.Visible;
             }
         }
 
         #endregion
 
-        #region Setting
-
-        private void onCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
-        {
-            UICommandInvokedHandler handler = onSettingsCommand;
-            args.Request.ApplicationCommands.Clear();
-            var privacyCommand = new SettingsCommand("privacyPage", "Privacy", handler);
-            var getProVersion = new SettingsCommand("proPage", "Get Pro Version", handler);
-
-            args.Request.ApplicationCommands.Add(privacyCommand);
-            args.Request.ApplicationCommands.Add(getProVersion);
-        }
-
-        private void onSettingsCommand(IUICommand command)
-        {
-        }
-
-        private void Settings_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
-        {
-            // Settings Wide
-            SettingsCommand settingsw = new SettingsCommand("SettingsW", "Settings Wide", (x) =>
-            {
-                SettingsFlyout settings = new SettingsFlyout();
-                settings.FlyoutWidth = Callisto.Controls.SettingsFlyout.SettingsFlyoutWidth.Wide;
-                settings.HeaderText = "Settings Wide";
-
-                //settings.Content = new CallistoSettings.SettingsViews.SettingsWide();
-                settings.IsOpen = true;
-            });
-            args.Request.ApplicationCommands.Add(settingsw);
-        }
-
-        #endregion
-
+       
         #region ShareContract
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
