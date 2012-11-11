@@ -89,7 +89,7 @@ namespace TheShoppingList
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source == null)
                 source = new ShoppingSource();
@@ -130,7 +130,7 @@ namespace TheShoppingList
         {
             if (navigationParameter is string)
                 SecondaryTileID = navigationParameter as string;
-            
+
         }
 
         private async Task<bool> LoadList(StorageFile args)
@@ -354,7 +354,7 @@ namespace TheShoppingList
             }
             SelectedList = e.AddedItems[0] as ShoppingList;
             ItemControls.Visibility = Visibility.Visible;
-            if(FacebookShare == false)
+            if (FacebookShare == false)
                 btnShare.Visibility = Visibility.Collapsed;
             ToggleAppBarButton();
             bottomAppBar.IsOpen = true;
@@ -378,7 +378,7 @@ namespace TheShoppingList
 
         #endregion
 
-       
+
         #region ShareContract
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -407,7 +407,7 @@ namespace TheShoppingList
             }
             catch (Exception)
             {
-                
+
             }
         }
 
@@ -417,7 +417,7 @@ namespace TheShoppingList
             dataTransferManager.DataRequested -= ShareStorageItemsHandler;
         }
 
-        private async  void ShareStorageItemsHandler(DataTransferManager sender,
+        private async void ShareStorageItemsHandler(DataTransferManager sender,
                                                     DataRequestedEventArgs e)
         {
             DataRequest request = e.Request;
@@ -434,7 +434,7 @@ namespace TheShoppingList
                 if (SelectedList != null)
                 {
                     //request.Data.SetHtmlFormat(SelectedList.ToHtml());
-                    
+
                     request.Data.SetText(SelectedList.ToFacebook());
                     var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
                     if (source != null)
@@ -571,7 +571,7 @@ namespace TheShoppingList
                     else break;
                 }
             }
-            
+
             if (listNames.Count > 0)
                 appTile.TextBody1.Text = listNames[0];
             if (listNames.Count > 1)
@@ -648,7 +648,6 @@ namespace TheShoppingList
             popUp.HorizontalOffset = Window.Current.CoreWindow.Bounds.Right - (Window.Current.CoreWindow.Bounds.Right - panel.Width - 4);
             popUp.VerticalOffset = Window.Current.CoreWindow.Bounds.Bottom - bottomAppBar.ActualHeight - panel.Height - 4;
             popUp.IsOpen = true;
-
         }
 
         private void ShareOnTwitterClick(object sender, RoutedEventArgs e)
@@ -676,31 +675,31 @@ namespace TheShoppingList
             double height = Window.Current.Bounds.Height;
             double width = Window.Current.Bounds.Width;
 
-            popup.Margin = new Thickness((width - 400) / 2, (height - 300)/2, (width - 400)/2, (height - 400)/2);
+            popup.Margin = new Thickness((width - 400) / 2, (height - 300) / 2, (width - 400) / 2, (height - 400) / 2);
             popup.IsOpen = true;
         }
 
         private async void OnFilePickerOpen(object sender, RoutedEventArgs e)
         {
 
-            
-                FileOpenPicker openPicker = new FileOpenPicker();
-                openPicker.ViewMode = PickerViewMode.List;
-                openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-                openPicker.FileTypeFilter.Add(".shoplist");
-                IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
-                if (files.Count > 0)
+
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.List;
+            openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            openPicker.FileTypeFilter.Add(".shoplist");
+            IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
+            if (files.Count > 0)
+            {
+                // Application now has read/write access to the picked file(s)
+                foreach (StorageFile file in files)
                 {
-                    // Application now has read/write access to the picked file(s)
-                    foreach (StorageFile file in files)
-                    {
-                        LoadList(file);
-                    }
+                    LoadList(file);
                 }
-                else
-                {
-                    new MessageDialog("Operation cancelled.").ShowAsync();
-                }
+            }
+            else
+            {
+                new MessageDialog("Operation cancelled.").ShowAsync();
+            }
         }
         #region Drag Events
         private void OnListDragStarging(object sender, DragItemsStartingEventArgs e)
@@ -716,12 +715,12 @@ namespace TheShoppingList
             var texts = Utils.FindVisualChildren<TextBlock>(sender as Grid);
             var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
             ShoppingList copyList = null;
-            
+
             foreach (var shoppingList in source.ShoppingLists)
             {
                 foreach (var textBlock in texts)
                 {
-                    if(textBlock.Text == shoppingList.Name)
+                    if (textBlock.Text == shoppingList.Name)
                     {
                         copyList = shoppingList;
                         break;

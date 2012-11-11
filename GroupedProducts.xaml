@@ -101,11 +101,17 @@
                                 <Border Margin="4,0,0,0" BorderThickness="1"  Width="200" Height="80">
                                     <StackPanel Width="200" Height="80" RightTapped="ItemRightTapped">
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding Title}" Padding="3" Style="{StaticResource TitleTextStyle}" Margin="0,7,0,0" FontFamily="Segoe Print" FontSize="30" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"/>
-                                        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
-                                            <TextBlock>Price:</TextBlock>
-                                            <TextBlock Text="{Binding Price}" FontWeight="Bold"/>
-                                        </StackPanel>
-                                        <TextBlock Text="{Binding ShopName}" HorizontalAlignment="Center" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
+                                        <Grid Margin="0,3,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock VerticalAlignment="Center">Price:</TextBlock>
+                                            <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Price}" FontWeight="Bold"/>
+                                            <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding ShopName}" HorizontalAlignment="Right" Foreground="YellowGreen" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
+                                        </Grid>
+                                        
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
@@ -182,18 +188,18 @@
                 </Grid.ColumnDefinitions>
                 <Button IsEnabled="True" Width="100" Height="70" Click="OnClickDiscard" Style="{StaticResource DiscardAppBarButtonStyle}" AllowDrop="True" Drop="ItemDropDelete" VerticalAlignment="Center"></Button>
                 <TextBlock x:Name="txblockBalance" Width="Auto" Height="70" Text="Your budget: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="164,0,24,0"/>
-                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <StackPanel x:Name="stackPanel" Grid.Column="2" Orientation="Horizontal">
                     <TextBox Name="txtBalance" Margin="0, -4, 0, 0" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True" TextChanged="OnTextBalanceTextChanged" IsReadOnly="True" DoubleTapped="OnBalanceTextDoubleTapped" Height="60" LostFocus="OnTxtBalanceLostFocus" ></TextBox>
                     <TextBlock Name="balanceCurrency" Margin="-20,0,0,0" HorizontalAlignment="Left" TextAlignment="Left" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Height="Auto"></TextBlock>
                 </StackPanel>
 
                 <TextBlock x:Name="textBlock1" Grid.Column="3" Text="Total:" Height="70"  VerticalAlignment="Center"  FontSize="26" HorizontalAlignment="Center"></TextBlock>
-                <StackPanel Grid.Column="3" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="131,0,39,0">
+                <StackPanel x:Name="stackPanel1" Grid.Column="3" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="131,0,39,0">
                     <TextBlock Name="txtTotal"   Margin="5" Foreground="White" VerticalAlignment="Center"  FontWeight="Bold" FontSize="26"  Height="70" ></TextBlock>
                     <TextBlock Name="totalCurrency" Height="70"  VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
                 </StackPanel>
                 <TextBlock x:Name="textBlock2" Grid.Column="5" Text="What's Left:" Height="70"  VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center"></TextBlock>
-                <StackPanel Grid.Column="6" Orientation="Horizontal">
+                <StackPanel x:Name="stackPanel2" Grid.Column="6" Orientation="Horizontal">
                     <TextBlock Name="txtRest" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"  FontSize="26" Height="70"></TextBlock>
                     <TextBlock Name="restCurrency" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"  FontSize="26" Height="70"></TextBlock>
                 </StackPanel>
@@ -268,6 +274,50 @@
                         <DoubleAnimation Duration="0" To="20" Storyboard.TargetProperty="(TextBlock.FontSize)" Storyboard.TargetName="textBlock1" d:IsOptimized="True"/>
                         <DoubleAnimation Duration="0" To="20" Storyboard.TargetProperty="(TextBlock.FontSize)" Storyboard.TargetName="textBlock2" d:IsOptimized="True"/>
                     </Storyboard>-->
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="txblockBalance">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="stackPanel">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="stackPanel1">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBlock1">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBlock2">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="stackPanel2">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
                 </VisualState>
 
                 <!-- The entire page respects the narrower 100-pixel margin convention for portrait -->

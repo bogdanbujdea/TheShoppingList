@@ -41,8 +41,13 @@ namespace TheShoppingList
         protected override void OnFileActivated(FileActivatedEventArgs args)
         {
             Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
+            {
+                // Create a Frame to act as the navigation context and navigate to the first page
+                rootFrame = new Frame();
+                Window.Current.Content = rootFrame;
+            }
             rootFrame.Navigate(typeof(MainPage), args);
-            Window.Current.Content = rootFrame;
             MainPage p = rootFrame.Content as MainPage;
             //p.RootNamespace = this.GetType().Namespace;
 

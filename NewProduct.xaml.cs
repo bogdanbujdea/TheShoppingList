@@ -53,6 +53,7 @@ namespace TheShoppingList
             helper.SetHidingHandler(InputPanelHiding);
             quantityType.SelectedIndex = 0;
             txtPriceLabel.Text = "Price(" + Utils.GetCountryInfo().CurrencySymbol + "):";
+            txtProductName.Focus(FocusState.Programmatic);
         }
 
         private void InputPanelHiding(InputPane input, InputPaneVisibilityEventArgs e)
@@ -123,6 +124,7 @@ namespace TheShoppingList
             {
                 new MessageDialog("You must type the product name").ShowAsync();
                 Product = null;
+                txtProductName.Focus(FocusState.Programmatic);
                 return;
             }
             int index = quantityType.SelectedIndex;
@@ -157,6 +159,7 @@ namespace TheShoppingList
                 else
                 {
                     new MessageDialog("The price must have only digits!").ShowAsync();
+                    txtProductName.Focus(FocusState.Programmatic);
                     return;
                 }
             if (txtQuantity.Text != string.Empty)
@@ -165,6 +168,7 @@ namespace TheShoppingList
                 else
                 {
                     new MessageDialog("The quantity must have only digits!").ShowAsync();
+                    txtProductName.Focus(FocusState.Programmatic);
                     return;
                 }
 
@@ -184,6 +188,7 @@ namespace TheShoppingList
             
             OnNewProductAdded(new ProductAddedArgs { Product = Product });
             txtProductName.Focus(FocusState.Programmatic);
+
         }
 
         private void ProductNameChanged(object sender, TextChangedEventArgs e)
@@ -300,6 +305,7 @@ namespace TheShoppingList
             {
                 textbox.Text = string.Empty;
             }
+            txtProductName.Focus(FocusState.Programmatic);
         }
 
 
