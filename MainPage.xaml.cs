@@ -47,6 +47,10 @@ namespace TheShoppingList
         public ShoppingList SelectedList { get; set; }
         public FacebookClient fbClient;
         public bool FacebookShare;
+        public bool Searching;
+
+        public ShoppingList DraggedList { get; set; }
+
         public MainPage()
         {
             InitializeComponent();
@@ -698,5 +702,42 @@ namespace TheShoppingList
                     new MessageDialog("Operation cancelled.").ShowAsync();
                 }
         }
+        #region Drag Events
+        private void OnListDragStarging(object sender, DragItemsStartingEventArgs e)
+        {
+            DraggedList = e.Items[0] as ShoppingList;
+        }
+
+        private async void ListDropped(object sender, DragEventArgs e)
+        {
+            var point = e.GetPosition(itemGridView);
+            var point2 = Utils.GetElementRect(sender as Grid);
+            //var findDescendant = Utils.FindDescendant<Grid>(itemGridView);
+            var texts = Utils.FindVisualChildren<TextBlock>(sender as Grid);
+            var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+            ShoppingList copyList = null;
+            
+            foreach (var shoppingList in source.ShoppingLists)
+            {
+                foreach (var textBlock in texts)
+                {
+                    if(textBlock.Text == shoppingList.Name)
+                    {
+                        copyList = shoppingList;
+                        break;
+                    }
+                }
+                if (copyList != null)
+                {
+                    foreach (var product in DraggedList.Products)
+                    {
+                        copyList.Products.Add(product);
+                    }
+                    itemGridView.ItemsSource = itemsViewSource.Source = source.ShoppingLists;
+                    return;
+                }
+            }
+        }
+        #endregion
     }
 }

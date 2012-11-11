@@ -56,3 +56,6 @@ C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppin
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\layout.resfiles.intermediate
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\resources.resfiles.intermediate
 C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\pri.resfiles.intermediate
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\SearchResultsPage.g.i.cs
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\SearchResultsPage.g.cs
+C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\obj\Debug\SearchResultsPage.xaml

@@ -105,6 +105,9 @@
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\NewShoppingList.xaml">
       <PackagePath>NewShoppingList.xaml</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\SearchResultsPage.xaml">
+      <PackagePath>SearchResultsPage.xaml</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\Settings\About.xaml">
       <PackagePath>Settings\About.xaml</PackagePath>
     </AppxPackagedFile>

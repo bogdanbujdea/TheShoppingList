@@ -17,6 +17,7 @@ GroupedProducts.xaml
 MainPage.xaml
 NewProduct.xaml
 NewShoppingList.xaml
+SearchResultsPage.xaml
 Settings\About.xaml
 Settings\SettingsNarrow.xaml
 Common\ReadMe.txt

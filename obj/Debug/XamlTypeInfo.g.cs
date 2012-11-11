@@ -158,9 +158,13 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
 
         private object Activate_23_MainPage() { return new global::TheShoppingList.MainPage(); }
 
-        private object Activate_24_About() { return new global::TheShoppingList.Settings.About(); }
+        private object Activate_24_BooleanToVisibilityConverter() { return new global::TheShoppingList.Common.BooleanToVisibilityConverter(); }
 
-        private object Activate_25_SettingsNarrow() { return new global::TheShoppingList.Settings.SettingsNarrow(); }
+        private object Activate_25_SearchResultsPage() { return new global::TheShoppingList.SearchResultsPage(); }
+
+        private object Activate_26_About() { return new global::TheShoppingList.Settings.About(); }
+
+        private object Activate_27_SettingsNarrow() { return new global::TheShoppingList.Settings.SettingsNarrow(); }
 
         private void VectorAdd_1_ObservableCollection(object instance, object item)
         {
@@ -503,18 +507,31 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 AddToMapOfTypeToStandardName(typeof(global::System.String),
                                                    "String");
                 userType.AddMemberName("SelectedList");
+                userType.AddMemberName("DraggedList");
+                xamlType = userType;
+                break;
+
+            case "TheShoppingList.Common.BooleanToVisibilityConverter":
+                userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.Common.BooleanToVisibilityConverter), GetXamlTypeByName("Object"));
+                userType.Activator = Activate_24_BooleanToVisibilityConverter;
+                xamlType = userType;
+                break;
+
+            case "TheShoppingList.SearchResultsPage":
+                userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.SearchResultsPage), GetXamlTypeByName("TheShoppingList.Common.LayoutAwarePage"));
+                userType.Activator = Activate_25_SearchResultsPage;
                 xamlType = userType;
                 break;
 
             case "TheShoppingList.Settings.About":
                 userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.Settings.About), GetXamlTypeByName("Windows.UI.Xaml.Controls.UserControl"));
-                userType.Activator = Activate_24_About;
+                userType.Activator = Activate_26_About;
                 xamlType = userType;
                 break;
 
             case "TheShoppingList.Settings.SettingsNarrow":
                 userType = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType(this, typeName, typeof(global::TheShoppingList.Settings.SettingsNarrow), GetXamlTypeByName("Windows.UI.Xaml.Controls.UserControl"));
-                userType.Activator = Activate_25_SettingsNarrow;
+                userType.Activator = Activate_27_SettingsNarrow;
                 xamlType = userType;
                 break;
 
@@ -1018,6 +1035,16 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
             var that = (global::TheShoppingList.MainPage)instance;
             that.SelectedList = (global::TheShoppingList.Classes.ShoppingList)Value;
         }
+        private object get_46_MainPage_DraggedList(object instance)
+        {
+            var that = (global::TheShoppingList.MainPage)instance;
+            return that.DraggedList;
+        }
+        private void set_46_MainPage_DraggedList(object instance, object Value)
+        {
+            var that = (global::TheShoppingList.MainPage)instance;
+            that.DraggedList = (global::TheShoppingList.Classes.ShoppingList)Value;
+        }
 
         private global::Windows.UI.Xaml.Markup.IXamlMember CreateXamlMember(string longMemberName)
         {
@@ -1305,6 +1332,12 @@ namespace TheShoppingList.TheShoppingList_XamlTypeInfo
                 xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "SelectedList", "TheShoppingList.Classes.ShoppingList");
                 xamlMember.Getter = get_45_MainPage_SelectedList;
                 xamlMember.Setter = set_45_MainPage_SelectedList;
+                break;
+            case "TheShoppingList.MainPage.DraggedList":
+                userType = (global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlUserType)GetXamlTypeByName("TheShoppingList.MainPage");
+                xamlMember = new global::TheShoppingList.TheShoppingList_XamlTypeInfo.XamlMember(this, "DraggedList", "TheShoppingList.Classes.ShoppingList");
+                xamlMember.Getter = get_46_MainPage_DraggedList;
+                xamlMember.Setter = set_46_MainPage_DraggedList;
                 break;
             }
             return xamlMember;

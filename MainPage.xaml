@@ -57,7 +57,7 @@
         
         <!-- Horizontal scrolling grid used in most view states -->
         <GridView
-            x:Name="itemGridView"
+            x:Name="itemGridView" AllowDrop="True" CanDragItems="True" DragItemsStarting="OnListDragStarging"
             AutomationProperties.AutomationId="ItemsGridView"
             AutomationProperties.Name="Items"
             TabIndex="1"
@@ -71,7 +71,7 @@
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Border CornerRadius="40" Margin="4,0,0,0" BorderThickness="1" RightTapped="OnItemRightTapped">
-                        <Grid HorizontalAlignment="Left" Width="250" Height="250">
+                        <Grid HorizontalAlignment="Left" Width="250" Height="250" AllowDrop="True" Drop="ListDropped">
                             <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" CornerRadius="45">
                                 <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
                             </Border>
@@ -81,11 +81,11 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         <ColumnDefinition Width="3*"></ColumnDefinition>
-                                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                                        <ColumnDefinition Width="2*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Budget: " HorizontalAlignment="Left" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
                                     <TextBlock Grid.Column="1" Text="{Binding UIBudget}" Margin="5,0,0,0" HorizontalAlignment="Left" Style="{StaticResource CaptionTextStyle}" Foreground="#9905188F" FontSize="18.667"></TextBlock>
-                                    <TextBlock Grid.Column="2" Text="{Binding InListCount}" FontWeight="ExtraBlack" Foreground="#FF09090A" HorizontalAlignment="Center" TextWrapping="NoWrap" Margin="15,0,15,10" FontSize="15" Width="Auto"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding InListCount, Mode=TwoWay}" FontWeight="ExtraBlack" Foreground="#FF09090A" HorizontalAlignment="Center" TextWrapping="NoWrap" Margin="15,0,10,10" FontSize="15" Width="Auto"/>
                                 </Grid>
                             </Border>
                         </Grid>

@@ -40,6 +40,7 @@ namespace TheShoppingList
             txtMessage.Text = fbText;
             UserDetails details = await MainPage.Page.fbClient.GetUserDetails("me");
             txtByUser.Text = details.Name;
+            if(fbText.Length > 51)
             txtMessageBlock.Text = fbText.Substring(0, 50) + "...";
             userImage.Source = new BitmapImage(new Uri(MainPage.Page.fbClient.GetUrlImage(details.Username), UriKind.RelativeOrAbsolute));
         }

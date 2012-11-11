@@ -5,7 +5,7 @@
     <WindowsUser>Bogdan</WindowsUser>
     <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
     <PackageArchitecture>neutral</PackageArchitecture>
-    <RegisteredManifestChecksum>BAF86789D41BC114D4B47E091E57CFC2C619EDEA79DAA407E400BC624DEEF682</RegisteredManifestChecksum>
+    <RegisteredManifestChecksum>C15758DECFF8EB9D61376FD6BA1AD3EEA043BC1B24956A42381B5B0566B496D6</RegisteredManifestChecksum>
     <RegisteredPackageMoniker>0fed0162-62d9-438e-bae1-b7737ac76b5c_1.0.0.0_neutral__h72g8cah9ve1a</RegisteredPackageMoniker>
     <RegisteredUserModeAppID>0fed0162-62d9-438e-bae1-b7737ac76b5c_h72g8cah9ve1a!App</RegisteredUserModeAppID>
     <RegisteredPackageID>0fed0162-62d9-438e-bae1-b7737ac76b5c</RegisteredPackageID>
@@ -16,17 +16,17 @@
     <AppXManifest Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2012-11-10T23:09:35.298</Modified>
+      <Modified>2012-11-11T09:37:50.383</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\TheShoppingList.exe">
       <PackagePath>TheShoppingList.exe</PackagePath>
-      <Modified>2012-11-10T23:09:32.666</Modified>
+      <Modified>2012-11-11T09:50:26.945</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\TheShoppingList.pdb">
       <PackagePath>TheShoppingList.pdb</PackagePath>
-      <Modified>2012-11-10T23:09:32.575</Modified>
+      <Modified>2012-11-11T09:50:26.836</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\AdDuplexWindows.8.0.1.0\lib\winrt45\AdDuplex.Windows.dll">
       <PackagePath>AdDuplex.Windows.dll</PackagePath>
@@ -131,7 +131,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\MainPage.xaml">
       <PackagePath>MainPage.xaml</PackagePath>
-      <Modified>2012-11-10T22:52:50.511</Modified>
+      <Modified>2012-11-11T09:50:20.231</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\NewProduct.xaml">
       <PackagePath>NewProduct.xaml</PackagePath>
@@ -140,6 +140,10 @@
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\NewShoppingList.xaml">
       <PackagePath>NewShoppingList.xaml</PackagePath>
       <Modified>2012-11-09T17:27:19.290</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\SearchResultsPage.xaml">
+      <PackagePath>SearchResultsPage.xaml</PackagePath>
+      <Modified>2012-11-10T23:26:06.163</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\Settings\About.xaml">
       <PackagePath>Settings\About.xaml</PackagePath>
@@ -159,7 +163,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2012-11-10T22:31:06.592</Modified>
+      <Modified>2012-11-10T23:39:15.408</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

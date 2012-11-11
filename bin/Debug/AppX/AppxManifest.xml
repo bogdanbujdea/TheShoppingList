@@ -42,6 +42,14 @@
             </SupportedFileTypes>
           </FileTypeAssociation>
         </Extension>
+        <Extension Category="windows.fileOpenPicker">
+          <FileOpenPicker>
+            <SupportedFileTypes>
+              <FileType>.shoplist</FileType>
+            </SupportedFileTypes>
+          </FileOpenPicker>
+        </Extension>
+        <Extension Category="windows.search" />
       </Extensions>
     </Application>
   </Applications>
