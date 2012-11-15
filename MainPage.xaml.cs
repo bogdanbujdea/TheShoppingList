@@ -57,7 +57,7 @@ namespace TheShoppingList
             AddedShoppingLists = new List<ShoppingList>();
             RegisterForShare();
             fbClient = new FacebookClient();
-            licenseInformation = CurrentAppSimulator.LicenseInformation;
+            licenseInformation = CurrentApp.LicenseInformation;
             licenseInformation.LicenseChanged += RefreshLicense;
         }
 
@@ -68,13 +68,13 @@ namespace TheShoppingList
 
         #region Initialize App
 
-        private async Task LoadAppListingUriProxyFileAsync()
-        {
-            StorageFolder proxyDataFolder = await Package.Current.InstalledLocation.GetFolderAsync("data");
-            StorageFile proxyFile = await proxyDataFolder.GetFileAsync("app-listing-uri.xml");
+        //private async Task LoadAppListingUriProxyFileAsync()
+        //{
+        //    StorageFolder proxyDataFolder = await Package.Current.InstalledLocation.GetFolderAsync("data");
+        //    StorageFile proxyFile = await proxyDataFolder.GetFileAsync("app-listing-uri.xml");
 
-            await CurrentAppSimulator.ReloadSimulatorAsync(proxyFile);
-        }
+        //    await CurrentAppSimulator.ReloadSimulatorAsync(proxyFile);
+        //}
 
         private async Task InitializeLicenseAsync()
         {
@@ -117,7 +117,7 @@ namespace TheShoppingList
                 Application.Current.Exit();
             }
 
-            await CurrentAppSimulator.RequestAppPurchaseAsync(false);
+            await CurrentApp.RequestAppPurchaseAsync(false);
             if (!licenseInformation.IsTrial && licenseInformation.IsActive)
             {
                 await
@@ -166,7 +166,7 @@ namespace TheShoppingList
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            await LoadAppListingUriProxyFileAsync();
+            //await LoadAppListingUriProxyFileAsync();
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source == null)
                 source = new ShoppingSource();

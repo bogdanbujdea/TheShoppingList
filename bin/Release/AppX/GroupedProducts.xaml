@@ -84,9 +84,9 @@
                     AppId="24355" 
                     Size="160x600"
                     />
-            <SemanticZoom x:ConnectionId='10' x:Name="Zoom" Grid.Row="0" Margin="0,-3,0,0"                                                                                          >
+            <SemanticZoom x:ConnectionId='12' x:Name="Zoom" Grid.Row="0" Margin="0,-3,0,0"                                                                                          >
                 <SemanticZoom.ZoomedInView>
-                    <GridView x:ConnectionId='14' 
+                    <GridView x:ConnectionId='16' 
             x:Name="itemGridView" CanReorderItems="True"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
@@ -99,7 +99,7 @@
                         <GridView.ItemTemplate>
                             <DataTemplate>
                                 <Border Margin="4,0,0,0" BorderThickness="1"  Width="200" Height="80">
-                                    <StackPanel x:ConnectionId='15' Width="200" Height="80"                              >
+                                    <StackPanel x:ConnectionId='17' Width="200" Height="80"                              >
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding Title}" Padding="3" Style="{StaticResource TitleTextStyle}" Margin="0,7,0,0" FontFamily="Segoe Print" FontSize="30" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"/>
                                         <Grid Margin="0,3,0,0">
                                             <Grid.ColumnDefinitions>
@@ -118,7 +118,7 @@
                         </GridView.ItemTemplate>
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <VirtualizingStackPanel x:ConnectionId='16' Orientation="Horizontal"  AllowDrop="True"                      />
+                                <VirtualizingStackPanel x:ConnectionId='18' Orientation="Horizontal"  AllowDrop="True"                      />
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                         <GridView.GroupStyle>
@@ -186,10 +186,10 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button x:ConnectionId='12' IsEnabled="True" Width="100" Height="70"                        Style="{StaticResource DiscardAppBarButtonStyle}" AllowDrop="True"                       VerticalAlignment="Center"></Button>
+                <Button x:ConnectionId='14' IsEnabled="True" Width="100" Height="70"                        Style="{StaticResource DiscardAppBarButtonStyle}" AllowDrop="True"                       VerticalAlignment="Center"></Button>
                 <TextBlock x:Name="txblockBalance" Width="Auto" Height="70" Text="Your budget: " VerticalAlignment="Center" FontSize="26" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="164,0,24,0"/>
                 <StackPanel x:Name="stackPanel" Grid.Column="2" Orientation="Horizontal">
-                    <TextBox x:ConnectionId='13' Name="txtBalance" Margin="0, -4, 0, 0" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True"                                        IsReadOnly="True"                                          Height="60"                                   ></TextBox>
+                    <TextBox x:ConnectionId='15' Name="txtBalance" Margin="0, -4, 0, 0" BorderThickness="0" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Background="#16499A" IsEnabled="True"                                        IsReadOnly="True"                                          Height="60"                                   ></TextBox>
                     <TextBlock Name="balanceCurrency" Margin="-20,0,0,0" HorizontalAlignment="Left" TextAlignment="Left" Padding="0" VerticalAlignment="top"   Foreground="White" FontWeight="Bold" FontSize="26" Height="Auto"></TextBlock>
                 </StackPanel>
 
@@ -204,11 +204,11 @@
                     <TextBlock Name="restCurrency" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"  FontSize="26" Height="70"></TextBlock>
                 </StackPanel>
             </Grid>
-            <Button x:ConnectionId='11' Grid.Row="0" Name="btnAddProduct" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                    Style="{StaticResource AddAppBarButtonStyle}" ></Button>
+            <Button x:ConnectionId='13' Grid.Row="0" Name="btnAddProduct" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                    Style="{StaticResource AddAppBarButtonStyle}" ></Button>
 
         </Grid>
         <!-- Vertical scrolling list only used when snapped -->
-        <ListView
+        <ListView x:ConnectionId='8'
             x:Name="itemListView"
             AutomationProperties.AutomationId="ItemListView"
             AutomationProperties.Name="Grouped Items"
@@ -217,16 +217,16 @@
             Margin="0,-10,0,0"
             Padding="10,0,0,60"
             ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
-            SelectionMode="None"
-            IsSwipeEnabled="false">
+            SelectionMode="Single" IsRightTapEnabled="True"
+            IsSwipeEnabled="True"                                    >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Margin="4,0,0,0" BorderThickness="1"  Width="200" Height="40">
-                        <StackPanel x:ConnectionId='9' Width="200" Height="40"                              >
+                        <StackPanel x:ConnectionId='10' Width="200" Height="40"                              >
                             <TextBlock HorizontalAlignment="Center" Text="{Binding Title}" Padding="3" Style="{StaticResource TitleTextStyle}" Margin="0,7,0,0" FontFamily="Segoe Print" FontSize="30" Foreground="{Binding Path=IsBought, Converter={StaticResource ColorConverter}}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
                                 <TextBlock>Price:</TextBlock>
-                                <TextBlock Text="{Binding Price}" FontWeight="Bold"/>
+                                <TextBlock x:ConnectionId='11' Text="{Binding Price}" FontWeight="Bold"                                    />
                             </StackPanel>
                             <TextBlock Text="{Binding ShopName}" HorizontalAlignment="Center" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
                         </StackPanel>
@@ -259,7 +259,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:ConnectionId='8' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
+            <Button x:ConnectionId='9' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Grid.Column="1" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 

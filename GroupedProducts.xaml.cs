@@ -11,6 +11,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation;
 using Windows.UI.Xaml.Controls;
@@ -39,12 +40,20 @@ namespace TheShoppingList
             balanceCurrency.Text = GetCurrency();
             restCurrency.Text = GetCurrency();
             totalCurrency.Text = GetCurrency();
+            ApplicationViewStates.CurrentStateChanged += ApplicationViewStates_CurrentStateChanged;
             InitializeLicense();
+        }
+
+        void ApplicationViewStates_CurrentStateChanged(object sender, VisualStateChangedEventArgs e)
+        {
+            var currentState = ApplicationView.Value;
+            if (currentState == ApplicationViewState.Snapped)
+                btnAddProduct.Visibility = Visibility.Collapsed;
         }
 
         private void InitializeLicense()
         {
-            var license = CurrentAppSimulator.LicenseInformation;
+            var license = CurrentApp.LicenseInformation;
             if (license.IsActive && license.IsTrial == false)
             {
                 Grid.SetColumnSpan(Zoom, 2);
@@ -89,7 +98,8 @@ namespace TheShoppingList
                 pageTitle.Text = ShoppingList.Name; //change the page name
                 SetGridBinding(); //set the binding
                 SetProductsPrice(); //initialize prices
-                itemGridView.SelectedIndex = -1; //deselect the first item
+                itemGridView.SelectedIndex = -1;
+                itemListView.SelectedIndex = -1;//deselect the first item
             }
             ShoppingList.Products.CollectionChanged += Products_CollectionChanged;
         }
@@ -137,12 +147,15 @@ namespace TheShoppingList
 
 
                     btnAddProduct.Visibility = gridViewUtils.ListIsEmpty(viewModel);
+                    var currentState = ApplicationView.Value;
+                    if(currentState == ApplicationViewState.Snapped)
+                        btnAddProduct.Visibility = Visibility.Collapsed;
                     itemGridView.SelectedIndex = -1;
                 }
             }
             catch (Exception exception)
             {
-                new MessageDialog(exception.Message + "In SetGridBinding").ShowAsync();
+                
             }
         }
 
@@ -573,5 +586,25 @@ namespace TheShoppingList
                 Frame.Navigate(typeof (MainPage));
         }
 
+        private void OnListItemRightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            rightTapped = true;
+        }
+
+        private void OnRightTappedListView(object sender, RightTappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            appBar.IsOpen = true;
+            var product = itemListView.SelectedItem as Product;
+            if (product != null)
+            {
+                SelectedProduct = product;
+                SelectedIndex = itemListView.SelectedIndex;
+            }
+            else return;
+            contextMenu.Visibility = Visibility.Visible;
+            ShowHideButtons();
+            appBar.IsOpen = true;
+        }
     }
 }
