@@ -5,7 +5,7 @@
     <WindowsUser>Bogdan</WindowsUser>
     <SolutionConfiguration>Release|AnyCPU</SolutionConfiguration>
     <PackageArchitecture>neutral</PackageArchitecture>
-    <RegisteredManifestChecksum>336CB14162A0994DAC79FCB8F2E8E5E226DDB7A621FE65400B932B209D90AE65</RegisteredManifestChecksum>
+    <RegisteredManifestChecksum>C15758DECFF8EB9D61376FD6BA1AD3EEA043BC1B24956A42381B5B0566B496D6</RegisteredManifestChecksum>
     <RegisteredPackageMoniker>0fed0162-62d9-438e-bae1-b7737ac76b5c_1.0.0.0_neutral__h72g8cah9ve1a</RegisteredPackageMoniker>
     <RegisteredUserModeAppID>0fed0162-62d9-438e-bae1-b7737ac76b5c_h72g8cah9ve1a!App</RegisteredUserModeAppID>
     <RegisteredPackageID>0fed0162-62d9-438e-bae1-b7737ac76b5c</RegisteredPackageID>
@@ -16,21 +16,45 @@
     <AppXManifest Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2012-11-02T18:00:36.384</Modified>
+      <Modified>2012-11-15T20:30:10.845</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\TheShoppingList.exe">
       <PackagePath>TheShoppingList.exe</PackagePath>
-      <Modified>2012-11-02T18:00:36.192</Modified>
+      <Modified>2012-11-15T20:33:32.152</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\TheShoppingList.pdb">
       <PackagePath>TheShoppingList.pdb</PackagePath>
-      <Modified>2012-11-02T18:00:36.169</Modified>
+      <Modified>2012-11-15T20:33:32.038</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\AdDuplexWindows.8.0.1.0\lib\winrt45\AdDuplex.Windows.dll">
+      <PackagePath>AdDuplex.Windows.dll</PackagePath>
+      <Modified>2012-11-03T01:30:23.910</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\Callisto.1.2.5\lib\winrt45\Callisto.dll">
+      <PackagePath>Callisto.dll</PackagePath>
+      <Modified>2012-11-05T22:39:32.695</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\Facebook.6.0.24\lib\WinRT\Facebook.dll">
+      <PackagePath>Facebook.dll</PackagePath>
+      <Modified>2012-11-09T21:40:02.287</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\NotificationsExtensions.winmd">
+      <PackagePath>NotificationsExtensions.winmd</PackagePath>
+      <Modified>2012-11-14T08:53:32.315</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\Facebook.6.0.24\lib\WinRT\Facebook.xml">
+      <PackagePath>Facebook.xml</PackagePath>
+      <Modified>2012-11-09T21:40:02.291</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\addtocart.png">
       <PackagePath>Assets\addtocart.png</PackagePath>
       <Modified>2012-09-29T00:54:28.329</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\badge.png">
+      <PackagePath>Assets\badge.png</PackagePath>
+      <Modified>2012-11-10T14:44:47.531</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\checked.png">
       <PackagePath>Assets\checked.png</PackagePath>
@@ -39,7 +63,7 @@
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\Logo.png">
       <PackagePath>Assets\Logo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2012-03-15T17:42:52.000</Modified>
+      <Modified>2012-11-10T13:30:05.797</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\removefromcart.png">
       <PackagePath>Assets\removefromcart.png</PackagePath>
@@ -48,12 +72,20 @@
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\SmallLogo.png">
       <PackagePath>Assets\SmallLogo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2012-03-15T17:42:52.000</Modified>
+      <Modified>2012-11-10T13:54:54.074</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\smallTile-sdk.png">
+      <PackagePath>Assets\smallTile-sdk.png</PackagePath>
+      <Modified>2012-11-10T13:53:43.997</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\SplashScreen.png">
       <PackagePath>Assets\SplashScreen.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2012-03-15T17:42:52.000</Modified>
+      <Modified>2012-11-10T15:29:23.499</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\squareTile-sdk.png">
+      <PackagePath>Assets\squareTile-sdk.png</PackagePath>
+      <Modified>2012-11-09T10:22:07.276</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\StoreLogo.png">
       <PackagePath>Assets\StoreLogo.png</PackagePath>
@@ -64,17 +96,22 @@
       <PackagePath>Assets\cart.png</PackagePath>
       <Modified>2012-09-24T17:21:29.166</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\unchecked.png">
-      <PackagePath>Assets\unchecked.png</PackagePath>
-      <Modified>2012-09-28T22:19:24.255</Modified>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Assets\WideLogo.png">
+      <PackagePath>Assets\WideLogo.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2012-11-10T14:53:49.938</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Common\ReadMe.txt">
       <PackagePath>Common\ReadMe.txt</PackagePath>
       <Modified>2012-09-22T11:49:45.248</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\Data\app-listing-uri.xml">
+      <PackagePath>Data\app-listing-uri.xml</PackagePath>
+      <Modified>2012-11-15T19:36:45.059</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\ShoppingList1.xml">
       <PackagePath>ShoppingList1.xml</PackagePath>
-      <Modified>2012-09-22T16:42:12.197</Modified>
+      <Modified>2012-11-05T22:34:59.750</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\App.xaml">
       <PackagePath>App.xaml</PackagePath>
@@ -82,35 +119,51 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\Common\StandardStyles.xaml">
       <PackagePath>Common\StandardStyles.xaml</PackagePath>
-      <Modified>2012-10-27T22:58:42.699</Modified>
+      <Modified>2012-11-09T21:00:22.735</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\FacebookDialog.xaml">
+      <PackagePath>FacebookDialog.xaml</PackagePath>
+      <Modified>2012-11-10T12:01:59.738</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\GroupedProducts.xaml">
       <PackagePath>GroupedProducts.xaml</PackagePath>
-      <Modified>2012-11-02T16:10:10.725</Modified>
+      <Modified>2012-11-12T22:02:58.247</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\MainPage.xaml">
       <PackagePath>MainPage.xaml</PackagePath>
-      <Modified>2012-10-16T15:23:25.713</Modified>
+      <Modified>2012-11-11T09:50:20.231</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\NewProduct.xaml">
       <PackagePath>NewProduct.xaml</PackagePath>
-      <Modified>2012-10-16T11:20:02.034</Modified>
+      <Modified>2012-11-13T13:56:19.572</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\NewShoppingList.xaml">
       <PackagePath>NewShoppingList.xaml</PackagePath>
-      <Modified>2012-10-16T14:04:36.648</Modified>
+      <Modified>2012-11-09T17:27:19.290</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\ProductsPage.xaml">
-      <PackagePath>ProductsPage.xaml</PackagePath>
-      <Modified>2012-10-14T02:23:03.025</Modified>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\Settings\About.xaml">
+      <PackagePath>Settings\About.xaml</PackagePath>
+      <Modified>2012-11-15T19:59:38.748</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\ProductsPageGrid.xaml">
-      <PackagePath>ProductsPageGrid.xaml</PackagePath>
-      <Modified>2012-10-14T01:21:57.499</Modified>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\Settings\PrivacyPage.xaml">
+      <PackagePath>Settings\PrivacyPage.xaml</PackagePath>
+      <Modified>2012-11-15T20:17:10.807</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\Settings\SettingsNarrow.xaml">
+      <PackagePath>Settings\SettingsNarrow.xaml</PackagePath>
+      <Modified>2012-11-15T12:47:11.151</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\AdDuplexWindows.8.0.1.0\lib\winrt45\AdDuplex.Windows\Themes\Generic.xaml">
+      <PackagePath>AdDuplex.Windows\Themes\Generic.xaml</PackagePath>
+      <Modified>2012-11-03T01:30:23.932</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\Callisto.1.2.5\lib\winrt45\Callisto\themes\Generic.xaml">
+      <PackagePath>Callisto\themes\Generic.xaml</PackagePath>
+      <Modified>2012-11-05T22:39:32.726</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2012-10-24T22:59:14.354</Modified>
+      <Modified>2012-11-15T20:30:08.768</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

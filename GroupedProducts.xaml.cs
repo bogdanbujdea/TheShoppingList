@@ -28,8 +28,6 @@ namespace TheShoppingList
     /// </summary>
     public sealed partial class GroupedProducts
     {
-        private LicenseInformation licenseInfo;
-        LicenseChangedEventHandler licenseChangeHandler = null;
         public GroupedProducts()
         {
             InitializeComponent();
@@ -41,67 +39,23 @@ namespace TheShoppingList
             balanceCurrency.Text = GetCurrency();
             restCurrency.Text = GetCurrency();
             totalCurrency.Text = GetCurrency();
-            licenseInfo = CurrentAppSimulator.LicenseInformation;
-            licenseInfo.LicenseChanged += licenseInfo_LicenseChanged;
             InitializeLicense();
         }
 
-        #region License
         private void InitializeLicense()
         {
-
-            if (licenseInfo.IsActive)
+            var license = CurrentAppSimulator.LicenseInformation;
+            if (license.IsActive && license.IsTrial == false)
             {
-                if (licenseInfo.IsTrial == false)
-                {
-                    adDuplexAd.Visibility = Visibility.Collapsed;
-                    Grid.SetColumnSpan(Zoom, 2);
-                }
-                else
-                {
-                    adDuplexAd.Visibility = Visibility.Visible;
-                    Grid.SetColumnSpan(Zoom, 1);
-                }
+                Grid.SetColumnSpan(Zoom, 2);
+                adDuplexAd.Visibility = Visibility.Collapsed;
             }
             else
             {
-                new MessageDialog("Something went wrong").ShowAsync();
+                Grid.SetColumnSpan(Zoom, 1);
+                adDuplexAd.Visibility = Visibility.Visible;
             }
-
         }
-
-        /// <summary>
-        /// Invoked when this page is about to unload
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        {
-            if (licenseChangeHandler != null)
-            {
-                CurrentAppSimulator.LicenseInformation.LicenseChanged -= licenseChangeHandler;
-            }
-            base.OnNavigatingFrom(e);
-        }
-
-        private async Task LoadAppListingUriProxyFileAsync()
-        {
-            StorageFolder proxyDataFolder = await Package.Current.InstalledLocation.GetFolderAsync("data");
-            StorageFile proxyFile = await proxyDataFolder.GetFileAsync("app-listing-uri.xml");
-            licenseChangeHandler = AppListingUriRefreshScenario;
-            CurrentAppSimulator.LicenseInformation.LicenseChanged += licenseChangeHandler;
-            await CurrentAppSimulator.ReloadSimulatorAsync(proxyFile);
-        }
-
-        private void AppListingUriRefreshScenario()
-        {
-
-        }
-
-        void licenseInfo_LicenseChanged()
-        {
-            InitializeLicense();
-        }
-        #endregion
 
         public int ListIndex { get; set; }
         public ShoppingList ShoppingList { get; set; }
@@ -138,7 +92,6 @@ namespace TheShoppingList
                 itemGridView.SelectedIndex = -1; //deselect the first item
             }
             ShoppingList.Products.CollectionChanged += Products_CollectionChanged;
-            await LoadAppListingUriProxyFileAsync();
         }
 
         void Products_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

@@ -4,4 +4,7 @@
     <UseSimulator>False</UseSimulator>
     <DoNotLaunchApp>False</DoNotLaunchApp>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DoNotLaunchApp>False</DoNotLaunchApp>
+  </PropertyGroup>
 </Project>

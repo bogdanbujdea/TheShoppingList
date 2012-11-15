@@ -5,16 +5,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="768"
-    d:DesignWidth="346" Width="346" Height="768" ScrollViewer.VerticalScrollBarVisibility="Hidden">
-    
-    <Grid Visibility="Visible">
-    	<TextBlock HorizontalAlignment="Left" Height="42.967" Margin="37.883,44.568,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="258.492" FontSize="25">
+    d:DesignWidth="346" Width="346" Height="768" >
+
+    <Grid>
+
+        
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Width="Auto">
+            <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Foreground="Black" Height="42.967" Margin="0,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="258.492" FontSize="25">
     		<Run Text="The Shopping List"/>
     		<LineBreak/>
     		<LineBreak/>
-    	</TextBlock>
-        <HyperlinkButton Visibility="Visible" FontSize="25" Content="Bogdan Bujdea" HorizontalAlignment="Left" Margin="43.453,112.533,0,0" VerticalAlignment="Top" Width="246.506" NavigateUri="http://www.microsoft.com/student/en-us/wowzapp/default.aspx"/>
-        <HyperlinkButton Visibility="Visible" FontSize="25" Content="WOWZAPP" HorizontalAlignment="Left" Margin="43.453,152.533,0,0" VerticalAlignment="Top" Width="246.506" NavigateUri="http://www.microsoft.com/student/en-us/wowzapp/default.aspx"/>
-
+            </TextBlock>
+            <HyperlinkButton Visibility="Visible" FontSize="25" Content="Bogdan B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="246.506" NavigateUri="mailto:thefunapp@gmail.com"/>
+            <TextBlock Name="txtTrial" FontSize="20" TextAlignment="Center" Foreground="Black">Trial expiration date:</TextBlock>
+            <TextBlock Name="txtTrialTime" FontSize="15" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="Black" ></TextBlock>
+        </StackPanel>
     </Grid>
 </UserControl>

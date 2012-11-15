@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Callisto.Controls;
 using NotificationsExtensions.TileContent;
 using TheShoppingList.Classes;
 using TheShoppingList.Social;
@@ -14,12 +12,10 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Store;
 using Windows.Data.Xml.Dom;
 using Windows.Foundation;
-using Windows.Security.Authentication.Web;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI;
-using Windows.UI.ApplicationSettings;
 using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.StartScreen;
@@ -41,16 +37,9 @@ namespace TheShoppingList
     /// </summary>
     public sealed partial class MainPage
     {
-        private LicenseInformation licenseInformation;
-        public string SecondaryTileID { get; set; }
-        public static MainPage Page { get; set; }
-        public ShoppingList SelectedList { get; set; }
-        public FacebookClient fbClient;
         public bool FacebookShare;
-        public bool Searching;
-
-        public ShoppingList DraggedList { get; set; }
-
+        public FacebookClient fbClient;
+        public LicenseInformation licenseInformation;
         public MainPage()
         {
             InitializeComponent();
@@ -64,36 +53,131 @@ namespace TheShoppingList
             windowSize.Height = bounds.Height;
             Application.Current.Resources["newListSize"] = windowSize;
             Page = this;
-
+            AddedShoppingLists = new List<ShoppingList>();
             RegisterForShare();
             fbClient = new FacebookClient();
+            licenseInformation = CurrentAppSimulator.LicenseInformation;
+            licenseInformation.LicenseChanged += RefreshLicense;
+        }
+
+        private async void RefreshLicense()
+        {
+            await InitializeLicenseAsync();
+        }
+
+        #region Initialize App
+
+        private async Task LoadAppListingUriProxyFileAsync()
+        {
+            StorageFolder proxyDataFolder = await Package.Current.InstalledLocation.GetFolderAsync("data");
+            StorageFile proxyFile = await proxyDataFolder.GetFileAsync("app-listing-uri.xml");
+
+            await CurrentAppSimulator.ReloadSimulatorAsync(proxyFile);
+        }
+
+        private async Task InitializeLicenseAsync()
+        {
+            try
+            {
+                if (licenseInformation.IsActive)
+                {
+                    if (licenseInformation.IsTrial)
+                    {
+                        // Display the expiration date using the DateTimeFormatter. 
+                        // For example, longDateFormat.Format(licenseInformation.ExpirationDate)
+                        await AppIsTrial();
+                    }
+                    else
+                    {
+                        Grid.SetColumnSpan(itemGridView, 2);
+                        adDuplexAd.Visibility = Visibility.Collapsed;
+                        //adDuplexAd.Visibility = Visibility.Visible;
+                    }
+                }
+                else await AppHasExpired();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private async Task AppHasExpired()
+        {
+            var result =
+                        await MessageBox.ShowAsync("The app has expired. Would you like to buy the full version?",
+                                                   "App expired", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.No)
+            {
+                await
+                new MessageDialog(
+                    "We're sorry, but you cannot use this app because the trial period expired. The app will close now!")
+                    .ShowAsync();
+                Application.Current.Exit();
+            }
+
+            await CurrentAppSimulator.RequestAppPurchaseAsync(false);
+            if (!licenseInformation.IsTrial && licenseInformation.IsActive)
+            {
+                await
+                    new MessageDialog("Thank you for buying this app!")
+                        .ShowAsync();
+                RemoveTrialFeatures();
+            }
+        }
+
+        private async Task AppIsTrial()
+        {
+            var days = (licenseInformation.ExpirationDate - DateTime.Now).Days;
+            bool Error = false;
+            try
+            {
+                if (days <= 0)
+                {
+                    await AppHasExpired();
+
+                }
+            }
+            catch (Exception)
+            {
+                Error = true;
+            }
+            if (Error)
+            {
+                await
+                    new MessageDialog(
+                        "We're sorry but the app encountered an error and it will close. Please try again!")
+                        .ShowAsync();
+                Application.Current.Exit();
+            }
+            adDuplexAd.Visibility = Visibility.Visible;
+            Grid.SetColumnSpan(itemGridView, 1);
         }
 
 
-        #region Initialize App
-        private void InitializeLicense()
+
+
+        private void RemoveTrialFeatures()
         {
-            licenseInformation = CurrentAppSimulator.LicenseInformation;
-            if (licenseInformation.IsActive)
-            {
-                if (licenseInformation.IsTrial == false)
-                {
-                    adDuplexAd.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    adDuplexAd.Visibility = Visibility.Visible;
-                }
-            }
+            adDuplexAd.Visibility = Visibility.Collapsed;
+            Grid.SetColumnSpan(itemGridView, 2);
         }
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-
+            await LoadAppListingUriProxyFileAsync();
             var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             if (source == null)
                 source = new ShoppingSource();
+
             bool noLists = await source.GetListsAsync();
+            if (AddedShoppingLists.Count > 0)
+            {
+                foreach (ShoppingList list in AddedShoppingLists)
+                {
+                    source.ShoppingLists.Add(list);
+                }
+            }
             if (noLists == false || source.ShoppingLists.Count == 0)
             {
                 btnAddList.Visibility = Visibility.Visible;
@@ -130,7 +214,14 @@ namespace TheShoppingList
         {
             if (navigationParameter is string)
                 SecondaryTileID = navigationParameter as string;
-
+            else if (navigationParameter is FileActivatedEventArgs)
+            {
+                IReadOnlyList<IStorageItem> files = (navigationParameter as FileActivatedEventArgs).Files;
+                foreach (IStorageItem storageItem in files)
+                {
+                    LoadList(storageItem as StorageFile);
+                }
+            }
         }
 
         private async Task<bool> LoadList(StorageFile args)
@@ -139,14 +230,13 @@ namespace TheShoppingList
             {
                 StorageFile storageFile = args;
 
-                var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+                var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
                 IInputStream sessionInputStream = await storageFile.OpenReadAsync();
                 var serializer = new XmlSerializer(typeof(ShoppingList));
                 var list = serializer.Deserialize(sessionInputStream.AsStreamForRead()) as ShoppingList;
                 if (list != null)
-                    source.ShoppingLists.Add(list);
+                    AddedShoppingLists.Add(list);
                 sessionInputStream.Dispose();
-                new MessageDialog("New list added").ShowAsync();
                 return true;
             }
             catch (Exception exception)
@@ -378,7 +468,6 @@ namespace TheShoppingList
 
         #endregion
 
-
         #region ShareContract
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -387,8 +476,8 @@ namespace TheShoppingList
             UnregisterForShare();
             if (e.Parameter is FileActivatedEventArgs)
             {
-                var files = (e.Parameter as FileActivatedEventArgs).Files;
-                foreach (var storageItem in files)
+                IReadOnlyList<IStorageItem> files = (e.Parameter as FileActivatedEventArgs).Files;
+                foreach (IStorageItem storageItem in files)
                 {
                     LoadList(storageItem as StorageFile);
                 }
@@ -400,14 +489,12 @@ namespace TheShoppingList
         {
             try
             {
-
                 DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
 
                 dataTransferManager.DataRequested += ShareStorageItemsHandler;
             }
             catch (Exception)
             {
-
             }
         }
 
@@ -436,10 +523,10 @@ namespace TheShoppingList
                     //request.Data.SetHtmlFormat(SelectedList.ToHtml());
 
                     request.Data.SetText(SelectedList.ToFacebook());
-                    var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+                    var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
                     if (source != null)
                     {
-                        List<StorageFile> storageFiles = new List<StorageFile>();
+                        var storageFiles = new List<StorageFile>();
                         storageFiles.Add(await source.SerializeList(SelectedList));
                         request.Data.SetStorageItems(storageFiles);
                     }
@@ -561,7 +648,7 @@ namespace TheShoppingList
             appTile.TextHeading.Text = "Latest Shopping Lists";
             //XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareText03);
             //XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
-            List<string> listNames = new List<string>();
+            var listNames = new List<string>();
             if (source != null)
             {
                 for (int i = 0; i < 4; i++)
@@ -600,9 +687,9 @@ namespace TheShoppingList
             TileUpdateManager.CreateTileUpdaterForApplication().Update(appTile.CreateNotification());
 
             XmlDocument badgeXml = BadgeUpdateManager.GetTemplateContent(BadgeTemplateType.BadgeGlyph);
-            XmlElement badgeElement = (XmlElement)badgeXml.SelectSingleNode("/badge");
+            var badgeElement = (XmlElement)badgeXml.SelectSingleNode("/badge");
             badgeElement.SetAttribute("value", source.ShoppingLists.Count.ToString());
-            BadgeNotification badge = new BadgeNotification(badgeXml);
+            var badge = new BadgeNotification(badgeXml);
             BadgeUpdateManager.CreateBadgeUpdaterForApplication().Update(badge);
 
             //XmlDocument badgeXml = BadgeUpdateManager.GetTemplateContent(BadgeTemplateType.BadgeGlyph);
@@ -625,34 +712,42 @@ namespace TheShoppingList
 
         #endregion
 
+        public string SecondaryTileID { get; set; }
+        public static MainPage Page { get; set; }
+        public ShoppingList SelectedList { get; set; }
+        public List<ShoppingList> AddedShoppingLists { get; set; }
+
+        public ShoppingList DraggedList { get; set; }
+
         private void OnShareList(object sender, RoutedEventArgs e)
         {
-            Popup popUp = new Popup();
+            var popUp = new Popup();
             popUp.IsLightDismissEnabled = true;
-            StackPanel panel = new StackPanel();
+            var panel = new StackPanel();
             panel.Background = bottomAppBar.Background;
             panel.Height = 60;
             panel.Width = 180;
-            Button btnFaceboook = new Button();
+            var btnFaceboook = new Button();
             btnFaceboook.Content = "On Facebook";
-            btnFaceboook.Style = (Style)App.Current.Resources["TextButtonStyle"];
+            btnFaceboook.Style = (Style)Application.Current.Resources["TextButtonStyle"];
             btnFaceboook.Margin = new Thickness(20, 5, 20, 5);
             btnFaceboook.Click += ShareOnFacebookClick;
-            Button btnTwitter = new Button();
+            var btnTwitter = new Button();
             btnTwitter.Content = "On Twitter";
-            btnTwitter.Style = (Style)App.Current.Resources["TextButtonStyle"];
+            btnTwitter.Style = (Style)Application.Current.Resources["TextButtonStyle"];
             btnTwitter.Margin = new Thickness(20, 5, 20, 5);
             btnTwitter.Click += ShareOnTwitterClick;
             panel.Children.Add(btnFaceboook);
             popUp.Child = panel;
-            popUp.HorizontalOffset = Window.Current.CoreWindow.Bounds.Right - (Window.Current.CoreWindow.Bounds.Right - panel.Width - 4);
-            popUp.VerticalOffset = Window.Current.CoreWindow.Bounds.Bottom - bottomAppBar.ActualHeight - panel.Height - 4;
+            popUp.HorizontalOffset = Window.Current.CoreWindow.Bounds.Right -
+                                     (Window.Current.CoreWindow.Bounds.Right - panel.Width - 4);
+            popUp.VerticalOffset = Window.Current.CoreWindow.Bounds.Bottom - bottomAppBar.ActualHeight - panel.Height -
+                                   4;
             popUp.IsOpen = true;
         }
 
         private void ShareOnTwitterClick(object sender, RoutedEventArgs e)
         {
-
         }
 
         private async void ShareOnFacebookClick(object sender, RoutedEventArgs e)
@@ -668,7 +763,7 @@ namespace TheShoppingList
             }
             if (fbClient.IsLoggedIn == false)
                 await fbClient.Login();
-            Popup popup = new Popup();
+            var popup = new Popup();
             popup.Child = new FacebookDialog();
             popup.VerticalAlignment = VerticalAlignment.Center;
             popup.HorizontalAlignment = HorizontalAlignment.Center;
@@ -681,9 +776,7 @@ namespace TheShoppingList
 
         private async void OnFilePickerOpen(object sender, RoutedEventArgs e)
         {
-
-
-            FileOpenPicker openPicker = new FileOpenPicker();
+            var openPicker = new FileOpenPicker();
             openPicker.ViewMode = PickerViewMode.List;
             openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
             openPicker.FileTypeFilter.Add(".shoplist");
@@ -701,7 +794,9 @@ namespace TheShoppingList
                 new MessageDialog("Operation cancelled.").ShowAsync();
             }
         }
+
         #region Drag Events
+
         private void OnListDragStarging(object sender, DragItemsStartingEventArgs e)
         {
             DraggedList = e.Items[0] as ShoppingList;
@@ -709,16 +804,16 @@ namespace TheShoppingList
 
         private async void ListDropped(object sender, DragEventArgs e)
         {
-            var point = e.GetPosition(itemGridView);
-            var point2 = Utils.GetElementRect(sender as Grid);
+            Windows.Foundation.Point point = e.GetPosition(itemGridView);
+            Rect point2 = Utils.GetElementRect(sender as Grid);
             //var findDescendant = Utils.FindDescendant<Grid>(itemGridView);
-            var texts = Utils.FindVisualChildren<TextBlock>(sender as Grid);
-            var source = App.Current.Resources["shoppingSource"] as ShoppingSource;
+            IEnumerable<TextBlock> texts = Utils.FindVisualChildren<TextBlock>(sender as Grid);
+            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
             ShoppingList copyList = null;
 
-            foreach (var shoppingList in source.ShoppingLists)
+            foreach (ShoppingList shoppingList in source.ShoppingLists)
             {
-                foreach (var textBlock in texts)
+                foreach (TextBlock textBlock in texts)
                 {
                     if (textBlock.Text == shoppingList.Name)
                     {
@@ -728,7 +823,7 @@ namespace TheShoppingList
                 }
                 if (copyList != null)
                 {
-                    foreach (var product in DraggedList.Products)
+                    foreach (Product product in DraggedList.Products)
                     {
                         copyList.Products.Add(product);
                     }
@@ -737,6 +832,7 @@ namespace TheShoppingList
                 }
             }
         }
+
         #endregion
     }
 }

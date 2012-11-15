@@ -7,7 +7,7 @@
     xmlns:local="using:TheShoppingList"
     xmlns:common="using:TheShoppingList.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:adduplex="using:AdDuplex.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -23,15 +23,18 @@
 
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar Name="bottomAppBar">
+        <AppBar x:ConnectionId='1' Name="bottomAppBar"                        >
             <Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button x:ConnectionId='3' Style="{StaticResource EditAppBarButtonStyle}"                 />
-                    <Button x:ConnectionId='4' Style="{StaticResource RemoveAppBarButtonStyle}"                   />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Name="ItemControls">
+                    <Button x:ConnectionId='6' Style="{StaticResource EditAppBarButtonStyle}"                 />
+                    <Button x:ConnectionId='7' Style="{StaticResource DeleteAppBarButtonStyle}"                   />
+                    <Button x:ConnectionId='8' Style="{StaticResource ShareAppBarButtonStyle}" Name="btnShare" x:FieldModifier="public"                    ></Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button x:ConnectionId='1' Style="{StaticResource AddAppBarButtonStyle}"                     />
-                    <Button x:ConnectionId='2' Style="{StaticResource RemoveAppBarButtonStyle}" AutomationProperties.Name="Remove All"                               />
+                    <Button x:ConnectionId='2' Style="{StaticResource AddAppBarButtonStyle}"                     />
+                    <Button x:ConnectionId='3' x:Name="button" Style="{StaticResource RemoveAppBarButtonStyle}" AutomationProperties.Name="Remove All"                               />
+                    <Button x:ConnectionId='4' x:Name="btnPinList"                   Style="{StaticResource PinAppBarButtonStyle}"></Button>
+                    <Button x:ConnectionId='5' Name="btnAddListFromPicker"                          Style="{StaticResource AddAppBarButtonStyle}" AutomationProperties.Name="Pick a list" ></Button>
                 </StackPanel>
             </Grid>
         </AppBar>
@@ -47,10 +50,14 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="160"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
         
         <!-- Horizontal scrolling grid used in most view states -->
-        <GridView x:ConnectionId='5'
-            x:Name="itemGridView"
+        <GridView x:ConnectionId='9'
+            x:Name="itemGridView" AllowDrop="True" CanDragItems="True"                                       
             AutomationProperties.AutomationId="ItemsGridView"
             AutomationProperties.Name="Items"
             TabIndex="1"
@@ -59,40 +66,49 @@
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
             SelectionMode="Multiple"
             IsRightTapEnabled="True"
-                                       
-            IsSwipeEnabled="True" Margin="10,0,-10,0"                         IsItemClickEnabled="True">
+                                                                             
+            IsSwipeEnabled="True" Margin="10,0,0,0"                         IsItemClickEnabled="True">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Border CornerRadius="40" Margin="4,0,0,0" BorderThickness="1" >
-                        <Grid HorizontalAlignment="Left" Width="250" Height="250">
+                    <Border x:ConnectionId='14' CornerRadius="40" Margin="4,0,0,0" BorderThickness="1"                                >
+                        <Grid x:ConnectionId='15' HorizontalAlignment="Left" Width="250" Height="250" AllowDrop="True"                   >
                             <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" CornerRadius="45">
                                 <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
                             </Border>
                             <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" Text="{Binding Name}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,5" FontFamily="Segoe Print" FontSize="24" Foreground="DarkCyan"/>
                             <Border VerticalAlignment="Bottom" CornerRadius="50" BorderThickness="1" Background="Transparent">
-                                <StackPanel VerticalAlignment="Bottom">
-
-                                    <TextBlock Text="{Binding CreatedTime}" HorizontalAlignment="Center" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontWeight="Bold"/>
-                                </StackPanel>
+                                <Grid VerticalAlignment="Bottom" Margin="25,0,25,5" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Budget: " HorizontalAlignment="Left" Style="{StaticResource SubtitleTextStyle}"></TextBlock>
+                                    <TextBlock Grid.Column="1" Text="{Binding UIBudget}" Margin="5,0,0,0" HorizontalAlignment="Left" Style="{StaticResource CaptionTextStyle}" Foreground="#9905188F" FontSize="18.667"></TextBlock>
+                                    <TextBlock Grid.Column="2" Text="{Binding InListCount, Mode=TwoWay}" FontWeight="ExtraBlack" Foreground="#FF09090A" HorizontalAlignment="Center" TextWrapping="NoWrap" Margin="15,0,10,10" FontSize="15" Width="Auto"/>
+                                </Grid>
                             </Border>
                         </Grid>
                     </Border>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        
-        <Popup x:ConnectionId='6' x:Name="ParentedPopup" Height="140" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Bottom"                      IsLightDismissEnabled="True" >
+        <adduplex:AdControl x:Name="adDuplexAd" Grid.Column="2" Grid.Row="1"
+                    AppId="24355" 
+                    Size="160x600"
+                    />
+        <Popup x:ConnectionId='10' x:Name="ParentedPopup" Height="140" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Bottom"                      IsLightDismissEnabled="True" >
             <Popup.ChildTransitions>
                 <TransitionCollection>
                     <PopupThemeTransition />
                 </TransitionCollection>
             </Popup.ChildTransitions>
-            <local:NewShoppingList />
+            <local:NewShoppingList x:Name="newShoppingList" />
         </Popup>
         
-        <Button x:ConnectionId='7' Grid.Row="1" Name="btnAddList" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                      Style="{StaticResource AddAppBarButtonStyle}" ></Button>
+        <Button x:ConnectionId='11' Grid.Row="1" Name="btnAddList" x:FieldModifier="public" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                      Style="{StaticResource AddAppBarButtonStyle}" ></Button>
             <!-- Vertical scrolling list only used when snapped -->
-        <ListView x:ConnectionId='8'
+        <ListView x:ConnectionId='12'
             x:Name="itemListView"
             AutomationProperties.AutomationId="ItemsListView"
             AutomationProperties.Name="Items"
@@ -107,13 +123,13 @@
             IsSwipeEnabled="false" IsItemClickEnabled="True"                                   />
 
         <!-- Back button and page title -->
-        <Grid>
+        <Grid x:Name="grid"  Margin="40,0,0,0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-            <Button x:ConnectionId='9' x:Name="backButton"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
+            <Button x:ConnectionId='13' x:Name="backButton" Visibility="Collapsed"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
             <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 
@@ -154,6 +170,149 @@
                         </ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemGridView" Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(AdControl.Size)" Storyboard.TargetName="adDuplexAd">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="300x250"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Column)" Storyboard.TargetName="adDuplexAd">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Int32>0</x:Int32>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.ColumnSpan)" Storyboard.TargetName="adDuplexAd">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Int32>2</x:Int32>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.ColumnSpan)" Storyboard.TargetName="itemGridView">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Int32>1</x:Int32>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.VerticalAlignment)" Storyboard.TargetName="adDuplexAd">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <VerticalAlignment>Bottom</VerticalAlignment>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.ColumnSpan)" Storyboard.TargetName="itemListView">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Int32>2</x:Int32>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.ColumnSpan)" Storyboard.TargetName="pageTitle">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Int32>1</x:Int32>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.ColumnSpan)" Storyboard.TargetName="grid">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Int32>2</x:Int32>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="ParentedPopup">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Double>300</x:Double>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="btnAddList">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.ColumnSpan)" Storyboard.TargetName="btnAddList">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Int32>2</x:Int32>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="btnAddList">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Thickness>0,0,0,150</Thickness>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="button">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.ColumnSpan)" Storyboard.TargetName="ParentedPopup">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Int32>2</x:Int32>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ParentedPopup">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.RowSpan)" Storyboard.TargetName="ParentedPopup">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Int32>2</x:Int32>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Row)" Storyboard.TargetName="ParentedPopup">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Int32>0</x:Int32>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Column)" Storyboard.TargetName="ParentedPopup">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Int32>0</x:Int32>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Popup.IsOpen)" Storyboard.TargetName="ParentedPopup">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Boolean>False</x:Boolean>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.HorizontalAlignment)" Storyboard.TargetName="ParentedPopup">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <HorizontalAlignment>Center</HorizontalAlignment>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.VerticalAlignment)" Storyboard.TargetName="ParentedPopup">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <VerticalAlignment>Top</VerticalAlignment>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>

@@ -112,31 +112,57 @@ namespace TheShoppingList
             //args.Request.ApplicationCommands.Add(storage);
 
             // Settings Narrow
-            SettingsCommand settingsNarrow = new SettingsCommand("SettingsNarrow", "List Settings", (x) =>
-            {
-                SettingsFlyout settings = new SettingsFlyout();
-                settings.FlyoutWidth = Callisto.Controls.SettingsFlyout.SettingsFlyoutWidth.Narrow;
-                //settings.HeaderBrush = new SolidColorBrush(Colors.Blue);
-                //settings.Background = new SolidColorBrush(Colors.Gray);
-                settings.HeaderText = "List Settings";
+            //SettingsCommand settingsNarrow = new SettingsCommand("SettingsNarrow", "List Settings", (x) =>
+            //{
+            //    SettingsFlyout settings = new SettingsFlyout();
+            //    settings.FlyoutWidth = Callisto.Controls.SettingsFlyout.SettingsFlyoutWidth.Narrow;
+            //    //settings.HeaderBrush = new SolidColorBrush(Colors.Blue);
+            //    //settings.Background = new SolidColorBrush(Colors.Gray);
+            //    settings.HeaderText = "List Settings";
 
-                settings.Content = new SettingsNarrow();
-                settings.IsOpen = true;
-            });
-            args.Request.ApplicationCommands.Add(settingsNarrow);
+            //    settings.Content = new SettingsNarrow();
+            //    settings.IsOpen = true;
+            //});
+            //args.Request.ApplicationCommands.Add(settingsNarrow);
 
 
             // About
             SettingsCommand about = new SettingsCommand("About", "About", (x) =>
-            {
-                SettingsFlyout settings = new SettingsFlyout();
-                settings.FlyoutWidth = SettingsFlyout.SettingsFlyoutWidth.Narrow;
-                settings.HeaderText = "About";
+                                                                              {
+                                                                                  SettingsFlyout settings =
+                                                                                      new SettingsFlyout();
+                                                                                  settings.FlyoutWidth =
+                                                                                      SettingsFlyout.SettingsFlyoutWidth
+                                                                                          .Narrow;
+                                                                                  settings.HeaderText = "About";
 
-                settings.Content = new About();
-                settings.IsOpen = true;
-            });
+                                                                                  settings.Content = new About();
+                                                                                  settings.IsOpen = true;
+                                                                              });
             args.Request.ApplicationCommands.Add(about);
+
+            var privacyCommand = new SettingsCommand("privacyPage", "Privacy", command =>
+                                                                                   {
+                                                                                       var frame = Window.Current.Content as Frame;
+                                                                                       if (
+                                                                                           frame != null)
+                                                                                           frame.Navigate(
+                                                                                               typeof (PrivacyPage));
+                                                                                   });
+            args.Request.ApplicationCommands.Add(privacyCommand);
+
+            //SettingsCommand settingsPrivacy = new SettingsCommand("SettingsPrivacy", "Privacy", (x) =>
+            //{
+            //    SettingsFlyout settings = new SettingsFlyout();
+            //    settings.FlyoutWidth = Callisto.Controls.SettingsFlyout.SettingsFlyoutWidth.Narrow;
+            //    //settings.HeaderBrush = new SolidColorBrush(Colors.Blue);
+            //    //settings.Background = new SolidColorBrush(Colors.Gray);
+            //    settings.HeaderText = "Privacy";
+
+            //    settings.Content = new SettingsNarrow();
+            //    settings.IsOpen = true;
+            //});
+            //args.Request.ApplicationCommands.Add(settingsPrivacy);
         }
 
         /// <summary>
@@ -197,7 +223,7 @@ namespace TheShoppingList
                 }
             }
 
-            frame.Navigate(typeof(SearchResultsPage), args.QueryText);
+           // frame.Navigate(typeof(SearchResultsPage), args.QueryText);
             Window.Current.Content = frame;
 
             // Ensure the current window is active
