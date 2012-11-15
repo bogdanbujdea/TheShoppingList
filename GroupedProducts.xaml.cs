@@ -455,6 +455,7 @@ namespace TheShoppingList
                 double rest = source.ShoppingLists[ListIndex].Budget - source.ShoppingLists[ListIndex].TotalCost;
                 txtRest.Text = rest.ToString();
                 CheckForTotalCostOverflow();
+                txtTotal.Text = source.ShoppingLists[ListIndex].TotalCost.ToString();
                 await source.SaveListsAsync();
             }
         }

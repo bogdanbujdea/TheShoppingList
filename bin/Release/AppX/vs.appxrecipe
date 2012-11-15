@@ -22,11 +22,11 @@
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\TheShoppingList.exe">
       <PackagePath>TheShoppingList.exe</PackagePath>
-      <Modified>2012-11-15T20:33:32.152</Modified>
+      <Modified>2012-11-15T20:43:55.681</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\TheShoppingList.pdb">
       <PackagePath>TheShoppingList.pdb</PackagePath>
-      <Modified>2012-11-15T20:33:32.038</Modified>
+      <Modified>2012-11-15T20:43:55.592</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\packages\AdDuplexWindows.8.0.1.0\lib\winrt45\AdDuplex.Windows.dll">
       <PackagePath>AdDuplex.Windows.dll</PackagePath>
@@ -127,7 +127,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\GroupedProducts.xaml">
       <PackagePath>GroupedProducts.xaml</PackagePath>
-      <Modified>2012-11-12T22:02:58.247</Modified>
+      <Modified>2012-11-15T20:42:10.915</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\bin\Release\MainPage.xaml">
       <PackagePath>MainPage.xaml</PackagePath>

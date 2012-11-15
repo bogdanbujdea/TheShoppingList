@@ -26,7 +26,7 @@
         <x:String x:Key="AppName">The Shopping List</x:String>
     </Page.Resources>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar x:ConnectionId='1' Name="appBar"                                             IsSticky="True">
+        <AppBar x:ConnectionId='1' Name="appBar"                                             IsSticky="False">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="Visible" Name="contextMenu">
                     <Button x:ConnectionId='4' Style="{StaticResource EditAppBarButtonStyle}" Name="btnEdit"                    />
