@@ -40,6 +40,7 @@ namespace TheShoppingList
         public bool FacebookShare;
         public FacebookClient fbClient;
         public LicenseInformation licenseInformation;
+        private Popup sharePopup;
         public MainPage()
         {
             InitializeComponent();
@@ -721,37 +722,29 @@ namespace TheShoppingList
 
         private void OnShareList(object sender, RoutedEventArgs e)
         {
-            var popUp = new Popup();
-            popUp.IsLightDismissEnabled = true;
-            var panel = new StackPanel();
-            panel.Background = bottomAppBar.Background;
-            panel.Height = 60;
-            panel.Width = 180;
-            var btnFaceboook = new Button();
-            btnFaceboook.Content = "On Facebook";
-            btnFaceboook.Style = (Style)Application.Current.Resources["TextButtonStyle"];
-            btnFaceboook.Margin = new Thickness(20, 5, 20, 5);
+            sharePopup = new Popup {IsLightDismissEnabled = true};
+            var panel = new StackPanel {Background = bottomAppBar.Background, Height = 40, Width = 130};
+            var btnFaceboook = new Button
+                                   {
+                                       Content = "On Facebook",
+                                       Style = (Style) Application.Current.Resources["TextButtonStyle"],
+                                       Margin = new Thickness(15, 5, 5, 15),
+                                       Height = 25, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center
+                                   };
             btnFaceboook.Click += ShareOnFacebookClick;
-            var btnTwitter = new Button();
-            btnTwitter.Content = "On Twitter";
-            btnTwitter.Style = (Style)Application.Current.Resources["TextButtonStyle"];
-            btnTwitter.Margin = new Thickness(20, 5, 20, 5);
-            btnTwitter.Click += ShareOnTwitterClick;
             panel.Children.Add(btnFaceboook);
-            popUp.Child = panel;
-            popUp.HorizontalOffset = Window.Current.CoreWindow.Bounds.Right -
+            sharePopup.Child = panel;
+            sharePopup.HorizontalOffset = 50 + Window.Current.CoreWindow.Bounds.Right -
                                      (Window.Current.CoreWindow.Bounds.Right - panel.Width - 4);
-            popUp.VerticalOffset = Window.Current.CoreWindow.Bounds.Bottom - bottomAppBar.ActualHeight - panel.Height -
+            sharePopup.VerticalOffset = Window.Current.CoreWindow.Bounds.Bottom - bottomAppBar.ActualHeight - panel.Height -
                                    4;
-            popUp.IsOpen = true;
-        }
-
-        private void ShareOnTwitterClick(object sender, RoutedEventArgs e)
-        {
+            sharePopup.IsOpen = true;
         }
 
         private async void ShareOnFacebookClick(object sender, RoutedEventArgs e)
         {
+            sharePopup.IsOpen = false;
+            var popup = new Popup();
             try
             {
                 await fbClient.GetUserDetails("me");
@@ -761,17 +754,33 @@ namespace TheShoppingList
                 fbClient.AccessToken = string.Empty;
                 fbClient.IsLoggedIn = false;
             }
-            if (fbClient.IsLoggedIn == false)
-                await fbClient.Login();
-            var popup = new Popup();
-            popup.Child = new FacebookDialog();
-            popup.VerticalAlignment = VerticalAlignment.Center;
-            popup.HorizontalAlignment = HorizontalAlignment.Center;
-            double height = Window.Current.Bounds.Height;
-            double width = Window.Current.Bounds.Width;
+            try
+            {
+                bool loginResult = false;
+                if (fbClient.IsLoggedIn == false)
+                    loginResult =  await fbClient.Login();
+                if(!loginResult)
+                {
+                    popup.IsOpen = false;
+                    itemGridView.SelectedIndex = -1;
+                    return;
+                }
+                popup.Child = new FacebookDialog();
+                popup.VerticalAlignment = VerticalAlignment.Center;
+                popup.HorizontalAlignment = HorizontalAlignment.Center;
+                double height = Window.Current.Bounds.Height;
+                double width = Window.Current.Bounds.Width;
 
-            popup.Margin = new Thickness((width - 400) / 2, (height - 300) / 2, (width - 400) / 2, (height - 400) / 2);
-            popup.IsOpen = true;
+                popup.Margin = new Thickness((width - 400) / 2, (height - 300) / 2, (width - 400) / 2, (height - 400) / 2);
+                popup.IsOpen = true;
+                itemGridView.SelectedIndex = -1;
+            }
+            catch (Exception)
+            {
+                if (popup.IsOpen == true)
+                    popup.IsOpen = false;
+                itemGridView.SelectedIndex = -1;
+            }
         }
 
         private async void OnFilePickerOpen(object sender, RoutedEventArgs e)

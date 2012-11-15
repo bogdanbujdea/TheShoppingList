@@ -6,5 +6,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DoNotLaunchApp>False</DoNotLaunchApp>
+    <UseSimulator>True</UseSimulator>
   </PropertyGroup>
 </Project>

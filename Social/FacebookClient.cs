@@ -61,6 +61,8 @@ namespace TheShoppingList.Social
                     WebAuthenticationOptions.None,
                     StartUri,
                     EndUri);
+                if (WebAuthenticationResult.ResponseData.Contains("denied") == true)
+                    return false;
                 if (WebAuthenticationResult.ResponseStatus == WebAuthenticationStatus.Success)
                 {
                     IsLoggedIn = true;
@@ -95,7 +97,6 @@ namespace TheShoppingList.Social
             }
             catch (Exception exception)
             {
-                new MessageDialog(exception.Message).ShowAsync();
                 return false;
                 //
                 // Bad Parameter, SSL/TLS Errors and Network Unavailable errors are to be handled here.

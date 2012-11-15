@@ -35,27 +35,41 @@ namespace TheShoppingList
 
         private async void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            txtListName.Text = ShoppingList.Name;
-            string fbText = ShoppingList.ToFacebook();
-            txtMessage.Text = fbText;
-            UserDetails details = await MainPage.Page.fbClient.GetUserDetails("me");
-            txtByUser.Text = details.Name;
-            if(fbText.Length > 51)
-            txtMessageBlock.Text = fbText.Substring(0, 50) + "...";
-            userImage.Source = new BitmapImage(new Uri(MainPage.Page.fbClient.GetUrlImage(details.Username), UriKind.RelativeOrAbsolute));
+            try
+            {
+                txtListName.Text = ShoppingList.Name;
+                string fbText = ShoppingList.ToFacebook();
+                txtMessage.Text = fbText;
+                UserDetails details = await MainPage.Page.fbClient.GetUserDetails("me");
+                txtByUser.Text = details.Name;
+                if (fbText.Length > 51)
+                    txtMessageBlock.Text = fbText.Substring(0, 50) + "...";
+                userImage.Source = new BitmapImage(new Uri(MainPage.Page.fbClient.GetUrlImage(details.Username), UriKind.RelativeOrAbsolute));
+            }
+            catch (Exception)
+            {
+                
+            }
         }
 
         private async void OnFacebookShare(object sender, RoutedEventArgs e)
         {
-            string user = "me";
-            if (cmbShareTarget.SelectedIndex == -1) cmbShareTarget.SelectedIndex = 0;
-            if (cmbShareTarget.SelectedIndex == 0)
-                user = "me";
-            else user = txtFriendName.Text;
-            PostDetails.Message = txtMessage.Text;
-            PostDetails.Name = ShoppingList.Name;
-            await MainPage.Page.fbClient.PostMessage(user, PostDetails);
-            ClosePopup();
+            try
+            {
+                string user = "me";
+                if (cmbShareTarget.SelectedIndex == -1) cmbShareTarget.SelectedIndex = 0;
+                if (cmbShareTarget.SelectedIndex == 0)
+                    user = "me";
+                else user = txtFriendName.Text;
+                PostDetails.Message = txtMessage.Text;
+                PostDetails.Name = ShoppingList.Name;
+                await MainPage.Page.fbClient.PostMessage(user, PostDetails);
+                ClosePopup();
+            }
+            catch (Exception)
+            {
+                
+            }
         }
 
         private void ClosePopup()
