@@ -22,6 +22,11 @@
 
 
     </Page.Resources>
+    <common:LayoutAwarePage.TopAppBar>
+        <AppBar>
+            <Button HorizontalAlignment="Right" Style="{StaticResource PreviewLinkAppBarButtonStyle}" AutomationProperties.Name="Tutorial" Click="OnShowTutorial"></Button>
+        </AppBar>
+    </common:LayoutAwarePage.TopAppBar>
     <common:LayoutAwarePage.BottomAppBar>
         <AppBar Name="bottomAppBar" Opened="OnAppBarOpened">
             <Grid>

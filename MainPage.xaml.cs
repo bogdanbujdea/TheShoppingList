@@ -15,6 +15,7 @@ using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.Notifications;
 using Windows.UI.Popups;
@@ -154,9 +155,6 @@ namespace TheShoppingList
             adDuplexAd.Visibility = Visibility.Visible;
             Grid.SetColumnSpan(itemGridView, 1);
         }
-
-
-
 
         private void RemoveTrialFeatures()
         {
@@ -792,15 +790,22 @@ namespace TheShoppingList
             IReadOnlyList<StorageFile> files = await openPicker.PickMultipleFilesAsync();
             if (files.Count > 0)
             {
+
+                var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
                 // Application now has read/write access to the picked file(s)
                 foreach (StorageFile file in files)
                 {
-                    LoadList(file);
+                    IInputStream sessionInputStream = await file.OpenReadAsync();
+                    var serializer = new XmlSerializer(typeof(ShoppingList));
+                    var list = serializer.Deserialize(sessionInputStream.AsStreamForRead()) as ShoppingList;
+                    sessionInputStream.Dispose();
+                    if (list != null)
+                        source.ShoppingLists.Add(list);
                 }
             }
             else
             {
-                new MessageDialog("Operation cancelled.").ShowAsync();
+                await new MessageDialog("Operation cancelled.").ShowAsync();
             }
         }
 
@@ -813,35 +818,56 @@ namespace TheShoppingList
 
         private async void ListDropped(object sender, DragEventArgs e)
         {
-            Windows.Foundation.Point point = e.GetPosition(itemGridView);
-            Rect point2 = Utils.GetElementRect(sender as Grid);
-            //var findDescendant = Utils.FindDescendant<Grid>(itemGridView);
-            IEnumerable<TextBlock> texts = Utils.FindVisualChildren<TextBlock>(sender as Grid);
-            var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
-            ShoppingList copyList = null;
-
-            foreach (ShoppingList shoppingList in source.ShoppingLists)
+            try
             {
-                foreach (TextBlock textBlock in texts)
+                Windows.Foundation.Point point = e.GetPosition(itemGridView);
+                Rect point2 = Utils.GetElementRect(sender as Grid);
+                //var findDescendant = Utils.FindDescendant<Grid>(itemGridView);
+                IEnumerable<TextBlock> texts = Utils.FindVisualChildren<TextBlock>(sender as Grid);
+                var source = Application.Current.Resources["shoppingSource"] as ShoppingSource;
+                ShoppingList copyList = null;
+
+                foreach (ShoppingList shoppingList in source.ShoppingLists)
                 {
-                    if (textBlock.Text == shoppingList.Name)
+                    foreach (TextBlock textBlock in texts)
                     {
-                        copyList = shoppingList;
-                        break;
+                        if (textBlock.Text == shoppingList.Name)
+                        {
+                            copyList = shoppingList;
+                            break;
+                        }
+                    }
+                    if (copyList != null)
+                    {
+                        foreach (Product product in DraggedList.Products)
+                        {
+                            copyList.Products.Add(product);
+                        }
+                        itemGridView.ItemsSource = itemsViewSource.Source = source.ShoppingLists;
+                        return;
                     }
                 }
-                if (copyList != null)
-                {
-                    foreach (Product product in DraggedList.Products)
-                    {
-                        copyList.Products.Add(product);
-                    }
-                    itemGridView.ItemsSource = itemsViewSource.Source = source.ShoppingLists;
-                    return;
-                }
+            }
+            catch (Exception)
+            {
+                
             }
         }
 
         #endregion
+
+        private async void OnShowTutorial(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await
+                Launcher.LaunchUriAsync(new Uri("http://www.youtube.com/watch?v=aZ58Q55JHk8", UriKind.RelativeOrAbsolute));
+            }
+            catch (Exception)
+            {
+
+                new MessageDialog("Can't start tutorial.").ShowAsync();
+            }
+        }
     }
 }

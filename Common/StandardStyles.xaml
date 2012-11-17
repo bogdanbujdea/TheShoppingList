@@ -583,11 +583,7 @@
         <Setter Property="AutomationProperties.Name" Value="Flag"/>
         <Setter Property="Content" Value="&#xE129;"/>
     </Style>
-    <Style x:Key="PreviewLinkAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
-        <Setter Property="AutomationProperties.AutomationId" Value="PreviewLinkAppBarButton"/>
-        <Setter Property="AutomationProperties.Name" Value="Preview Link"/>
-        <Setter Property="Content" Value="&#xE12A;"/>
-    </Style>
+
     <Style x:Key="GlobeAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="GlobeAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Globe"/>
@@ -1446,7 +1442,11 @@
         <Setter Property="AutomationProperties.Name" Value="Remove"/>
         <Setter Property="Content" Value="&#xE108;"/>
     </Style>
-
+    <Style x:Key="PreviewLinkAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="PreviewLinkAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Preview Link"/>
+        <Setter Property="Content" Value="&#xE12A;"/>
+    </Style>
     <Style x:Key="AddAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="AddAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Add"/>

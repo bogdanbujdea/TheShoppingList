@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="0fed0162-62d9-438e-bae1-b7737ac76b5c" Publisher="CN=Bogdan" Version="1.0.0.0" />
+  <Identity Name="19960BogdanB.TheShoppingList" Publisher="CN=4E87F883-6FEA-4B8F-9088-5E5336A782BD" Version="1.0.0.0" />
   <Properties>
-    <DisplayName>TheShoppingList</DisplayName>
-    <PublisherDisplayName>Bogdan</PublisherDisplayName>
+    <DisplayName>The Shopping List</DisplayName>
+    <PublisherDisplayName>Bogdan B</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="TheShoppingList.App">
-      <VisualElements DisplayName="TheShoppingList" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="TheShoppingList" ForegroundText="dark" BackgroundColor="#16499A" ToastCapable="false">
+      <VisualElements DisplayName="The Shopping List" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="The best shopping list app on Windows 8. It's easy to use, it's simple, and most important, it gives you everything you need to create a shopping list." ForegroundText="dark" BackgroundColor="#16499A" ToastCapable="false">
         <DefaultTile ShowName="noLogos" ShortName="The Shopping List" WideLogo="Assets\WideLogo.png" />
         <SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#16499A" />
         <InitialRotationPreference>
@@ -42,12 +42,10 @@
             </SupportedFileTypes>
           </FileOpenPicker>
         </Extension>
-        <Extension Category="windows.search" />
       </Extensions>
     </Application>
   </Applications>
   <Capabilities>
-    <Capability Name="documentsLibrary" />
     <Capability Name="internetClient" />
   </Capabilities>
 </Package>

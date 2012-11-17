@@ -22,19 +22,24 @@
 
 
     </Page.Resources>
+    <common:LayoutAwarePage.TopAppBar>
+        <AppBar>
+            <Button x:ConnectionId='1' HorizontalAlignment="Right" Style="{StaticResource PreviewLinkAppBarButtonStyle}" AutomationProperties.Name="Tutorial"                       ></Button>
+        </AppBar>
+    </common:LayoutAwarePage.TopAppBar>
     <common:LayoutAwarePage.BottomAppBar>
-        <AppBar x:ConnectionId='1' Name="bottomAppBar"                        >
+        <AppBar x:ConnectionId='2' Name="bottomAppBar"                        >
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Name="ItemControls">
-                    <Button x:ConnectionId='6' Style="{StaticResource EditAppBarButtonStyle}"                 />
-                    <Button x:ConnectionId='7' Style="{StaticResource DeleteAppBarButtonStyle}"                   />
-                    <Button x:ConnectionId='8' Style="{StaticResource ShareAppBarButtonStyle}" Name="btnShare" x:FieldModifier="public"                    ></Button>
+                    <Button x:ConnectionId='7' Style="{StaticResource EditAppBarButtonStyle}"                 />
+                    <Button x:ConnectionId='8' Style="{StaticResource DeleteAppBarButtonStyle}"                   />
+                    <Button x:ConnectionId='9' Style="{StaticResource ShareAppBarButtonStyle}" Name="btnShare" x:FieldModifier="public"                    ></Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button x:ConnectionId='2' Style="{StaticResource AddAppBarButtonStyle}"                     />
-                    <Button x:ConnectionId='3' x:Name="button" Style="{StaticResource RemoveAppBarButtonStyle}" AutomationProperties.Name="Remove All"                               />
-                    <Button x:ConnectionId='4' x:Name="btnPinList"                   Style="{StaticResource PinAppBarButtonStyle}"></Button>
-                    <Button x:ConnectionId='5' Name="btnAddListFromPicker"                          Style="{StaticResource AddAppBarButtonStyle}" AutomationProperties.Name="Pick a list" ></Button>
+                    <Button x:ConnectionId='3' Style="{StaticResource AddAppBarButtonStyle}"                     />
+                    <Button x:ConnectionId='4' x:Name="button" Style="{StaticResource RemoveAppBarButtonStyle}" AutomationProperties.Name="Remove All"                               />
+                    <Button x:ConnectionId='5' x:Name="btnPinList"                   Style="{StaticResource PinAppBarButtonStyle}"></Button>
+                    <Button x:ConnectionId='6' Name="btnAddListFromPicker"                          Style="{StaticResource AddAppBarButtonStyle}" AutomationProperties.Name="Pick a list" ></Button>
                 </StackPanel>
             </Grid>
         </AppBar>
@@ -56,7 +61,7 @@
         </Grid.ColumnDefinitions>
         
         <!-- Horizontal scrolling grid used in most view states -->
-        <GridView x:ConnectionId='9'
+        <GridView x:ConnectionId='10'
             x:Name="itemGridView" AllowDrop="True" CanDragItems="True"                                       
             AutomationProperties.AutomationId="ItemsGridView"
             AutomationProperties.Name="Items"
@@ -70,8 +75,8 @@
             IsSwipeEnabled="True" Margin="10,0,0,0"                         IsItemClickEnabled="True">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Border x:ConnectionId='14' CornerRadius="40" Margin="4,0,0,0" BorderThickness="1"                                >
-                        <Grid x:ConnectionId='15' HorizontalAlignment="Left" Width="250" Height="250" AllowDrop="True"                   >
+                    <Border x:ConnectionId='15' CornerRadius="40" Margin="4,0,0,0" BorderThickness="1"                                >
+                        <Grid x:ConnectionId='16' HorizontalAlignment="Left" Width="250" Height="250" AllowDrop="True"                   >
                             <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" CornerRadius="45">
                                 <Image Source="{Binding Image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
                             </Border>
@@ -97,7 +102,7 @@
                     AppId="24355" 
                     Size="160x600"
                     />
-        <Popup x:ConnectionId='10' x:Name="ParentedPopup" Height="140" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Bottom"                      IsLightDismissEnabled="True" >
+        <Popup x:ConnectionId='11' x:Name="ParentedPopup" Height="140" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Bottom"                      IsLightDismissEnabled="True" >
             <Popup.ChildTransitions>
                 <TransitionCollection>
                     <PopupThemeTransition />
@@ -106,9 +111,9 @@
             <local:NewShoppingList x:Name="newShoppingList" />
         </Popup>
         
-        <Button x:ConnectionId='11' Grid.Row="1" Name="btnAddList" x:FieldModifier="public" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                      Style="{StaticResource AddAppBarButtonStyle}" ></Button>
+        <Button x:ConnectionId='12' Grid.Row="1" Name="btnAddList" x:FieldModifier="public" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed"                      Style="{StaticResource AddAppBarButtonStyle}" ></Button>
             <!-- Vertical scrolling list only used when snapped -->
-        <ListView x:ConnectionId='12'
+        <ListView x:ConnectionId='13'
             x:Name="itemListView"
             AutomationProperties.AutomationId="ItemsListView"
             AutomationProperties.Name="Items"
@@ -129,7 +134,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-            <Button x:ConnectionId='13' x:Name="backButton" Visibility="Collapsed"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
+            <Button x:ConnectionId='14' x:Name="backButton" Visibility="Collapsed"                IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
             <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
 

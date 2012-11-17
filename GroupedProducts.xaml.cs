@@ -544,7 +544,7 @@ namespace TheShoppingList
         }
 
         #endregion
-
+        
         #region Other
 
         private void ShowHideButtons()

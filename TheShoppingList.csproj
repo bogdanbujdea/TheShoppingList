@@ -12,7 +12,9 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>TheShoppingList_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>TheShoppingList_StoreKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <PackageCertificateThumbprint>EC7F2DA56A6E587FCE10C66DA1C04045AD457FAC</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -154,6 +156,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TheShoppingList_StoreKey.pfx" />
     <None Include="TheShoppingList_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +183,7 @@
     <EmbeddedResource Include="Settings\privacy.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="ShoppingList1.xml" />
   </ItemGroup>
   <ItemGroup>
