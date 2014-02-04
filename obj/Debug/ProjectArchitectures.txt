@@ -1,1 +1,0 @@
-C:\Users\Bogdan\Documents\Visual Studio 2012\Projects\TheShoppingList\TheShoppingList\TheShoppingList.csproj;neutral
